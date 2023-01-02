@@ -1,0 +1,239 @@
+package com.my.repairagency007.DAO.implementations;
+
+import com.my.repairagency007.DAO.UserDAO;
+import com.my.repairagency007.exception.DAOException;
+import com.my.repairagency007.model.entity.User;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
+
+
+import static com.my.repairagency007.DAO.implementations.SQLQuery.UserSQL.*;
+
+public class UserDAOImpl extends GenericDAO implements UserDAO {
+
+    private static final Logger log = LoggerFactory.getLogger(UserDAOImpl.class);
+
+    @Override
+    public List<User> findAll() throws DAOException {
+
+        log.trace("Find all users");
+        Connection connection = getConnection();
+        ResultSet rs = null;
+        PreparedStatement ps = null;
+
+        ArrayList<User> result = null;
+
+        try{
+            begin(connection);
+            ps = connection.prepareStatement(SQL_SELECT_ALL_USERS);
+            rs = ps.executeQuery();
+            result = extractUsersFromResultSet(rs);
+            commit(connection);
+            log.trace("ArrayList of Users created");
+        } catch (SQLException e) {
+            rollback(connection);
+            log.error("Error in find All Users methods", e);
+            throw new DAOException(e);
+        } finally {
+            close(connection, ps, rs);
+        }
+
+        return result;
+    }
+    @Override
+    public User getEntityById(int id) throws DAOException {
+
+        log.debug("Find user by id");
+        Connection connection = getConnection();
+        ResultSet rs = null;
+        PreparedStatement ps = null;
+        User user = null;
+
+        try{
+            begin(connection);
+            ps = connection.prepareStatement(SQL_GET_USER_BY_ID);
+            ps.setInt(1, id);
+            rs = ps.executeQuery();
+            if( rs.next() ) {user = extractUserFromResultSet(rs);}
+            commit(connection);
+            log.trace("User found and created");
+        } catch (SQLException e) {
+            rollback(connection);
+            log.error("Error in find User by id methods", e);
+            throw new DAOException(e);
+        } finally {
+            close(connection, ps, rs);
+        }
+
+        return user;
+    }
+
+    @Override
+    public boolean delete(User user) throws DAOException {
+        return deleteById(user.getId());
+    }
+
+    @Override
+    public boolean deleteById(int id) throws DAOException {
+
+        log.debug("Delete user by id");
+        Connection connection = getConnection();
+        PreparedStatement ps = null;
+        boolean result = false;
+
+        try{
+            begin(connection);
+            ps = connection.prepareStatement(SQL_DELETE_USER_BY_ID);
+            ps.setInt(1, id);
+            if(ps.executeUpdate() > 0) {result = true;}
+            connection.commit();
+            log.trace("User deleted");
+        } catch (SQLException e) {
+            rollback(connection);
+            log.error("Error in delete User by id methods", e);
+            throw new DAOException(e);
+        } finally {
+            close(connection, ps, null);
+        }
+        return result;
+    }
+
+    @Override
+    public boolean create(User user) throws DAOException {
+
+        log.debug("Create user");
+        Connection connection = getConnection();
+        PreparedStatement ps = null;
+        boolean result = false;
+        ResultSet rs = null;
+
+        try{
+            begin(connection);
+
+            ps = connection.prepareStatement(SQL_CREATE_USER, PreparedStatement.RETURN_GENERATED_KEYS);
+            fillUser(ps, user);
+            if(ps.executeUpdate() > 0) {result = true;}
+            rs = ps.getGeneratedKeys();
+
+            if (rs.next()) {
+                int id = rs.getInt(1);
+                user.setId(id);
+            }
+
+            connection.commit();
+            log.trace("User created");
+        } catch (SQLException e) {
+            rollback(connection);
+            log.error("Error create User", e);
+            throw new DAOException(e);
+        } finally {
+            close(connection, ps, rs);
+        }
+        return result;
+    }
+
+    @Override
+    public User update(User user) throws DAOException {
+
+        log.debug("Update user");
+        Connection connection = getConnection();
+        PreparedStatement ps = null;
+
+        try{
+            begin(connection);
+
+            ps = connection.prepareStatement(SQL_UPDATE_USER);
+            fillUser(ps, user);
+            ps.setInt(10, user.getId());
+            ps.executeUpdate();
+
+            connection.commit();
+            log.trace("User updated");
+        } catch (SQLException e) {
+            rollback(connection);
+            log.error("Error update User", e);
+            throw new DAOException(e);
+        } finally {
+            close(connection, ps, null);
+        }
+        return user;
+    }
+
+    private ArrayList<User> extractUsersFromResultSet(ResultSet rs) throws SQLException{
+
+        ArrayList<User> users = new ArrayList<>();
+
+        while (rs.next()) {
+            User user = extractUserFromResultSet(rs);
+            users.add(user);
+        }
+        return users;
+    }
+
+    private void fillUser(PreparedStatement ps, User user)throws SQLException{
+
+        ps.setString(1, user.getNotification());
+        ps.setString(2, user.getPhoneNumber());
+        ps.setInt(3, user.getAccount());
+        ps.setString(4, user.getStatus());
+        ps.setString(5, user.getPassword());
+        ps.setString(6, user.getFirstName());
+        ps.setString(7, user.getLastName());
+        ps.setString(8, user.getEmail());
+        ps.setInt(9, user.getRoleId());
+
+    }
+
+    private User extractUserFromResultSet(ResultSet rs) throws SQLException  {
+
+        User result = new User();
+
+        result.setId(rs.getInt("u_id"));
+        result.setPhoneNumber(rs.getString("phone_number"));
+        result.setAccount(rs.getInt("account"));
+        result.setStatus(rs.getString("status"));
+        result.setPassword(rs.getString("password"));
+        result.setFirstName(rs.getString("first_name"));
+        result.setLastName(rs.getString("last_name"));
+        result.setEmail(rs.getString("email"));
+        result.setRoleId(rs.getInt("role_id"));
+        return result;
+    }
+
+    @Override
+    public User getByEmail(String email) throws DAOException {
+
+        log.debug("Find user by email: " + email);
+        Connection connection = getConnection();
+        ResultSet rs = null;
+        PreparedStatement ps = null;
+        User user = null;
+
+        try{
+            begin(connection);
+            ps = connection.prepareStatement(SQL_GET_USER_BY_EMAIL);
+            ps.setString(1, email);
+            log.debug("Prepare prepare statement");
+            rs = ps.executeQuery();
+            log.debug("execute ps and recieve result set");
+            if (rs.next()){user = extractUserFromResultSet(rs);}
+            log.debug("Recieve user from rs");
+            commit(connection);
+            log.trace("User found and created");
+        } catch (SQLException e) {
+            rollback(connection);
+            log.error("Error in find User by email methods", e);
+            throw new DAOException(e);
+        } finally {
+            close(connection, ps, rs);
+        }
+        return user;
+    }
+}
