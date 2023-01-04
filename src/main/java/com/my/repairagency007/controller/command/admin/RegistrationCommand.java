@@ -78,7 +78,7 @@ public class RegistrationCommand implements Command {
     newUser.setPassword(BCrypt.hashpw(password, BCrypt.gensalt()));
     newUser.setFirstName(firstName);
     newUser.setLastName(lastName);
-    newUser.setRoleId(3);
+    newUser.setRoleId(1);
     newUser.setAccount(0);
     newUser.setPhoneNumber(phoneNumber);
     try {
@@ -92,7 +92,7 @@ public class RegistrationCommand implements Command {
     HttpSession session = request.getSession();
     session.setAttribute("newUser", newUser);
     log.debug("Save new user in session attribute");
-    String resp = Path.COMMAND_PROFILE;
+    String resp = Path.COMMAND_LOGIN;
     log.debug("Form path to profile command: " + resp);
     try {
       response.sendRedirect(resp);

@@ -35,7 +35,7 @@ public class AllRequestCommand implements Command {
         log.debug("Получили юзера из сессии");
         List<Request> requests;
         log.debug("User role" + getRole(currentUser));
-        if (getRole(currentUser) == USER || getRole(currentUser) == CRAFTSMAN) {
+        if (getRole(currentUser) == MANAGER || getRole(currentUser) == CRAFTSMAN) {
             try {
                 log.debug("создание списка реквестов");
                 requests = new RequestDAOImpl().findAll();

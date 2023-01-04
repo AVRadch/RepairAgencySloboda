@@ -6,13 +6,17 @@ public class Request {
 
     private int id;
 
+    private int user_id;
+
     private String description;
 
     private Date date;
 
-    private String completionStatus;
+    private int completionStatusId;
 
-    private String paymentStatus;
+    private int repairer_id;
+
+    private int paymentStatusId;
 
     private int totalCost;
 
@@ -28,16 +32,24 @@ public class Request {
         return date;
     }
 
-    public String getCompletionStatus() {
-        return completionStatus;
+    public int getCompletionStatusId() {
+        return completionStatusId;
     }
 
-    public String getPaymentStatus() {
-        return paymentStatus;
+    public int getPaymentStatusId() {
+        return paymentStatusId;
     }
 
     public int getTotalCost() {
         return totalCost;
+    }
+
+    public int getUser_id() {
+        return user_id;
+    }
+
+    public int getRepairer_id() {
+        return repairer_id;
     }
 
     public void setId(int id) {
@@ -52,15 +64,23 @@ public class Request {
         this.date = date;
     }
 
-    public void setCompletionStatus(String completionStatus) {
-        this.completionStatus = completionStatus;
+    public void setCompletionStatusId(int completionStatusId) {
+        this.completionStatusId = completionStatusId;
     }
 
-    public void setPaymentStatus(String paymentStatus) {
-        this.paymentStatus = paymentStatus;
+    public void setPaymentStatusId(int paymentStatusId) {
+        this.paymentStatusId = paymentStatusId;
     }
 
     public void setTotalCost(int totalCost) {
         this.totalCost = totalCost;
+    }
+
+    public void setUser_id(int user_id) {
+        this.user_id = user_id;
+    }
+
+    public void setRepairer_id(int repairer_id) {
+        this.repairer_id = repairer_id;
     }
 }

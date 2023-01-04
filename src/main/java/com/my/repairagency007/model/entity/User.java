@@ -1,14 +1,17 @@
 package com.my.repairagency007.model.entity;
 
+import java.io.Serializable;
 import java.util.Objects;
 
-public class User {
+public class User implements Serializable {
+
+    private static final long serialVersionUID = 1L;
     private int id;
     private String notification;
     private String phoneNumber;
     private int account;
     private String status;
-    private String password;
+    private transient String password;
     private String firstName;
     private String lastName;
     private String email;
@@ -96,7 +99,7 @@ public class User {
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, notification, phoneNumber, account, status, password, firstName, lastName, email, roleId);
+        return Objects.hash(notification, phoneNumber, account, status, firstName, lastName, email);
     }
 
 }

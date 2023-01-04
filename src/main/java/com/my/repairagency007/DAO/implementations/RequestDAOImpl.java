@@ -232,10 +232,12 @@ public class RequestDAOImpl extends GenericDAO implements RequestDAO {
         Request result = new Request();
 
         result.setId(rs.getInt("r_id"));
+        result.setUser_id(rs.getInt("users_id"));
         result.setDescription(rs.getString("descriptions"));
         result.setDate(rs.getDate("date"));
-        result.setCompletionStatus(rs.getString("completion_status"));
-        result.setPaymentStatus(rs.getString("payment_status"));
+        result.setCompletionStatusId(rs.getInt("completion_status_id"));
+        result.setRepairer_id(rs.getInt("repairer_id"));
+        result.setPaymentStatusId(rs.getInt("payment_status_id"));
         result.setTotalCost(rs.getInt("total_cost"));
 
         return result;
@@ -245,8 +247,8 @@ public class RequestDAOImpl extends GenericDAO implements RequestDAO {
 
         ps.setString(1, request.getDescription());
         ps.setDate(2, (Date) request.getDate());
-        ps.setString(3, request.getCompletionStatus());
-        ps.setString(4, request.getPaymentStatus());
+        ps.setInt(3, request.getCompletionStatusId());
+        ps.setInt(4, request.getPaymentStatusId());
         ps.setInt(5, request.getTotalCost());
 
     }
