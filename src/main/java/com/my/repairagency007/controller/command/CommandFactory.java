@@ -1,10 +1,9 @@
 package com.my.repairagency007.controller.command;
 
-import com.my.repairagency007.DAO.implementations.UserDAOImpl;
 import com.my.repairagency007.controller.command.admin.AllRequestCommand;
 import com.my.repairagency007.controller.command.admin.RegistrationCommand;
 import com.my.repairagency007.controller.command.common.LoginCommand;
-import com.my.repairagency007.services.UserService;
+import com.my.repairagency007.model.services.UserService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 

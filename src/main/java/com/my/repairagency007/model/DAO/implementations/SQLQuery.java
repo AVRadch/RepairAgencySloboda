@@ -1,4 +1,4 @@
-package com.my.repairagency007.DAO.implementations;
+package com.my.repairagency007.model.DAO.implementations;
 
 public abstract class SQLQuery {
     static class UserSQL{

@@ -1,11 +1,9 @@
 package com.my.repairagency007.controller.command.admin;
 
-import com.my.repairagency007.DAO.implementations.RequestDAOImpl;
+import com.my.repairagency007.model.DAO.implementations.RequestDAOImpl;
 import com.my.repairagency007.controller.command.Command;
-import com.my.repairagency007.controller.command.common.LoginCommand;
 import com.my.repairagency007.exception.DAOException;
 import com.my.repairagency007.model.entity.Request;
-import com.my.repairagency007.model.entity.Role;
 import com.my.repairagency007.model.entity.User;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -16,7 +14,6 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.List;
 
 import static com.my.repairagency007.model.entity.Role.*;

@@ -1,9 +1,7 @@
-package com.my.repairagency007.DAO;
+package com.my.repairagency007.model.DAO;
 
 import com.my.repairagency007.exception.DAOException;
 import com.my.repairagency007.model.entity.User;
-
-import java.util.List;
 
 public interface UserDAO extends BaseDAO<User> {
 

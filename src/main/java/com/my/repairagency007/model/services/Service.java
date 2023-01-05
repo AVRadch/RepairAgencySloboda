@@ -1,4 +1,4 @@
-package com.my.repairagency007.services;
+package com.my.repairagency007.model.services;
 
 import com.my.repairagency007.exception.ServiceException;
 

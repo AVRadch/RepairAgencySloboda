@@ -1,4 +1,4 @@
-package com.my.repairagency007.DAO;
+package com.my.repairagency007.model.DAO;
 
 import com.my.repairagency007.model.entity.Feedback;
 

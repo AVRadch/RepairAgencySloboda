@@ -1,6 +1,6 @@
-package com.my.repairagency007.DAO.implementations;
+package com.my.repairagency007.model.DAO.implementations;
 
-import com.my.repairagency007.DAO.FeedbackDAO;
+import com.my.repairagency007.model.DAO.FeedbackDAO;
 import com.my.repairagency007.exception.DAOException;
 import com.my.repairagency007.model.entity.Feedback;
 
@@ -15,7 +15,7 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
-import static com.my.repairagency007.DAO.implementations.SQLQuery.FeedbackSQL.*;
+import static com.my.repairagency007.model.DAO.implementations.SQLQuery.FeedbackSQL.*;
 
 public class FeedbackDAOImpl extends GenericDAO implements FeedbackDAO {
     private static final Logger log = LoggerFactory.getLogger(FeedbackDAOImpl.class);

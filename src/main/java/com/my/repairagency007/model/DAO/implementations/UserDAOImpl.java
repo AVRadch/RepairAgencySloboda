@@ -1,6 +1,6 @@
-package com.my.repairagency007.DAO.implementations;
+package com.my.repairagency007.model.DAO.implementations;
 
-import com.my.repairagency007.DAO.UserDAO;
+import com.my.repairagency007.model.DAO.UserDAO;
 import com.my.repairagency007.exception.DAOException;
 import com.my.repairagency007.model.entity.User;
 import org.slf4j.Logger;
@@ -14,7 +14,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 
-import static com.my.repairagency007.DAO.implementations.SQLQuery.UserSQL.*;
+import static com.my.repairagency007.model.DAO.implementations.SQLQuery.UserSQL.*;
 
 public class UserDAOImpl extends GenericDAO implements UserDAO {
 

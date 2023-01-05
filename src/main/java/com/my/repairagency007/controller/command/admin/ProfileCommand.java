@@ -1,7 +1,7 @@
 package com.my.repairagency007.controller.command.admin;
 
-import com.my.repairagency007.DAO.UserDAO;
-import com.my.repairagency007.DAO.implementations.UserDAOImpl;
+import com.my.repairagency007.model.DAO.UserDAO;
+import com.my.repairagency007.model.DAO.implementations.UserDAOImpl;
 import com.my.repairagency007.controller.Path;
 import com.my.repairagency007.controller.command.Command;
 import com.my.repairagency007.exception.DAOException;

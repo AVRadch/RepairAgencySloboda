@@ -1,6 +1,6 @@
-package com.my.repairagency007.DAO.implementations;
+package com.my.repairagency007.model.DAO.implementations;
 
-import com.my.repairagency007.DAO.RequestDAO;
+import com.my.repairagency007.model.DAO.RequestDAO;
 import com.my.repairagency007.exception.DAOException;
 import com.my.repairagency007.model.entity.Request;
 import org.slf4j.Logger;
@@ -10,7 +10,7 @@ import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 
-import static com.my.repairagency007.DAO.implementations.SQLQuery.RequestSQL.*;
+import static com.my.repairagency007.model.DAO.implementations.SQLQuery.RequestSQL.*;
 
 public class RequestDAOImpl extends GenericDAO implements RequestDAO {
 
@@ -228,25 +228,22 @@ public class RequestDAOImpl extends GenericDAO implements RequestDAO {
     }
 
     private Request extractRequestFromResultSet(ResultSet rs) throws SQLException  {
-
-        Request result = new Request();
-
-        result.setId(rs.getInt("r_id"));
-        result.setUser_id(rs.getInt("users_id"));
-        result.setDescription(rs.getString("descriptions"));
-        result.setDate(rs.getDate("date"));
-        result.setCompletionStatusId(rs.getInt("completion_status_id"));
-        result.setRepairer_id(rs.getInt("repairer_id"));
-        result.setPaymentStatusId(rs.getInt("payment_status_id"));
-        result.setTotalCost(rs.getInt("total_cost"));
-
-        return result;
+        return Request.builder()
+                .id(rs.getInt("r_id"))
+                .user_id(rs.getInt("users_id"))
+                .description(rs.getString("descriptions"))
+                .date(rs.getDate("date").toLocalDate())
+                .completionStatusId(rs.getInt("completion_status_id"))
+                .repairer_id(rs.getInt("repairer_id"))
+                .paymentStatusId(rs.getInt("payment_status_id"))
+                .totalCost(rs.getInt("total_cost"))
+                .build();
     }
 
     private void fillRequest(PreparedStatement ps, Request request)throws SQLException{
 
         ps.setString(1, request.getDescription());
-        ps.setDate(2, (Date) request.getDate());
+        ps.setDate(2, Date.valueOf(request.getDate()));
         ps.setInt(3, request.getCompletionStatusId());
         ps.setInt(4, request.getPaymentStatusId());
         ps.setInt(5, request.getTotalCost());

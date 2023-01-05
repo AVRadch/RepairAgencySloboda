@@ -1,4 +1,4 @@
-package com.my.repairagency007.DAO.implementations;
+package com.my.repairagency007.model.DAO.implementations;
 
 import javax.sql.DataSource;
 import java.sql.Connection;

@@ -1,4 +1,4 @@
-package com.my.repairagency007.util;
+package com.my.repairagency007.util.query;
 
 import java.util.ArrayList;
 import java.util.List;

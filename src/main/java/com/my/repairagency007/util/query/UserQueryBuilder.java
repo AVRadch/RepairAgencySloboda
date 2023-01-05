@@ -1,9 +1,11 @@
-package com.my.repairagency007.util;
+package com.my.repairagency007.util.query;
+
+import com.my.repairagency007.util.query.QueryBuilder;
 
 import java.util.HashSet;
 import java.util.Set;
 
-public class UserQueryBuilder extends QueryBuilder{
+public class UserQueryBuilder extends QueryBuilder {
 
     private static final Set<String> USER_SORT_FIELDS_SET = new HashSet<>();
 

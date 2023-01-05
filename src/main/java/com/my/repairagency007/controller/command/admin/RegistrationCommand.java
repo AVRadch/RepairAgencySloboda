@@ -1,10 +1,9 @@
 package com.my.repairagency007.controller.command.admin;
 
 
-import com.my.repairagency007.DAO.UserDAO;
-import com.my.repairagency007.DAO.implementations.UserDAOImpl;
+import com.my.repairagency007.model.DAO.UserDAO;
+import com.my.repairagency007.model.DAO.implementations.UserDAOImpl;
 import com.my.repairagency007.controller.Path;
-import com.my.repairagency007.controller.RepairAgencyServlet;
 import com.my.repairagency007.controller.command.Command;
 import com.my.repairagency007.exception.DAOException;
 import com.my.repairagency007.model.entity.User;
@@ -16,10 +15,6 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.io.IOException;
-import java.math.BigDecimal;
-import java.util.Collections;
-import java.util.HashSet;
-import java.util.Set;
 
 /**
  * New user registration controller command.

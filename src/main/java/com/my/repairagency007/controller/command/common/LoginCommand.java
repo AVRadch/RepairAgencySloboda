@@ -1,8 +1,6 @@
 package com.my.repairagency007.controller.command.common;
 
-import com.my.repairagency007.controller.RepairAgencyServlet;
 import com.my.repairagency007.controller.command.Command;
-import com.my.repairagency007.controller.command.CommandUtility;
 import com.my.repairagency007.model.entity.User;
 
 import javax.servlet.http.HttpServletRequest;
@@ -11,8 +9,7 @@ import javax.servlet.http.HttpSession;
 import java.util.Objects;
 import java.util.ResourceBundle;
 
-import com.my.repairagency007.services.UserService;
-import org.apache.commons.codec.digest.DigestUtils;
+import com.my.repairagency007.model.services.UserService;
 import org.mindrot.jbcrypt.BCrypt;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

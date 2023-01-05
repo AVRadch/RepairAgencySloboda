@@ -1,9 +1,10 @@
 package com.my.repairagency007.DTO;
 
-import lombok.*;
+import lombok.Builder;
+import lombok.Data;
+import lombok.EqualsAndHashCode;
 
 import java.io.Serializable;
-import java.util.Date;
 
 @Data
 @EqualsAndHashCode(of = {"user_id", "description", "date", "repairer_id", "totalCost"})
