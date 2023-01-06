@@ -14,10 +14,10 @@ import static com.my.repairagency007.model.DAO.implementations.SQLQuery.RequestS
 
 public class RequestDAOImpl extends GenericDAO implements RequestDAO {
 
-    private static final Logger log = LoggerFactory.getLogger(UserDAOImpl.class);
+    private static final Logger log = LoggerFactory.getLogger(RequestDAOImpl.class);
 
     @Override
-    public List<Request> findAll() throws DAOException {
+    public List<Request> findAll(String query) throws DAOException {
 
         log.trace("Find all request");
         Connection connection = getConnection();

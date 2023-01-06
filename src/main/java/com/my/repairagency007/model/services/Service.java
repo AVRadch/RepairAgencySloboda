@@ -6,11 +6,11 @@ import java.util.List;
 
 public interface Service<T> {
 
-    T getById(String idString) throws ServiceException;
+    T getById(int id) throws ServiceException;
 
-    List<T> getAll() throws ServiceException;
+    List<T> getAll(String query) throws ServiceException;
 
     void update(T entity) throws ServiceException;
 
-    void delete(String idString) throws ServiceException;
+    void delete(int id) throws ServiceException;
 }

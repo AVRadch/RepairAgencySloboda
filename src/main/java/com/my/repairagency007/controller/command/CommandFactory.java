@@ -3,7 +3,8 @@ package com.my.repairagency007.controller.command;
 import com.my.repairagency007.controller.command.admin.AllRequestCommand;
 import com.my.repairagency007.controller.command.admin.RegistrationCommand;
 import com.my.repairagency007.controller.command.common.LoginCommand;
-import com.my.repairagency007.model.services.UserService;
+import com.my.repairagency007.controller.context.AppContext;
+import com.my.repairagency007.model.services.impl.UserServiceImpl;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -33,11 +34,11 @@ public class CommandFactory {
 
     static {
         // common commands
-        commands.put("login", new LoginCommand(new UserService()));
+        commands.put("login", new LoginCommand(AppContext.getAppContext().getUserService()));
         commands.put("redirect", null);
 
         commands.put("registration", new RegistrationCommand());
-        commands.put("adminAllRequest", new AllRequestCommand());
+        commands.put("adminAllRequest", new AllRequestCommand(AppContext.getAppContext()));
 
     }
 

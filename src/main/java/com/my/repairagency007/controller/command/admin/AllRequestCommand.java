@@ -1,10 +1,14 @@
 package com.my.repairagency007.controller.command.admin;
 
-import com.my.repairagency007.model.DAO.implementations.RequestDAOImpl;
+import com.my.repairagency007.DTO.RequestDTO;
+import com.my.repairagency007.controller.context.AppContext;
+import com.my.repairagency007.exception.ServiceException;
 import com.my.repairagency007.controller.command.Command;
-import com.my.repairagency007.exception.DAOException;
-import com.my.repairagency007.model.entity.Request;
 import com.my.repairagency007.model.entity.User;
+import com.my.repairagency007.model.services.impl.RequestServiceImpl;
+import com.my.repairagency007.model.services.impl.UserServiceImpl;
+import com.my.repairagency007.util.query.QueryBuilder;
+import com.my.repairagency007.util.query.RequestQueryBuilder;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -21,8 +25,17 @@ import static com.my.repairagency007.model.entity.Role.*;
 public class AllRequestCommand implements Command {
 
     private static final Logger log = LoggerFactory.getLogger(AllRequestCommand.class);
+
+    private final RequestServiceImpl requestService;
+    private final UserServiceImpl userService;
+
+    public AllRequestCommand(AppContext appContext) {
+        requestService = appContext.getRequestService();
+        userService = appContext.getUserService();
+    }
+
     @Override
-    public String execute(HttpServletRequest request, HttpServletResponse response) {
+    public String execute(HttpServletRequest request, HttpServletResponse response) throws ServiceException {
 
         HttpSession session = request.getSession();
         log.debug("Получили сессию");
@@ -30,13 +43,15 @@ public class AllRequestCommand implements Command {
 
         User currentUser = (User) session.getAttribute("user");
         log.debug("Получили юзера из сессии");
-        List<Request> requests;
+        List<RequestDTO> requests;
         log.debug("User role" + getRole(currentUser));
         if (getRole(currentUser) == MANAGER || getRole(currentUser) == CRAFTSMAN) {
             try {
                 log.debug("создание списка реквестов");
-                requests = new RequestDAOImpl().findAll();
-            } catch (DAOException e) {
+                QueryBuilder queryBuilder = getQueryBuilder(request);
+                requests = requestService.getAll(queryBuilder.getQuery());
+                int numberOfRecords = requestService.getNumberOfRecords(queryBuilder.getRecordQuery());
+            } catch (ServiceException e) {
                 log.error("Не получилось создать список реквестов");
                 return "error_page.jsp";
             }
@@ -56,5 +71,13 @@ public class AllRequestCommand implements Command {
             }
         }
         return "error_page.jsp";
+    }
+
+    private QueryBuilder getQueryBuilder(HttpServletRequest request) {
+        return new RequestQueryBuilder()
+                .setDateFilter(request.getParameter("date"))
+                .setSortField(request.getParameter("sort"))
+                .setOrder(request.getParameter("order"))
+                .setLimits(request.getParameter("offset"), request.getParameter("records"));
     }
 }

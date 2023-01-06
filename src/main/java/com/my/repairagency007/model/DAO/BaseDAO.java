@@ -8,7 +8,7 @@ import java.sql.Statement;
 import java.util.List;
 
 public interface BaseDAO<T> {
-    List<T> findAll() throws DAOException;
+    List<T> findAll(String query) throws DAOException;
 
     T getEntityById(int id) throws DAOException;
 

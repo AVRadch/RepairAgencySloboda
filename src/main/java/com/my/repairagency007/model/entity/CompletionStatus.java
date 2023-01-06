@@ -12,4 +12,5 @@ public enum CompletionStatus {
     public String getName() {
         return name().toLowerCase();
     }
+
 }

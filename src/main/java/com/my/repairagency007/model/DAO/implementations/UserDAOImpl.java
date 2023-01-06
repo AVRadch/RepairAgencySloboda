@@ -21,7 +21,7 @@ public class UserDAOImpl extends GenericDAO implements UserDAO {
     private static final Logger log = LoggerFactory.getLogger(UserDAOImpl.class);
 
     @Override
-    public List<User> findAll() throws DAOException {
+    public List<User> findAll(String query) throws DAOException {
 
         log.trace("Find all users");
         Connection connection = getConnection();
@@ -193,18 +193,17 @@ public class UserDAOImpl extends GenericDAO implements UserDAO {
 
     private User extractUserFromResultSet(ResultSet rs) throws SQLException  {
 
-        User result = new User();
-
-        result.setId(rs.getInt("u_id"));
-        result.setPhoneNumber(rs.getString("phone_number"));
-        result.setAccount(rs.getInt("account"));
-        result.setStatus(rs.getString("status"));
-        result.setPassword(rs.getString("password"));
-        result.setFirstName(rs.getString("first_name"));
-        result.setLastName(rs.getString("last_name"));
-        result.setEmail(rs.getString("email"));
-        result.setRoleId(rs.getInt("role_id"));
-        return result;
+        return User.builder()
+                .id(rs.getInt("u_id"))
+                .phoneNumber(rs.getString("phone_number"))
+                .account(rs.getInt("account"))
+                .status(rs.getString("status"))
+                .password(rs.getString("password"))
+                .firstName(rs.getString("first_name"))
+                .lastName(rs.getString("last_name"))
+                .email(rs.getString("email"))
+                .roleId(rs.getInt("role_id"))
+                .build();
     }
 
     @Override

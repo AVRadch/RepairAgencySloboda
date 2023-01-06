@@ -20,7 +20,7 @@ import static com.my.repairagency007.model.DAO.implementations.SQLQuery.Feedback
 public class FeedbackDAOImpl extends GenericDAO implements FeedbackDAO {
     private static final Logger log = LoggerFactory.getLogger(FeedbackDAOImpl.class);
     @Override
-    public List<Feedback> findAll() throws DAOException {
+    public List<Feedback> findAll(String query) throws DAOException {
         log.trace("Find all feedbacks");
         Connection connection = getConnection();
         ResultSet rs = null;

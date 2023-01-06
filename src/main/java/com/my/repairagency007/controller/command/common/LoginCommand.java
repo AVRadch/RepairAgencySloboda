@@ -9,7 +9,7 @@ import javax.servlet.http.HttpSession;
 import java.util.Objects;
 import java.util.ResourceBundle;
 
-import com.my.repairagency007.model.services.UserService;
+import com.my.repairagency007.model.services.impl.UserServiceImpl;
 import org.mindrot.jbcrypt.BCrypt;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -18,11 +18,11 @@ public class LoginCommand implements Command {
 
     private static final Logger log = LoggerFactory.getLogger(LoginCommand.class);
 
-    private final UserService userService;
+    private final UserServiceImpl userServiceImpl;
     private ResourceBundle resourceBundle;
 
-    public LoginCommand(UserService userService) {
-        this.userService = userService;
+    public LoginCommand(UserServiceImpl userServiceImpl) {
+        this.userServiceImpl = userServiceImpl;
     }
 
     @Override
@@ -45,7 +45,7 @@ public class LoginCommand implements Command {
         User user;
 
         try {
-            user = userService.getByEmail(email);
+            user = userServiceImpl.getByEmail(email);
         }catch (Exception e){
             e.printStackTrace();
             log.error("error in getByEmail method", e);

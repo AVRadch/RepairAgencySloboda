@@ -1,5 +1,7 @@
 package com.my.repairagency007.model.DAO.implementations;
 
+import com.my.repairagency007.controller.context.AppContext;
+import com.my.repairagency007.controller.context.JDBCDataSource;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -14,7 +16,7 @@ public abstract class GenericDAO {
     private static final Logger log = LoggerFactory.getLogger(GenericDAO.class);
     private final DataSource dataSource;
     public GenericDAO() {
-        this.dataSource = JDBCDataSource.getDataSource();
+        this.dataSource = AppContext.getAppContext().getDataSource();
     }
     protected Connection getConnection(){
 

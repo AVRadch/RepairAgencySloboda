@@ -35,18 +35,22 @@
         <thead>
         <tr>
             <th>id</th>
+            <th>User</th>
             <th>Description</th>
             <th>Date</th>
             <th>Completion</th>
+            <th>Repairer</th>
             <th>Payment</th>
             <th>Total Cost</th>
         </tr>
         </thead>
         <tbody>
 
-        <c:forEach var="request" items="${requestScope.requests}" varStatus="status">
+        <c:forEach var="request" items="${requestScope.requestDTOS}" varStatus="status">
             <tr>
-            <td><c:out value="${request.id}"/></td>
+                <td><c:out value="${request.id}"/></td>
+                <td><c:out value="${request.userFirstName}"/><br>
+                    <c:out value="${request.userLastName}"/>></td>
             <td><c:out value="${request.description}"/></td>
             <td><c:out value="${request.date}"/></td>
             <td><c:out value="${request.completionStatus}"/></td>
