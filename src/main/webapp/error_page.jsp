@@ -7,9 +7,12 @@
 --%>
 <%@ include file="/WEB-INF/jspf/directive/page.jspf" %>
 <%@ include file="/WEB-INF/jspf/directive/taglib.jspf" %>
+<%@ page contentType="text/html;charset=UTF-8" language="java" %>
 
 <!doctype html>
 <html>
+<meta http-equiv="X-UA-Compatible" content="IE=chrome">
+<meta charset="UTF-8">
 <c:set var="title" value="Страница входа" scope="page"/>
 <jsp:include page="header.jsp"></jsp:include>
 <body>

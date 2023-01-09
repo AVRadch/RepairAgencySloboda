@@ -1,13 +1,12 @@
 package com.my.repairagency007.controller.command.admin;
 
-import com.my.repairagency007.DTO.RequestDTO;
 import com.my.repairagency007.DTO.UserDTO;
+import com.my.repairagency007.controller.command.Command;
 import com.my.repairagency007.controller.context.AppContext;
 import com.my.repairagency007.exception.ServiceException;
-import com.my.repairagency007.controller.command.Command;
-import com.my.repairagency007.model.services.impl.RequestServiceImpl;
+import com.my.repairagency007.model.services.impl.UserServiceImpl;
 import com.my.repairagency007.util.query.QueryBuilder;
-import com.my.repairagency007.util.query.RequestQueryBuilder;
+import com.my.repairagency007.util.query.UserQueryBuilder;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -21,18 +20,14 @@ import java.util.List;
 
 import static com.my.repairagency007.model.entity.Role.*;
 
-public class AllRequestCommand implements Command {
+public class AllUsersCommand implements Command {
 
-    private static final Logger log = LoggerFactory.getLogger(AllRequestCommand.class);
+    private static final Logger log = LoggerFactory.getLogger(AllUsersCommand.class);
 
-    private final RequestServiceImpl requestService;
+    private final UserServiceImpl userService;
 
-    public AllRequestCommand() {
-        log.debug("try to use AppContex");
-        AppContext appContext = AppContext.getAppContext();
-        log.debug("Result appContext " + appContext);
-        requestService = appContext.getRequestService();
-        log.debug("ResultSet " + requestService);
+    public AllUsersCommand() {
+        userService = AppContext.getAppContext().getUserService();
     }
 
     @Override
@@ -44,21 +39,29 @@ public class AllRequestCommand implements Command {
 
         UserDTO currentUser = (UserDTO) session.getAttribute("user");
         log.debug("Получили юзера из сессии");
-        List<RequestDTO> requests;
-        log.debug("User role " + currentUser.getRole() + "=" + MANAGER.getName());
-        if (currentUser.getRole().equals(MANAGER.getName()) || currentUser.getRole().equals(CRAFTSMAN.getName()) ) {
+        List<UserDTO> users;
+        log.debug("User role" + currentUser.getRole());
+
+        if (currentUser.getRole().equals(MANAGER.getName())  || currentUser.getRole().equals(CRAFTSMAN.getName())) {
             try {
-                log.debug("создание списка реквестов");
+                log.debug("создание списка юзеров");
                 QueryBuilder queryBuilder = getQueryBuilder(request);
-                requests = requestService.getAll(queryBuilder.getQuery());
-                int numberOfRecords = requestService.getNumberOfRecords(queryBuilder.getRecordQuery());
+                log.debug("Построен Query Builder");
+                users = userService.getAll(queryBuilder.getQuery());
+                log.debug("Получены usersDTO");
+                for (UserDTO user: users
+                     ) {
+                    log.debug("user: " + user);
+                }
+                log.debug("залогированы user DTO");
+                int numberOfRecords = userService.getNumberOfRecords(queryBuilder.getRecordQuery());
             } catch (ServiceException e) {
                 log.error("Не получилось создать список реквестов");
                 return "error_page.jsp";
             }
-            request.setAttribute("requestDTOS", requests);
+            request.setAttribute("userDTOS", users);
 
-            dispatcher = request.getRequestDispatcher("requestsForAdmin.jsp");
+            dispatcher = request.getRequestDispatcher("usersForAdmin.jsp");
             try {
                 dispatcher.forward(request, response);
             } catch (ServletException | IOException e) {
@@ -75,7 +78,7 @@ public class AllRequestCommand implements Command {
     }
 
     private QueryBuilder getQueryBuilder(HttpServletRequest request) {
-        return new RequestQueryBuilder()
+        return new UserQueryBuilder()
                 .setDateFilter(request.getParameter("date"))
                 .setSortField(request.getParameter("sort"))
                 .setOrder(request.getParameter("order"))

@@ -12,6 +12,7 @@ import java.sql.Date;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -177,22 +178,21 @@ public class FeedbackDAOImpl extends GenericDAO implements FeedbackDAO {
     }
 
     private Feedback extractFeedbackFromResultSet(ResultSet rs) throws SQLException {
-        Feedback result = new Feedback();
 
-        result.setId(rs.getInt("r_id"));
-        result.setRepairerId(rs.getInt("repairer_id"));
-        result.setDate(rs.getDate("date_time"));
-        result.setFeedback(rs.getString("feedback_text"));
-        result.setRating(rs.getInt("rating"));
-        result.setRequestId(rs.getInt("request_id"));
-
-        return result;
+        return Feedback.builder()
+                .id(rs.getInt("r_id"))
+                .repairerId(rs.getInt("repairer_id"))
+                .date(rs.getDate("date_time").toLocalDate())
+                .feedback(rs.getString("feedback_text"))
+                .rating(rs.getInt("rating"))
+                .requestId(rs.getInt("request_id"))
+                .build();
     }
 
     private void fillFeedback(PreparedStatement ps, Feedback feedback)throws SQLException {
 
         ps.setInt(1, feedback.getRepairerId());
-        ps.setDate(2, (Date) feedback.getDate());
+        ps.setDate(2, Date.valueOf( feedback.getDate()));
         ps.setString(3, feedback.getFeedback());
         ps.setInt(4, feedback.getRating());
         ps.setInt(5, feedback. getRequestId());

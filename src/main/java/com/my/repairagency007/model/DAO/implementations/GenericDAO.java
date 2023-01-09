@@ -16,7 +16,7 @@ public abstract class GenericDAO {
     private static final Logger log = LoggerFactory.getLogger(GenericDAO.class);
     private final DataSource dataSource;
     public GenericDAO() {
-        this.dataSource = AppContext.getAppContext().getDataSource();
+        this.dataSource = AppContext.getDataSource();
     }
     protected Connection getConnection(){
 

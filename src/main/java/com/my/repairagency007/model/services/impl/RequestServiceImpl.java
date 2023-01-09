@@ -1,22 +1,22 @@
 package com.my.repairagency007.model.services.impl;
 
+import com.my.repairagency007.DTO.UserDTO;
 import com.my.repairagency007.exception.DAOException;
 import com.my.repairagency007.model.DAO.RequestDAO;
 import com.my.repairagency007.DTO.RequestDTO;
 import com.my.repairagency007.exception.ServiceException;
 import com.my.repairagency007.model.DAO.UserDAO;
-import com.my.repairagency007.model.entity.CompletionStatus;
-import com.my.repairagency007.model.entity.PaymentStatus;
 import com.my.repairagency007.model.entity.Request;
 import com.my.repairagency007.model.entity.User;
 import com.my.repairagency007.model.services.RequestService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
+import static com.my.repairagency007.util.MapperDTOUtil.convertDTOToRequest;
+import static com.my.repairagency007.util.MapperDTOUtil.convertRequestToDTO;
 import static com.my.repairagency007.util.ValidatorUtil.validateDescription;
 
 public class RequestServiceImpl implements RequestService {
@@ -104,6 +104,10 @@ public class RequestServiceImpl implements RequestService {
             log.error("Error to find request and form DTO");
             throw new ServiceException(e);
         }
+        for (RequestDTO  requestDTO: requestDTOS
+             ) {
+            log.debug("requestDTO" + requestDTO);
+        }
         return requestDTOS;
     }
 
@@ -131,28 +135,4 @@ public class RequestServiceImpl implements RequestService {
         }
     }
 
-    public static Request convertDTOToRequest(RequestDTO requestDTO) {
-        return Request.builder()
-                .user_id(requestDTO.getUser_id())
-                .description(requestDTO.getDescription())
-                .date(LocalDate.parse(requestDTO.getDate()))
-                .build();
-    }
-
-    public static RequestDTO convertRequestToDTO(Request request, User user, User repairer){
-        return RequestDTO.builder()
-                .id(request.getId())
-                .user_id(request.getUser_id())
-                .userFirstName(user.getFirstName())
-                .userLastName(user.getLastName())
-                .description(request.getDescription())
-                .date(request.getDate().toString())
-                .completionStatus(CompletionStatus.getCompletionStatusId(request).getName())
-                .repairer_id(request.getRepairer_id())
-                .repairerFirstName(repairer.getFirstName())
-                .repairerLastName(repairer.getLastName())
-                .paymentStatus(PaymentStatus.getPaymentStatusId(request).getName())
-                .totalCost(request.getTotalCost())
-                .build();
-    }
 }

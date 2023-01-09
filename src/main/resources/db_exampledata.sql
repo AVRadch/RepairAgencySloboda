@@ -144,3 +144,6 @@ delete from request;
 delete from request_has_user;
 delete from role;
 delete from users;
+
+drop table request;
+drop table feedback;

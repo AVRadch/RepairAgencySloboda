@@ -3,9 +3,9 @@ package com.my.repairagency007.model.DAO.implementations;
 public abstract class SQLQuery {
     static class UserSQL{
         public static final String SQL_SELECT_ALL_USERS = "SELECT * FROM users";
-        public static final String SQL_GET_USER_BY_ID = "SELECT * FROM users WHERE id = ?";
+        public static final String SQL_GET_USER_BY_ID = "SELECT * FROM users WHERE u_id = ?";
         public static final String SQL_GET_USER_BY_EMAIL = "SELECT * FROM users WHERE email = ?";
-        public static final String SQL_DELETE_USER_BY_ID = "DELETE FROM users WHERE id = ?";
+        public static final String SQL_DELETE_USER_BY_ID = "DELETE FROM users WHERE u_id = ?";
         public static final String SQL_CREATE_USER = "INSERT INTO users(notification, phone_number, account, status, password, " +
             "first_name, last_name, email, role_id) VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?)";
         public static final String SQL_UPDATE_USER = "UPDATE users SET notification = ?," +

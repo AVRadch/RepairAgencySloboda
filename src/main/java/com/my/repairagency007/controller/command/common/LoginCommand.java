@@ -1,6 +1,9 @@
 package com.my.repairagency007.controller.command.common;
 
+import com.my.repairagency007.DTO.UserDTO;
 import com.my.repairagency007.controller.command.Command;
+import com.my.repairagency007.controller.context.AppContext;
+import com.my.repairagency007.model.DAO.implementations.UserDAOImpl;
 import com.my.repairagency007.model.entity.User;
 
 import javax.servlet.http.HttpServletRequest;
@@ -9,6 +12,7 @@ import javax.servlet.http.HttpSession;
 import java.util.Objects;
 import java.util.ResourceBundle;
 
+import com.my.repairagency007.model.services.UserService;
 import com.my.repairagency007.model.services.impl.UserServiceImpl;
 import org.mindrot.jbcrypt.BCrypt;
 import org.slf4j.Logger;
@@ -18,12 +22,8 @@ public class LoginCommand implements Command {
 
     private static final Logger log = LoggerFactory.getLogger(LoginCommand.class);
 
-    private final UserServiceImpl userServiceImpl;
     private ResourceBundle resourceBundle;
 
-    public LoginCommand(UserServiceImpl userServiceImpl) {
-        this.userServiceImpl = userServiceImpl;
-    }
 
     @Override
     public String execute(HttpServletRequest request, HttpServletResponse httpResponse) {
@@ -42,10 +42,12 @@ public class LoginCommand implements Command {
             request.setAttribute("errorMessage", errorMessage);
             return "login.jsp";
         }
-        User user;
+        UserDTO userDTO;
+        UserService userService =// AppContext.getAppContext().getUserService();
+                new UserServiceImpl(new UserDAOImpl());
 
         try {
-            user = userServiceImpl.getByEmail(email);
+            userDTO = userService.getByEmail(email);
         }catch (Exception e){
             e.printStackTrace();
             log.error("error in getByEmail method", e);
@@ -53,19 +55,19 @@ public class LoginCommand implements Command {
             return "login.jsp";
         }
 
-        if (Objects.isNull(user)) {
+        if (Objects.isNull(userDTO)) {
             log.debug("user is null");
             request.setAttribute("message_er", resourceBundle.getString("login.invalid"));
             return "login.jsp";
         }
 
-        if (BCrypt.checkpw(password, user.getPassword())) {
+        if (BCrypt.checkpw(password, userDTO.getPassword())) {
      //       HttpSession session = request.getSession();
             log.debug("try to save user attribute in session");
-            session.setAttribute("user", user);
-            session.setAttribute("email", user.getEmail());
-            session.setAttribute("balance", user.getAccount());
-            session.setAttribute("roles", user.getRoleId());
+            session.setAttribute("user", userDTO);
+            session.setAttribute("email", userDTO.getEmail());
+            session.setAttribute("balance", userDTO.getAccount());
+            session.setAttribute("roles", userDTO.getRole());
             return "controller?action=adminAllRequest";
         } else {
             log.debug("not correct password");

@@ -26,8 +26,10 @@
                         <div class="span6">
                             <h1 class="muted">Repair Company Sloboda</h1>
                         </div>
-
-                        <div class="span4 offset2" style="margin-top:15px;">
+                        <div class="span1 offset1" >
+                            <%@ include file="/language_selector.jsp" %>
+                        </div>
+                        <div class="span2 offset2" style="margin-top:15px;">
                             <button class="btn pull-right" type="button">Sign Out</button>
                         </div>
                     </div>
@@ -38,7 +40,7 @@
                         <div class="container">
                             <ul class="nav">
                                 <li>
-                                    <a href="#">Users</a>
+                                    <a href="controller?action=adminAllUsers">Users</a>
                                 </li>
 
                                 <li>

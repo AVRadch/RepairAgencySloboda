@@ -1,35 +1,45 @@
 package com.my.repairagency007.controller.context;
 
+import com.my.repairagency007.model.DAO.FeedbackDAO;
+import com.my.repairagency007.model.DAO.RequestDAO;
+import com.my.repairagency007.model.DAO.UserDAO;
+import com.my.repairagency007.model.DAO.implementations.FeedbackDAOImpl;
 import com.my.repairagency007.model.DAO.implementations.RequestDAOImpl;
 import com.my.repairagency007.model.DAO.implementations.UserDAOImpl;
+
+import com.my.repairagency007.model.services.impl.FeedbackServiceImpl;
 import com.my.repairagency007.model.services.impl.RequestServiceImpl;
 import com.my.repairagency007.model.services.impl.UserServiceImpl;
-import jakarta.servlet.ServletContext;
-import lombok.Getter;
-import lombok.Setter;
+import com.my.repairagency007.util.PDFUtil;
 
+import lombok.Getter;
+
+import javax.servlet.ServletContext;
 import javax.sql.DataSource;
 
 public class AppContext {
 
-    private static AppContext appContext;
+    @Getter private static AppContext appContext;
 
-    @Setter
-    @Getter
-    private DataSource dataSource = JDBCDataSource.getDataSource();
+    @Getter private static final DataSource dataSource = JDBCDataSource.getDataSource();
 
-    @Getter private final RequestServiceImpl requestService = new RequestServiceImpl(new RequestDAOImpl(), new UserDAOImpl());
-    @Getter private final UserServiceImpl userService = new UserServiceImpl(new UserDAOImpl());
+    @Getter private final UserDAO userDAO = new UserDAOImpl();
 
-    @Getter
-    private final ServletContext servletContext;
+    @Getter private final UserServiceImpl userService = new UserServiceImpl(getUserDAO());
+
+    @Getter private final RequestDAO requestDAO = new RequestDAOImpl();
+
+    @Getter private final RequestServiceImpl requestService = new RequestServiceImpl(getRequestDAO(), getUserDAO());
+
+    @Getter private final FeedbackDAO feedbackDAO = new FeedbackDAOImpl();
+
+    @Getter private final FeedbackServiceImpl feedbackService = new FeedbackServiceImpl(getFeedbackDAO());
+
+    @Getter private final PDFUtil pdfUtil;
 
     public AppContext(ServletContext servletContext) {
-        this.servletContext = servletContext;
-    }
 
-    public static AppContext getAppContext() {
-        return appContext;
+        pdfUtil = new PDFUtil(servletContext);
     }
 
     public static void createAppContext(ServletContext servletContext) {

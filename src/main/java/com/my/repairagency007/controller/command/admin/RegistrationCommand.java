@@ -68,14 +68,16 @@ public class RegistrationCommand implements Command {
       tariffs = Collections.emptySet();
     }*/
     log.debug("Fill info into User");
-    User newUser = new User();
-    newUser.setEmail(email);
-    newUser.setPassword(BCrypt.hashpw(password, BCrypt.gensalt()));
-    newUser.setFirstName(firstName);
-    newUser.setLastName(lastName);
-    newUser.setRoleId(1);
-    newUser.setAccount(0);
-    newUser.setPhoneNumber(phoneNumber);
+    User newUser;
+    newUser = User.builder()
+            .email(email)
+            .password(BCrypt.hashpw(password, BCrypt.gensalt()))
+            .firstName(firstName)
+            .lastName(lastName)
+            .roleId(1)
+            .account(0)
+            .phoneNumber(phoneNumber)
+            .build();
     try {
       log.debug("Try to create new user in Data Base");
       userDAO.create(newUser);
@@ -90,11 +92,11 @@ public class RegistrationCommand implements Command {
     String resp = Path.COMMAND_LOGIN;
     log.debug("Form path to profile command: " + resp);
     try {
-      response.sendRedirect(resp);
+      response.sendRedirect("login.jsp");
       resp = Path.COMMAND_REDIRECT;
     } catch (IOException e) {
       resp = Path.PAGE_ERROR_PAGE;
     }
-    return null;
+    return resp;
   }
 }

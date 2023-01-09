@@ -50,7 +50,7 @@ public class UserDAOImpl extends GenericDAO implements UserDAO {
     @Override
     public User getEntityById(int id) throws DAOException {
 
-        log.debug("Find user by id");
+        log.debug("Find user by id" + id);
         Connection connection = getConnection();
         ResultSet rs = null;
         PreparedStatement ps = null;

@@ -1,8 +1,8 @@
 <%--
   Created by IntelliJ IDEA.
   User: Алексей Радченко
-  Date: 29.12.2022
-  Time: 18:46
+  Date: 09.01.2023
+  Time: 12:25
   To change this template use File | Settings | File Templates.
 --%>
 <%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
@@ -36,33 +36,30 @@
         <thead>
         <tr>
             <th>id</th>
-            <th>User</th>
-            <th>Description</th>
-            <th>Date</th>
-            <th>Completion</th>
-            <th>Repairer</th>
-            <th>Payment</th>
-            <th>Total Cost</th>
+            <th>Email</th>
+            <th>Lastname</th>
+            <th>Firstname</th>
+            <th>Account</th>
+            <th>Phone Number</th>
+            <th>Notification</th>
         </tr>
         </thead>
         <tbody>
 
-        <c:forEach var="request" items="${requestScope.requestDTOS}" varStatus="status">
+        <c:forEach var="user" items="${requestScope.userDTOS}" varStatus="status">
             <tr>
-                <td><c:out value="${request.id}"/></td>
-                <td><c:out value="${request.userFirstName}"/><br>
-                    <c:out value="${request.userLastName}"/></td>
-            <td><c:out value="${request.description}"/></td>
-            <td><c:out value="${request.date}"/></td>
-            <td><c:out value="${request.completionStatus}"/></td>
-                <td><c:out value="${request.repairerLastName}"/></td>
-            <td><c:out value="${request.paymentStatus}"/></td>
-            <td><c:out value="${request.totalCost}"/></td>
+                <td><c:out value="${user.id}"/></td>
+                <td><c:out value="${user.email}"/></td>
+                <td><c:out value="${user.lastName}"/></td>
+                <td><c:out value="${user.firstName}"/></td>
+                <td><c:out value="${user.account}"/></td>
+                <td><c:out value="${user.phoneNumber}"/></td>
+                <td><c:out value="${user.notification}"/></td>
             </tr>
         </c:forEach>
 
         </tbody>
-        </table>
+    </table>
 </div>
 
 </body>

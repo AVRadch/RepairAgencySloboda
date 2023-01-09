@@ -1,5 +1,6 @@
 package com.my.repairagency007.model.services.impl;
 
+import com.my.repairagency007.DTO.UserDTO;
 import com.my.repairagency007.exception.ServiceException;
 import com.my.repairagency007.model.DAO.UserDAO;
 import com.my.repairagency007.exception.DAOException;
@@ -8,11 +9,15 @@ import com.my.repairagency007.model.services.UserService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.util.ArrayList;
 import java.util.List;
+
+import static com.my.repairagency007.util.MapperDTOUtil.convertDTOToUser;
+import static com.my.repairagency007.util.MapperDTOUtil.convertUserToDTO;
 
 public class UserServiceImpl implements UserService {
 
-    private static final Logger log = LoggerFactory.getLogger(RequestServiceImpl.class);
+    private static final Logger log = LoggerFactory.getLogger(UserServiceImpl.class);
 
     private final UserDAO userDAO;
 
@@ -20,27 +25,40 @@ public class UserServiceImpl implements UserService {
         this.userDAO = userDAO;
     }
 
-    public List<User> getAll(String query) throws ServiceException {
-        List<User> users;
+    @Override
+
+
+    public UserDTO getById(int id) throws ServiceException{
+        UserDTO userDTO;
         try {
-            users = userDAO.findAll(query);
+            User user = userDAO.getEntityById(id);
+            userDTO = convertUserToDTO(user);
         } catch (DAOException e) {
             throw new ServiceException(e);
         }
-        return users;
+        return userDTO;
     }
 
-    public User getById(int id) throws ServiceException{
-        User user;
+    @Override
+    public List<UserDTO> getAll(String query) throws ServiceException {
+        List<UserDTO> userDTOS = new ArrayList<>();
         try {
-            user = userDAO.getEntityById(id);
+            log.debug("Try to execute userDAO findAll method");
+            List<User> users = userDAO.findAll(query);
+            log.debug("convert users to dto");
+            for (User user: users){
+                log.debug("Role user = " + user.getRoleId());
+                userDTOS.add(convertUserToDTO(user));
+                log.debug("Role userDTO " + convertUserToDTO(user).getRole());
+            }
         } catch (DAOException e) {
             throw new ServiceException(e);
         }
-        return user;
+        return userDTOS;
     }
 
-    public void delete(User user) throws ServiceException {
+
+    public void delete(UserDTO user) throws ServiceException {
         delete(user.getId());
     }
 
@@ -56,7 +74,8 @@ public class UserServiceImpl implements UserService {
         }
     }
 
-    public void create(User user) throws ServiceException {
+    public void create(UserDTO userDTO) throws ServiceException {
+        User user = convertDTOToUser(userDTO);
         try {
             userDAO.create(user);
         } catch (DAOException e) {
@@ -65,7 +84,8 @@ public class UserServiceImpl implements UserService {
         }
     }
 
-    public void update(User user) throws ServiceException {
+    public void update(UserDTO userDTO) throws ServiceException {
+        User user = convertDTOToUser(userDTO);
         try {
             userDAO.update(user);
         } catch (DAOException e) {
@@ -74,14 +94,19 @@ public class UserServiceImpl implements UserService {
         }
     }
 
-    public User getByEmail(String email) throws ServiceException {
-        User user;
+    public UserDTO getByEmail(String email) throws ServiceException {
+        UserDTO userDTO;
         try {
-            user = userDAO.getByEmail(email);
+            User user = userDAO.getByEmail(email);
+            userDTO = convertUserToDTO(user);
         } catch (DAOException e) {
             log.error("Error get by email", e);
             throw new ServiceException(e);
         }
-        return user;
+        return userDTO;
+    }
+
+    public int getNumberOfRecords(String filter) throws ServiceException {
+        return 0;
     }
 }

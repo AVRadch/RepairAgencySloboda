@@ -1,10 +1,10 @@
 package com.my.repairagency007.controller.command;
 
 import com.my.repairagency007.controller.command.admin.AllRequestCommand;
+import com.my.repairagency007.controller.command.admin.AllUsersCommand;
 import com.my.repairagency007.controller.command.admin.RegistrationCommand;
+import com.my.repairagency007.controller.command.common.LocaleHandlerCommand;
 import com.my.repairagency007.controller.command.common.LoginCommand;
-import com.my.repairagency007.controller.context.AppContext;
-import com.my.repairagency007.model.services.impl.UserServiceImpl;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -34,11 +34,13 @@ public class CommandFactory {
 
     static {
         // common commands
-        commands.put("login", new LoginCommand(AppContext.getAppContext().getUserService()));
+        commands.put("login", new LoginCommand());
         commands.put("redirect", null);
+        commands.put("locale-handler", new LocaleHandlerCommand());
 
         commands.put("registration", new RegistrationCommand());
-        commands.put("adminAllRequest", new AllRequestCommand(AppContext.getAppContext()));
+        commands.put("adminAllRequest", new AllRequestCommand());
+        commands.put("adminAllUsers", new AllUsersCommand());
 
     }
 
