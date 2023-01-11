@@ -14,7 +14,7 @@ public abstract class SQLQuery {
     }
     static class RequestSQL {
         public static final String SQL_SELECT_ALL_REQUEST = "SELECT * FROM request";
-        public static final String SQL_GET_REQUEST_BY_ID = "SELECT * FROM request WHERE id = ?";
+        public static final String SQL_GET_REQUEST_BY_ID = "SELECT * FROM request WHERE r_id = ?";
         public static final String SQL_DELETE_REQUEST_BY_ID = "DELETE FROM request WHERE id = ?";
         public static final String SQL_CREATE_REQUEST = "INSERT INTO request(description, date, completion_status, " +
                 "payment_status, total_cost) VALUES(?, ?, ?, ?, ?)";

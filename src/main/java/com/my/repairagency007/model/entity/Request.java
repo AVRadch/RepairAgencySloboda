@@ -11,6 +11,7 @@ import java.time.LocalDate;
 public class Request {
 
     private static final long serialVersionUID = 1L;
+
     private int id;
 
     private int user_id;

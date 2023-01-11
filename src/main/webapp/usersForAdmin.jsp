@@ -42,6 +42,7 @@
             <th>Account</th>
             <th>Phone Number</th>
             <th>Notification</th>
+            <th>Action</th>
         </tr>
         </thead>
         <tbody>
@@ -55,6 +56,14 @@
                 <td><c:out value="${user.account}"/></td>
                 <td><c:out value="${user.phoneNumber}"/></td>
                 <td><c:out value="${user.notification}"/></td>
+                <td>
+                    <a class="link-dark" href=controller?action=deleteUser&user-id=${user.id}>
+                        <fmt:message key="button.deleteUser"/>
+                    </a> <br>
+                    <a class="link-dark" href=controller?action=editUser&user-id=${user.id}>
+                        <fmt:message key="button.editUser"/>
+                    </a>
+                </td>
             </tr>
         </c:forEach>
 

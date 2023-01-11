@@ -30,7 +30,8 @@
                             <%@ include file="/language_selector.jsp" %>
                         </div>
                         <div class="span2 offset2" style="margin-top:15px;">
-                            <button class="btn pull-right" type="button">Sign Out</button>
+                 <!--           <button class="btn pull-right" type="button">Sign Out</button>  -->
+                            <a href="controller?action=logout" class="btn pull-right" role="button"><fmt:message key="button.logout"/></a>
                         </div>
                     </div>
                 </div>
@@ -40,19 +41,19 @@
                         <div class="container">
                             <ul class="nav">
                                 <li>
-                                    <a href="controller?action=adminAllUsers">Users</a>
+                                    <a href="controller?action=adminAllUsers"><fmt:message key="button.users"/></a>
                                 </li>
 
                                 <li>
-                                    <a href="#">Feedbacks</a>
+                                    <a href="controller?action=adminAllFeedbacks"><fmt:message key="button.feedbacks"/></a>
                                 </li>
 
                                 <li>
-                                    <a href="#">Requests</a>
+                                    <a href="controller?action=adminAllRequest"><fmt:message key="button.requests"/></a>
                                 </li>
 
                                 <li>
-                                    <a href="#">Reports</a>
+                                    <a href="#"><fmt:message key="button.reports"/></a>
                                 </li>
                             </ul>
                         </div>

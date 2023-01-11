@@ -84,7 +84,16 @@ public class RequestServiceImpl implements RequestService {
 
     @Override
     public RequestDTO getById(int id) throws ServiceException {
-        return null;
+
+        RequestDTO requestDTO;
+
+        try {
+            requestDTO = fillDTOFromRequestAndUsers(requestDAO.getEntityById(id));
+        } catch (DAOException e) {
+            log.error("Error getEntity by id method", e);
+            throw new ServiceException(e);
+        }
+        return requestDTO;
     }
 
     @Override
@@ -96,9 +105,7 @@ public class RequestServiceImpl implements RequestService {
             log.trace("convert request to dto");
             for (Request request: requests
                  ) {
-                User user = userDAO.getEntityById(request.getUser_id());
-                User repairer = userDAO.getEntityById(request.getRepairer_id());
-                requestDTOS.add(convertRequestToDTO(request, user, repairer));
+                requestDTOS.add(fillDTOFromRequestAndUsers(request));
             }
         } catch (DAOException e) {
             log.error("Error to find request and form DTO");
@@ -133,6 +140,12 @@ public class RequestServiceImpl implements RequestService {
             log.error("Error delete request", e);
             throw new ServiceException(e);
         }
+    }
+
+    private RequestDTO fillDTOFromRequestAndUsers(Request request) throws DAOException {
+        User user = userDAO.getEntityById(request.getUser_id());
+        User repairer = userDAO.getEntityById(request.getRepairer_id());
+        return convertRequestToDTO(request, user, repairer);
     }
 
 }

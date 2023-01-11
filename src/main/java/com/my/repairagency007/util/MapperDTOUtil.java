@@ -3,7 +3,6 @@ package com.my.repairagency007.util;
 import com.my.repairagency007.DTO.FeedbackDTO;
 import com.my.repairagency007.DTO.RequestDTO;
 import com.my.repairagency007.DTO.UserDTO;
-import com.my.repairagency007.controller.command.admin.AllUsersCommand;
 import com.my.repairagency007.model.entity.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -21,6 +20,12 @@ public class MapperDTOUtil {
                 .date(LocalDate.parse(requestDTO.getDate()))
                 .build();
     }
+
+    /**
+     * Converts Request and 2 User into RequestDTO
+     * @param request, user, repairer to convert
+     * @return UserDTO
+     */
 
     public static RequestDTO convertRequestToDTO(Request request, User user, User repairer){
         return RequestDTO.builder()
@@ -45,7 +50,7 @@ public class MapperDTOUtil {
      * @return UserDTO
      */
     public static UserDTO convertUserToDTO(User user){
-        log.debug("Role = " + Role.getRole(user));
+ //       log.debug("Role = " + Role.getRole(user));
         return UserDTO.builder()
                 .id(user.getId())
                 .notification(user.getNotification())
@@ -80,6 +85,11 @@ public class MapperDTOUtil {
                 .build();
     }
 
+    /**
+     * Converts FeedbackDTO into Feedback
+     * @param feedbackDTO to convert
+     * @return Feedback
+     */
     public static Feedback convertDTOToFeedback(FeedbackDTO feedbackDTO) {
         return Feedback.builder()
                 .id(feedbackDTO.getId())
@@ -88,6 +98,27 @@ public class MapperDTOUtil {
                 .feedback(feedbackDTO.getFeedback())
                 .rating(feedbackDTO.getRating())
                 .requestId(feedbackDTO.getRequestId())
+                .build();
+    }
+
+    /**
+     * Converts Feedback, User, Request DTO into FeedbackDTO
+     * @param feedback, repairer, requestDTO to convert
+     * @return UserDTO
+     */
+    public static FeedbackDTO convertFeedbackToDTO(Feedback feedback, RequestDTO requestDTO){
+        return FeedbackDTO.builder()
+                .id(feedback.getId())
+                .repairerId(requestDTO != null ? requestDTO.getRepairer_id() : 0)
+                .repairerFirstName(requestDTO != null ? requestDTO.getRepairerFirstName(): null)
+                .repairerLastName(requestDTO != null ? requestDTO.getRepairerLastName(): null)
+                .date(feedback.getDate().toString())
+                .feedback(feedback.getFeedback())
+                .rating(feedback.getRating())
+                .requestId(feedback.getRequestId())
+                .userFirstName(requestDTO != null ? requestDTO.getUserFirstName(): null)
+                .userLastName(requestDTO != null ? requestDTO.getUserLastName() : null)
+                .requestDescription(requestDTO != null ? requestDTO.getDescription() : null)
                 .build();
     }
 }

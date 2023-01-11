@@ -43,6 +43,7 @@
             <th>Repairer</th>
             <th>Payment</th>
             <th>Total Cost</th>
+            <th>Action</th>
         </tr>
         </thead>
         <tbody>
@@ -58,6 +59,14 @@
                 <td><c:out value="${request.repairerLastName}"/></td>
             <td><c:out value="${request.paymentStatus}"/></td>
             <td><c:out value="${request.totalCost}"/></td>
+                <td>
+                    <a class="link-dark" href=controller?action=deleteRequest&request-id=${request.id}>
+                        <fmt:message key="button.deleteRequest"/>
+                    </a> <br>
+                    <a class="link-dark" href=controller?action=editRequest&request-id=${request.id}>
+                        <fmt:message key="button.editRequest"/>
+                    </a>
+                </td>
             </tr>
         </c:forEach>
 

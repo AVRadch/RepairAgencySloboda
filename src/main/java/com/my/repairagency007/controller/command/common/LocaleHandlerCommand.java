@@ -15,10 +15,11 @@ public class LocaleHandlerCommand implements Command {
     @Override
     public String execute(HttpServletRequest httpRequest, HttpServletResponse httpResponse) throws ServiceException {
 
-        String lang = httpRequest.getParameter("language");
-        log.debug("Parametr language = " + lang);
-        httpRequest.getSession().setAttribute("language", lang);
+        String language = httpRequest.getParameter("language");
+        log.debug("Parametr language = " + language);
+        httpRequest.getSession().setAttribute("language", language);
         String referer =  httpRequest.getHeader("referer");
+        log.debug("Parametr referer from request = " + referer);
         try {
             log.debug("Try to redirect" + referer);
             httpResponse.sendRedirect(referer);

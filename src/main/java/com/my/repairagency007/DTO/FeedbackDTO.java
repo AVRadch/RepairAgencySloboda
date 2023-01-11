@@ -19,7 +19,7 @@ public class FeedbackDTO implements Serializable {
 
     @EqualsAndHashCode.Exclude private String repairerFirstName;
 
-    @EqualsAndHashCode.Exclude private String repairerLastname;
+    @EqualsAndHashCode.Exclude private String repairerLastName;
 
     private String date;
 

@@ -8,28 +8,28 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
 @WebFilter(urlPatterns = "/",
-initParams = @WebInitParam(name = "defaultLocale", value = "en"))
+initParams = @WebInitParam(name = "defaultLanguage", value = "en"))
 public class LocaleFilter implements Filter {
-    private String defaultLocale;
+    private String defaultLanguage;
 
     @Override
     public void init(FilterConfig config) {
-        defaultLocale = config.getInitParameter("defaultLocale");
+        defaultLanguage = config.getInitParameter("defaultLanguage");
     }
 
     public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain) throws IOException, ServletException {
         HttpServletRequest httpRequest = (HttpServletRequest) request;
-        String locale = httpRequest.getParameter("locale");
-        if (locale == null || locale.isEmpty()) {
-            httpRequest.getSession().setAttribute("locale", locale);
+        String language = httpRequest.getParameter("language");
+        if (language == null || language.isEmpty()) {
+            httpRequest.getSession().setAttribute("language", language);
             ((HttpServletResponse)response).setIntHeader("Refresh", 0);
             if ((!httpRequest.getServletPath().contains("controller"))) {
                 chain.doFilter(request, response);
             }
         } else {
-            String sessionLocale = (String) httpRequest.getSession().getAttribute("locale");
+            String sessionLocale = (String) httpRequest.getSession().getAttribute("language");
             if (sessionLocale == null || sessionLocale.isEmpty()) {
-                httpRequest.getSession().setAttribute("locale", defaultLocale);
+                httpRequest.getSession().setAttribute("language", defaultLanguage);
             }
             chain.doFilter(request, response);
         }

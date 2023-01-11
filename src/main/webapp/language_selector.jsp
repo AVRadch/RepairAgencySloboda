@@ -20,8 +20,8 @@
 <div class="container-fluid">
      <form action="controller?action=locale-handler" method="post">
          <select class="form-select form-select-lg" name = "language" onchange='submit();' aria-label="close">
-             <option value = "en" ${sessionScope.language == 'en' ? 'selected' : ''}>English</option>
-             <option value = "ru" ${sessionScope.language == 'ru' ? 'selected' : ''}>Русский</option>
+             <option value = "en" ${requestScope.language == 'en' ? 'selected' : ''}>English</option>
+             <option value = "ru" ${requestScope.language == 'ru' ? 'selected' : ''}>Русский</option>
          </select>
      </form>
 </div>

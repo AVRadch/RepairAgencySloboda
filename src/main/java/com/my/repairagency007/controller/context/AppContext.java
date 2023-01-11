@@ -33,7 +33,7 @@ public class AppContext {
 
     @Getter private final FeedbackDAO feedbackDAO = new FeedbackDAOImpl();
 
-    @Getter private final FeedbackServiceImpl feedbackService = new FeedbackServiceImpl(getFeedbackDAO());
+    @Getter private final FeedbackServiceImpl feedbackService = new FeedbackServiceImpl(getFeedbackDAO(), getUserDAO(), getRequestService());
 
     @Getter private final PDFUtil pdfUtil;
 

@@ -1,14 +1,26 @@
 package com.my.repairagency007.model.services.impl;
 
 import com.my.repairagency007.DTO.FeedbackDTO;
+import com.my.repairagency007.DTO.RequestDTO;
 import com.my.repairagency007.DTO.UserDTO;
+import com.my.repairagency007.controller.context.AppContext;
+import com.my.repairagency007.exception.DAOException;
 import com.my.repairagency007.exception.ServiceException;
 import com.my.repairagency007.model.DAO.FeedbackDAO;
+import com.my.repairagency007.model.DAO.UserDAO;
+import com.my.repairagency007.model.entity.Feedback;
+import com.my.repairagency007.model.entity.Request;
+import com.my.repairagency007.model.entity.User;
 import com.my.repairagency007.model.services.FeedbackService;
+import com.my.repairagency007.model.services.RequestService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.util.ArrayList;
 import java.util.List;
+
+import static com.my.repairagency007.util.MapperDTOUtil.convertFeedbackToDTO;
+import static com.my.repairagency007.util.MapperDTOUtil.convertRequestToDTO;
 
 public class FeedbackServiceImpl implements FeedbackService {
 
@@ -16,8 +28,15 @@ public class FeedbackServiceImpl implements FeedbackService {
 
     private final FeedbackDAO feedbackDAO;
 
-    public FeedbackServiceImpl (FeedbackDAO feedbackDAO) {
+    private final RequestService requestService;
+
+    private final UserDAO userDAO;
+
+    public FeedbackServiceImpl (FeedbackDAO feedbackDAO, UserDAO userDAO, RequestService requestService) {
+
+        this.requestService = requestService;
         this.feedbackDAO = feedbackDAO;
+        this.userDAO = userDAO;
     }
 
 
@@ -28,7 +47,33 @@ public class FeedbackServiceImpl implements FeedbackService {
 
     @Override
     public List<FeedbackDTO> getAll(String query) throws ServiceException {
-        return null;
+
+        List<FeedbackDTO> feedbackDTOS = new ArrayList<>();
+        try {
+            log.debug("Try to execute feedbackDAO findAll method");
+            List<Feedback> feedbacks = feedbackDAO.findAll(query);
+            log.debug("convert feedback to dto");
+            for (Feedback feedback : feedbacks
+            ) {
+                RequestDTO request = requestService.getById(feedback.getRequestId());
+                if (request == null){
+                    log.trace("Request equal null" + feedback.getId());
+                } else {
+                                  log.trace("Request DTO for feedback -> " + request.getRepairer_id());
+                }
+
+                feedbackDTOS.add(convertFeedbackToDTO(feedback, request));
+            }
+        } catch (DAOException e) {
+            log.error("Error to find request and form DTO");
+            throw new ServiceException(e);
+        }
+
+        for (FeedbackDTO  feedbackDTO: feedbackDTOS
+        ) {
+            log.debug("feedbackDTO" + feedbackDTO);
+        }
+        return feedbackDTOS;
     }
 
     @Override
@@ -39,5 +84,9 @@ public class FeedbackServiceImpl implements FeedbackService {
     @Override
     public void delete(int id) throws ServiceException {
 
+    }
+
+    public int getNumberOfRecords(String filter) throws ServiceException {
+        return 0;
     }
 }

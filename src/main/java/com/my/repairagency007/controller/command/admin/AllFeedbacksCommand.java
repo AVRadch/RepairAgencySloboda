@@ -1,11 +1,12 @@
 package com.my.repairagency007.controller.command.admin;
 
-import com.my.repairagency007.DTO.RequestDTO;
+import com.my.repairagency007.DTO.FeedbackDTO;
 import com.my.repairagency007.DTO.UserDTO;
+import com.my.repairagency007.controller.command.Command;
 import com.my.repairagency007.controller.context.AppContext;
 import com.my.repairagency007.exception.ServiceException;
-import com.my.repairagency007.controller.command.Command;
-import com.my.repairagency007.model.services.impl.RequestServiceImpl;
+import com.my.repairagency007.model.services.impl.FeedbackServiceImpl;
+import com.my.repairagency007.util.query.FeedbackQueryBuilder;
 import com.my.repairagency007.util.query.QueryBuilder;
 import com.my.repairagency007.util.query.RequestQueryBuilder;
 import org.slf4j.Logger;
@@ -19,16 +20,17 @@ import javax.servlet.http.HttpSession;
 import java.io.IOException;
 import java.util.List;
 
-import static com.my.repairagency007.model.entity.Role.*;
+import static com.my.repairagency007.model.entity.Role.CRAFTSMAN;
+import static com.my.repairagency007.model.entity.Role.MANAGER;
 
-public class AllRequestCommand implements Command {
+public class AllFeedbacksCommand implements Command {
 
     private static final Logger log = LoggerFactory.getLogger(AllRequestCommand.class);
 
-    private final RequestServiceImpl requestService;
+    private final FeedbackServiceImpl feedbackService;
 
-    public AllRequestCommand() {
-        requestService = AppContext.getAppContext().getRequestService();
+    public AllFeedbacksCommand() {
+        feedbackService = AppContext.getAppContext().getFeedbackService();
     }
 
     @Override
@@ -40,20 +42,21 @@ public class AllRequestCommand implements Command {
 
         UserDTO currentUser = (UserDTO) session.getAttribute("user");
         log.debug("Получили юзера из сессии");
-        List<RequestDTO> requests;
+        List<FeedbackDTO> feedbackDTOS;
+
         if (currentUser.getRole().equals(MANAGER.getName()) || currentUser.getRole().equals(CRAFTSMAN.getName()) ) {
             try {
-                log.debug("создание списка реквестов");
+                log.debug("создание списка фидбеков");
                 QueryBuilder queryBuilder = getQueryBuilder(request);
-                requests = requestService.getAll(queryBuilder.getQuery());
-                int numberOfRecords = requestService.getNumberOfRecords(queryBuilder.getRecordQuery());
+                feedbackDTOS = feedbackService.getAll(queryBuilder.getQuery());
+                int numberOfRecords = feedbackService.getNumberOfRecords(queryBuilder.getRecordQuery());
             } catch (ServiceException e) {
-                log.error("Не получилось создать список реквестов");
+                log.error("Не получилось создать список фидбеков");
                 return "error_page.jsp";
             }
-            request.setAttribute("requestDTOS", requests);
+            request.setAttribute("feedbackDTOS", feedbackDTOS);
 
-            dispatcher = request.getRequestDispatcher("requestsForAdmin.jsp");
+            dispatcher = request.getRequestDispatcher("feedbacksForAdmin.jsp");
             try {
                 dispatcher.forward(request, response);
             } catch (ServletException | IOException e) {
@@ -66,11 +69,11 @@ public class AllRequestCommand implements Command {
                 log.error("Не получилось перейти на страницу Sign In");
             }
         }
-        return "requestsForAdmin.jsp";
+        return null;
     }
 
     private QueryBuilder getQueryBuilder(HttpServletRequest request) {
-        return new RequestQueryBuilder()
+        return new FeedbackQueryBuilder()
                 .setDateFilter(request.getParameter("date"))
                 .setSortField(request.getParameter("sort"))
                 .setOrder(request.getParameter("order"))

@@ -50,14 +50,16 @@ public class RequestDAOImpl extends GenericDAO implements RequestDAO {
         Connection connection = getConnection();
         ResultSet rs = null;
         PreparedStatement ps = null;
-        Request request;
+        Request request = null;
 
         try{
             begin(connection);
             ps = connection.prepareStatement(SQL_GET_REQUEST_BY_ID);
             ps.setInt(1, id);
             rs = ps.executeQuery();
-            request = extractRequestFromResultSet(rs);
+            if (rs.next()){
+                request = extractRequestFromResultSet(rs);
+            }
             commit(connection);
             log.trace("Request found");
         } catch (SQLException e) {

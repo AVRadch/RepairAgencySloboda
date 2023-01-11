@@ -180,8 +180,8 @@ public class FeedbackDAOImpl extends GenericDAO implements FeedbackDAO {
     private Feedback extractFeedbackFromResultSet(ResultSet rs) throws SQLException {
 
         return Feedback.builder()
-                .id(rs.getInt("r_id"))
-                .repairerId(rs.getInt("repairer_id"))
+                .id(rs.getInt("feedback_id"))
+ //               .repairerId(rs.getInt("repairer_id"))
                 .date(rs.getDate("date_time").toLocalDate())
                 .feedback(rs.getString("feedback_text"))
                 .rating(rs.getInt("rating"))
