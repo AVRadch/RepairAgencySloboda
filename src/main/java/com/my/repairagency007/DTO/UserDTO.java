@@ -15,7 +15,7 @@ public class UserDTO {
     private int id;
     private String notification;
     private String phoneNumber;
-    private int account;
+    private String account;
     private String status;
     private transient String password;
     private String firstName;

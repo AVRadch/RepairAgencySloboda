@@ -11,15 +11,14 @@ import com.my.repairagency007.util.query.RequestQueryBuilder;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import javax.servlet.RequestDispatcher;
-import javax.servlet.ServletException;
+
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
-import java.io.IOException;
 import java.util.List;
 
 import static com.my.repairagency007.model.entity.Role.*;
+import static com.my.repairagency007.util.PaginationUtil.paginate;
 
 public class AllRequestCommand implements Command {
 
@@ -35,38 +34,21 @@ public class AllRequestCommand implements Command {
     public String execute(HttpServletRequest request, HttpServletResponse response) throws ServiceException {
 
         HttpSession session = request.getSession();
-        log.debug("Получили сессию");
-        RequestDispatcher dispatcher;
 
-        UserDTO currentUser = (UserDTO) session.getAttribute("user");
+        UserDTO currentUser = (UserDTO) session.getAttribute("logged_user");
         log.debug("Получили юзера из сессии");
+        String forward = "requestsForAdmin.jsp";
         List<RequestDTO> requests;
-        if (currentUser.getRole().equals(MANAGER.getName()) || currentUser.getRole().equals(CRAFTSMAN.getName()) ) {
-            try {
-                log.debug("создание списка реквестов");
-                QueryBuilder queryBuilder = getQueryBuilder(request);
-                requests = requestService.getAll(queryBuilder.getQuery());
-                int numberOfRecords = requestService.getNumberOfRecords(queryBuilder.getRecordQuery());
-            } catch (ServiceException e) {
-                log.error("Не получилось создать список реквестов");
-                return "error_page.jsp";
-            }
-            request.setAttribute("requestDTOS", requests);
 
-            dispatcher = request.getRequestDispatcher("requestsForAdmin.jsp");
-            try {
-                dispatcher.forward(request, response);
-            } catch (ServletException | IOException e) {
-                log.error("Ошибка перехода на страницу со списком запросов", e);
-            }
-        } else {
-            try {
-                response.sendRedirect("controller?action=registration");
-            } catch (IOException e) {
-                log.error("Не получилось перейти на страницу Sign In");
-            }
-        }
-        return "requestsForAdmin.jsp";
+        log.debug("создание списка реквестов");
+        QueryBuilder queryBuilder = getQueryBuilder(request);
+        requests = requestService.getAll(queryBuilder.getQuery());
+        int numberOfRecords = requestService.getNumberOfRecords(queryBuilder.getRecordQuery());
+
+        paginate(numberOfRecords, request);
+        request.setAttribute("requestDTOS", requests);
+
+        return forward;
     }
 
     private QueryBuilder getQueryBuilder(HttpServletRequest request) {

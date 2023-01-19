@@ -21,7 +21,6 @@ public class ProfileCommand implements Command {
   @Override
   public String execute(HttpServletRequest request, HttpServletResponse response) {
     HttpSession session = request.getSession();
-    ServletContext servletContext = request.getServletContext();
 
     if (session.getAttribute("newUser") != null) {
       User newUser = (User) session.getAttribute("newUser");
@@ -30,11 +29,6 @@ public class ProfileCommand implements Command {
 
     if (request.getParameter("user_id") != null) {
       int id = Integer.parseInt(request.getParameter("user_id"));
-      show(request, id);
-    }
-
-    if (servletContext.getAttribute("user_id") != null) {
-      int id = (Integer) servletContext.getAttribute("user_id");
       show(request, id);
     }
 

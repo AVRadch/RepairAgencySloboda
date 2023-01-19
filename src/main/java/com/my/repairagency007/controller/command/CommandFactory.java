@@ -1,9 +1,6 @@
 package com.my.repairagency007.controller.command;
 
-import com.my.repairagency007.controller.command.admin.AllFeedbacksCommand;
-import com.my.repairagency007.controller.command.admin.AllRequestCommand;
-import com.my.repairagency007.controller.command.admin.AllUsersCommand;
-import com.my.repairagency007.controller.command.admin.RegistrationCommand;
+import com.my.repairagency007.controller.command.admin.*;
 import com.my.repairagency007.controller.command.common.LocaleHandlerCommand;
 import com.my.repairagency007.controller.command.common.LoginCommand;
 import com.my.repairagency007.controller.command.common.LogoutCommand;
@@ -40,11 +37,16 @@ public class CommandFactory {
         commands.put("logout", new LogoutCommand());
         commands.put("redirect", null);
         commands.put("locale-handler", new LocaleHandlerCommand());
-
+        //admin commands
         commands.put("registration", new RegistrationCommand());
         commands.put("adminAllRequest", new AllRequestCommand());
         commands.put("adminAllUsers", new AllUsersCommand());
         commands.put("adminAllFeedbacks", new AllFeedbacksCommand());
+        commands.put("deleteUser", new DeleteUserCommand());
+        commands.put("editUser", new EditUserCommand());
+        commands.put("updateUser", new UpdateUserCommand());
+        commands.put("addUser", new AddUserCommand());
+        commands.put("registrationAdmin", new RegistrationAdminCommand());
     }
 
     public Command getCommand(HttpServletRequest request) {

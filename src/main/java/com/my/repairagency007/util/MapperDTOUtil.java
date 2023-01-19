@@ -7,6 +7,8 @@ import com.my.repairagency007.model.entity.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import javax.servlet.http.HttpServletRequest;
+import java.text.DecimalFormat;
 import java.time.LocalDate;
 
 public class MapperDTOUtil {
@@ -51,11 +53,12 @@ public class MapperDTOUtil {
      */
     public static UserDTO convertUserToDTO(User user){
  //       log.debug("Role = " + Role.getRole(user));
+        String formattedAccount = new DecimalFormat("#0.00").format(user.getAccount()/100.0);
         return UserDTO.builder()
                 .id(user.getId())
                 .notification(user.getNotification())
                 .phoneNumber(user.getPhoneNumber())
-                .account(user.getAccount())
+                .account(formattedAccount)
                 .status(user.getStatus())
                 .password(user.getPassword())
                 .firstName(user.getFirstName())
@@ -71,17 +74,21 @@ public class MapperDTOUtil {
      * @return User
      */
     public static User convertDTOToUser(UserDTO userDTO) {
+        int intAccount = (int) Math.round(Double.parseDouble(userDTO.getAccount()) * 100);
+        int roleNumber = Role.valueOf(userDTO.getRole().toUpperCase()).ordinal();
+        log.debug("Role userDTO = " + userDTO.getRole());
+        log.debug("Number of role userDTO = " + roleNumber++);
         return User.builder()
                 .id(userDTO.getId())
                 .notification(userDTO.getNotification())
                 .phoneNumber(userDTO.getPhoneNumber())
-                .account(userDTO.getAccount())
+                .account(intAccount)
                 .status(userDTO.getStatus())
                 .password(userDTO.getPassword())
                 .firstName(userDTO.getFirstName())
                 .lastName(userDTO.getLastName())
                 .email(userDTO.getEmail())
-                .roleId(Role.valueOf(userDTO.getRole()).ordinal())
+                .roleId(roleNumber)
                 .build();
     }
 
@@ -120,5 +127,12 @@ public class MapperDTOUtil {
                 .userLastName(requestDTO != null ? requestDTO.getUserLastName() : null)
                 .requestDescription(requestDTO != null ? requestDTO.getDescription() : null)
                 .build();
+    }
+
+    public static void fillUserDTO(HttpServletRequest request, UserDTO userDTO) {
+        userDTO.setEmail(request.getParameter("email").trim());
+        userDTO.setFirstName(request.getParameter("firstname").trim());
+        userDTO.setLastName(request.getParameter("lastname").trim());
+        userDTO.setPhoneNumber(request.getParameter("phoneNumber").trim());
     }
 }

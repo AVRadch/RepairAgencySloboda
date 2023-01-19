@@ -111,10 +111,6 @@ public class RequestServiceImpl implements RequestService {
             log.error("Error to find request and form DTO");
             throw new ServiceException(e);
         }
-        for (RequestDTO  requestDTO: requestDTOS
-             ) {
-            log.debug("requestDTO" + requestDTO);
-        }
         return requestDTOS;
     }
 
@@ -123,7 +119,13 @@ public class RequestServiceImpl implements RequestService {
     }
 
     public int getNumberOfRecords(String filter) throws ServiceException {
-        return 0;
+        int records;
+        try {
+            records = requestDAO.getNumberOfRecords(filter);
+        } catch (DAOException e) {
+            throw new ServiceException(e);
+        }
+        return records;
     }
 
     @Override

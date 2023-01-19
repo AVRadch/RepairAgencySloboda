@@ -1,11 +1,14 @@
 package com.my.repairagency007.model.services.impl;
 
 import com.my.repairagency007.DTO.UserDTO;
+import com.my.repairagency007.exception.IncorrectPasswordException;
+import com.my.repairagency007.exception.NoSuchUserException;
 import com.my.repairagency007.exception.ServiceException;
 import com.my.repairagency007.model.DAO.UserDAO;
 import com.my.repairagency007.exception.DAOException;
 import com.my.repairagency007.model.entity.User;
 import com.my.repairagency007.model.services.UserService;
+import org.mindrot.jbcrypt.BCrypt;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -26,8 +29,25 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
+    public UserDTO login(String login, String password) throws ServiceException {
 
+        UserDTO userDTO;
 
+        try {
+            User user;
+            user = userDAO.getByEmail(login).orElseThrow(NoSuchUserException::new);
+            if (!BCrypt.checkpw(password, user.getPassword())){
+                throw new IncorrectPasswordException();
+            }
+                userDTO = convertUserToDTO(user);
+        } catch (DAOException e) {
+            log.error("Error get user by email", e);
+            throw new ServiceException(e);
+        }
+        return userDTO;
+    }
+
+    @Override
     public UserDTO getById(int id) throws ServiceException{
         UserDTO userDTO;
         try {
@@ -47,9 +67,7 @@ public class UserServiceImpl implements UserService {
             List<User> users = userDAO.findAll(query);
             log.debug("convert users to dto");
             for (User user: users){
-                log.debug("Role user = " + user.getRoleId());
                 userDTOS.add(convertUserToDTO(user));
-                log.debug("Role userDTO " + convertUserToDTO(user).getRole());
             }
         } catch (DAOException e) {
             throw new ServiceException(e);
@@ -64,7 +82,7 @@ public class UserServiceImpl implements UserService {
 
     public void delete(int id) throws ServiceException {
         try {
-            if (userDAO.deleteById(id)){
+            if (!userDAO.deleteById(id)){
                 log.error("Can't delete user by id");
                 throw new ServiceException();
             }
@@ -72,6 +90,7 @@ public class UserServiceImpl implements UserService {
             log.error("Can't delete user by id", e);
             throw new ServiceException(e);
         }
+        log.debug("Delete user with id = " + id);
     }
 
     public void create(UserDTO userDTO) throws ServiceException {
@@ -85,6 +104,7 @@ public class UserServiceImpl implements UserService {
     }
 
     public void update(UserDTO userDTO) throws ServiceException {
+        log.debug("Update user. UserDTO = " + userDTO);
         User user = convertDTOToUser(userDTO);
         try {
             userDAO.update(user);
@@ -97,7 +117,7 @@ public class UserServiceImpl implements UserService {
     public UserDTO getByEmail(String email) throws ServiceException {
         UserDTO userDTO;
         try {
-            User user = userDAO.getByEmail(email);
+            User user = userDAO.getByEmail(email).orElseThrow(NoSuchUserException::new);
             userDTO = convertUserToDTO(user);
         } catch (DAOException e) {
             log.error("Error get by email", e);
@@ -107,6 +127,12 @@ public class UserServiceImpl implements UserService {
     }
 
     public int getNumberOfRecords(String filter) throws ServiceException {
-        return 0;
+        int records;
+        try {
+            records = userDAO.getNumberOfRecords(filter);
+        } catch (DAOException e) {
+            throw new ServiceException(e);
+        }
+        return records;
     }
 }

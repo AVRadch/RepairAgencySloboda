@@ -19,4 +19,9 @@ public class ContextListener implements ServletContextListener {
         log.info("AppContext initialized");
         AppContext.createAppContext(sce.getServletContext());
     }
+
+    @Override
+    public void contextDestroyed(ServletContextEvent servletContextEvent) {
+        log.debug("Servlet context destruction");
+    }
 }

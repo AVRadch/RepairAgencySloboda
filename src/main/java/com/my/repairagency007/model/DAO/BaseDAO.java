@@ -19,4 +19,6 @@ public interface BaseDAO<T> {
     boolean create(T t) throws DAOException;
 
     T update(T t) throws DAOException;
+
+    public int getNumberOfRecords(String filter) throws DAOException;
 }

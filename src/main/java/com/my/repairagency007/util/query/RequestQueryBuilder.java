@@ -17,11 +17,11 @@ public class RequestQueryBuilder extends QueryBuilder {
     }
 
     public RequestQueryBuilder() {
-        super("request.id");
+        super("r_id");
     }
     @Override
     protected String getGroupByQuery() {
-        return " GROUP BY request.id ";
+        return " GROUP BY r_id ";
     }
 
     @Override
@@ -29,6 +29,6 @@ public class RequestQueryBuilder extends QueryBuilder {
         if (REQUEST_SORT_FIELDS_SET.contains(sortField.toLowerCase())) {
             return sortField;
         }
-        return "request.id";
+        return "r_id";
     }
 }

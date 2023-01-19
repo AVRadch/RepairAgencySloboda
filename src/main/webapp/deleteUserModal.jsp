@@ -16,7 +16,7 @@
             <div class="modal-footer flex-column border-top-0">
                 <form method="POST" action="controller">
                     <input type="hidden" name="action" value="delete-user">
-                    <input type="hidden" name="user-id" value=${requestScope.user.id}>
+                    <input type="hidden" name="user-id" value=${requestScope.user-id}>
                     <button type="submit" class="btn btn-dark mt-4 mb-4">Yes</button>
                 </form>
             </div>

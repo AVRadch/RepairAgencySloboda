@@ -24,17 +24,17 @@ public class RepairAgencyServlet extends HttpServlet {
     protected void doGet(HttpServletRequest req, HttpServletResponse resp)
             throws ServletException, IOException {
         log.debug("Make DoGet");
-        processRequest(req, resp);
+        req.getRequestDispatcher(processRequest(req, resp)).forward(req, resp);
     }
 
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp)
             throws ServletException, IOException {
-        log.debug("Make DoPost");
-        processRequest(req, resp);
+        log.debug("Make Redirect DoPost");
+        resp.sendRedirect(processRequest(req, resp));
     }
 
-    private void processRequest(HttpServletRequest req, HttpServletResponse resp)
+    private String processRequest(HttpServletRequest req, HttpServletResponse resp)
             throws ServletException, IOException {
         req.setCharacterEncoding("UTF-8");
         CommandFactory commandFactory = CommandFactory.commandFactory();
@@ -46,12 +46,10 @@ public class RepairAgencyServlet extends HttpServlet {
             page = command.execute(req, resp);
         } catch (ServiceException e) {
             log.error("Error in main servlet", e);
-            resp.sendRedirect("controller?action=error");
+            page = "controller?action=error";
         }
         log.debug("Command " + page);
-        RequestDispatcher dispatcher = req.getRequestDispatcher(page);
-        if (!page.equals("redirect")) {
-            dispatcher.forward(req, resp);
-        }
+
+        return page;
     }
 }

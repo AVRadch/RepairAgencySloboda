@@ -1,8 +1,15 @@
 package com.my.repairagency007.util;
 
-import jakarta.servlet.http.HttpServletRequest;
+
+import com.my.repairagency007.controller.command.admin.AllUsersCommand;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+import javax.servlet.http.HttpServletRequest;
 
 public final class PaginationUtil {
+
+    private static final Logger log = LoggerFactory.getLogger(PaginationUtil.class);
 
     public static void paginate(int totalRecords, HttpServletRequest request) {
         int records = getInt(request.getParameter("records"), 1, 5);
@@ -11,11 +18,19 @@ public final class PaginationUtil {
     }
 
     private static void setAttributes(HttpServletRequest request, int totalRecords, int records, int offset) {
+
+        log.debug("Total records" + totalRecords);
+        log.debug("Records = " + records);
+        log.debug("Offset = " + offset);
         int pages = totalRecords / records + (totalRecords % records != 0 ? 1 : 0);
+        log.debug("pages = " + pages);
         int currentPage = offset / records + 1;
+        log.debug("current Pages = " + currentPage);
         int startPage = currentPage == pages ? Math.max(currentPage - 2, 1)
                 : Math.max(currentPage - 1, 1);
+        log.debug("Start page = " + startPage);
         int endPage = Math.min(startPage + 2, pages);
+        log.debug("End page = " + endPage);
         request.setAttribute("offset", offset);
         request.setAttribute("records", records);
         request.setAttribute("pages", pages);

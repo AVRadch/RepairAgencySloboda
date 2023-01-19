@@ -17,9 +17,27 @@ import java.util.ArrayList;
 import java.util.List;
 
 import static com.my.repairagency007.model.DAO.implementations.SQLQuery.FeedbackSQL.*;
+import static com.my.repairagency007.model.DAO.implementations.SQLQuery.RequestSQL.GET_NUMBER_OF_REQUEST_RECORDS;
+import static com.my.repairagency007.model.DAO.implementations.SQLQuery.UserSQL.SQL_SELECT_ALL_USERS;
 
 public class FeedbackDAOImpl extends GenericDAO implements FeedbackDAO {
     private static final Logger log = LoggerFactory.getLogger(FeedbackDAOImpl.class);
+
+    public int getNumberOfRecords(String filter) throws DAOException {
+        int numberOfRecords = 0;
+        String query = String.format(GET_NUMBER_OF_FEEDBACK_RECORDS, filter);
+        try (Connection connection = getConnection();
+             PreparedStatement preparedStatement = connection.prepareStatement(query)) {
+            try (ResultSet resultSet = preparedStatement.executeQuery()) {
+                if (resultSet.next()) {
+                    numberOfRecords = resultSet.getInt("numberOfRecords");
+                }
+            }
+        }catch (SQLException e) {
+            throw new DAOException(e);
+        }
+        return numberOfRecords;
+    }
     @Override
     public List<Feedback> findAll(String query) throws DAOException {
         log.trace("Find all feedbacks");
@@ -31,11 +49,11 @@ public class FeedbackDAOImpl extends GenericDAO implements FeedbackDAO {
 
         try{
             begin(connection);
-            ps = connection.prepareStatement(SQL_SELECT_ALL_FEEDBACKS);
+            ps = connection.prepareStatement(SQL_SELECT_ALL_FEEDBACKS + query);
             rs = ps.executeQuery();
             result = extractFeedbacksFromResultSet(rs);
             commit(connection);
-            log.trace("ArrayList of Feedbacks created");
+            log.debug("ArrayList of feedbacks created" + SQL_SELECT_ALL_FEEDBACKS + query);
         } catch (SQLException e) {
             rollback(connection);
             log.error("Error in find All feedbacks methods", e);

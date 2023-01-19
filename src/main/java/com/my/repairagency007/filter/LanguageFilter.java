@@ -6,8 +6,11 @@ import javax.servlet.annotation.WebInitParam;
 import java.io.IOException;
 
 /**
- * @author sburch
- * @version 1.0
+ *Created by IntelliJ IDEA.
+ *User: Алексей Радченко
+ *Date: 09.01.2023
+ *Time: 15:25
+ *To change this template use File | Settings | File Templates.
  * This filter makes encoding with charset utf-8.
  */
 @WebFilter(urlPatterns = "/*",

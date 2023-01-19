@@ -10,13 +10,14 @@ public class UserQueryBuilder extends QueryBuilder {
     private static final Set<String> USER_SORT_FIELDS_SET = new HashSet<>();
 
     static {
+        USER_SORT_FIELDS_SET.add("u_id");
         USER_SORT_FIELDS_SET.add("email");
-        USER_SORT_FIELDS_SET.add("name");
-        USER_SORT_FIELDS_SET.add("surname");
+        USER_SORT_FIELDS_SET.add("first_name");
+        USER_SORT_FIELDS_SET.add("last_name");
     }
 
     public UserQueryBuilder() {
-        super("id");
+        super("u_id");
     }
 
     @Override
@@ -29,6 +30,6 @@ public class UserQueryBuilder extends QueryBuilder {
         if (USER_SORT_FIELDS_SET.contains(sortField.toLowerCase())) {
             return sortField;
         }
-        return "id";
+        return "u_id";
     }
 }

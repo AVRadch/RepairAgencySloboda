@@ -69,10 +69,6 @@ public class FeedbackServiceImpl implements FeedbackService {
             throw new ServiceException(e);
         }
 
-        for (FeedbackDTO  feedbackDTO: feedbackDTOS
-        ) {
-            log.debug("feedbackDTO" + feedbackDTO);
-        }
         return feedbackDTOS;
     }
 
@@ -87,6 +83,12 @@ public class FeedbackServiceImpl implements FeedbackService {
     }
 
     public int getNumberOfRecords(String filter) throws ServiceException {
-        return 0;
+        int records;
+        try {
+            records = feedbackDAO.getNumberOfRecords(filter);
+        } catch (DAOException e) {
+            throw new ServiceException(e);
+        }
+        return records;
     }
 }

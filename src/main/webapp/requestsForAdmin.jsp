@@ -21,6 +21,10 @@
     <meta name="description" content="Repair Agency"/>
     <meta name="keywords" content="repair, parts">
     <meta name="author" content="AVRad">
+    <link rel="stylesheet" href="css/bootstrap.min.css">
+    <link rel="stylesheet" href="css/bootstrap-icons.css">
+    <link rel="stylesheet" href="css/my.css">
+    <script src="assets/js/bootstrap.min.js"></script>
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.1/jquery.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
@@ -30,19 +34,43 @@
 <body>
 <%@ include file="/header.jsp" %>
 
+<br>
 
-<div class="container table-responsive">
-    <table class="table table-striped table-hover w-auto">
+<div class="bd-example-snippet bd-code-snippet">
+    <div class="bd-example">
+        <table class="table table-striped" aria-label="user-table">
         <thead>
+        <c:set var="base" value="controller?action=adminAllRequest&date=${param.date}&"/>
+        <c:set var="byDate" value="sort=date&"/>
+        <c:set var="byCompletionStatus" value="sort=completion_status_id&"/>
+        <c:set var="byPaymentStatus" value="sort=payment_status_id&"/>
+        <c:set var="byTotalCost" value="sort=total_cost&"/>
+        <c:set var="dateOrder"
+               value="order=${param.sort ne 'date' || param.order eq 'DESC' ? 'ASC' : 'DESC'}"/>
+        <c:set var="completionStatusOrder"
+               value="order=${param.sort ne 'completion_status_id' || param.order eq 'DESC' ? 'ASC' : 'DESC'}"/>
+        <c:set var="paymentStatusOrder"
+               value="order=${param.sort ne 'payment_status_id' || param.order eq 'DESC' ? 'ASC' : 'DESC'}"/>
+        <c:set var="totalCostOrder"
+               value="order=${param.sort ne 'total_cost' || param.order eq 'DESC' ? 'ASC' : 'DESC'}"/>
+        <c:set var="limits" value="&offset=0&records=${param.records}"/>
         <tr>
             <th>id</th>
             <th>User</th>
             <th>Description</th>
-            <th>Date</th>
-            <th>Completion</th>
+            <th scope="col">Date<a href="${base.concat(byDate).concat(dateOrder).concat(limits)}">
+                <i class="bi bi-arrow-down-up link-dark"></i>
+            </a></th>
+            <th scope="col">Completion<a href="${base.concat(byCompletionStatus).concat(completionStatusOrder).concat(limits)}">
+                <i class="bi bi-arrow-down-up link-dark"></i>
+            </a></th>
             <th>Repairer</th>
-            <th>Payment</th>
-            <th>Total Cost</th>
+            <th scope="col">Payment<a href="${base.concat(byPaymentStatus).concat(paymentStatusOrder).concat(limits)}">
+                <i class="bi bi-arrow-down-up link-dark"></i>
+            </a></th>
+            <th scope="col">Total Cost<a href="${base.concat(byTotalCost).concat(totalCostOrder).concat(limits)}">
+                <i class="bi bi-arrow-down-up link-dark"></i>
+            </a></th>
             <th>Action</th>
         </tr>
         </thead>
@@ -72,7 +100,28 @@
 
         </tbody>
         </table>
+    </div>
 </div>
+
+<form method="GET" action="controller" class="flex">
+    <div class="d-flex justify-content-between text-center">
+        <input type="hidden" name="action" value="adminAllRequest">
+        <input type="hidden" name="offset" value="0">
+        <div class="form-row ">
+            <div class="flex-column">
+                <label for="records"><fmt:message key="label.numberRecords"/></label>
+                <input class="col-2" type="number" min="1" name="records" id="records"
+                       value="${not empty requestScope.records ? requestScope.records : "6"}">&nbsp&nbsp&nbsp&nbsp&nbsp
+                <button type="submit" class="btn btn-dark mt-2 mb-3"><fmt:message key="label.submit"/></button>
+            </div>
+        </div>
+    </div>
+</form>
+
+<c:set var="href" scope="request"
+       value="controller?action=adminAllRequest&date=${param.date}&sort=${param.sort}&order=${param.order}&"/>
+
+<jsp:include page="pagination.jsp"/>
 
 </body>
 </html>

@@ -14,4 +14,6 @@ public interface Service<T> {
     void update(T entity) throws ServiceException;
 
     void delete(int id) throws ServiceException;
+
+    public int getNumberOfRecords(String filter) throws ServiceException;
 }

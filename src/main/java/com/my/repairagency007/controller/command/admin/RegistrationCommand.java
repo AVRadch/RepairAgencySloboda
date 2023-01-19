@@ -1,20 +1,19 @@
 package com.my.repairagency007.controller.command.admin;
 
 
-import com.my.repairagency007.model.DAO.UserDAO;
-import com.my.repairagency007.model.DAO.implementations.UserDAOImpl;
-import com.my.repairagency007.controller.Path;
+import com.my.repairagency007.DTO.UserDTO;
+import com.my.repairagency007.controller.context.AppContext;
+import com.my.repairagency007.exception.ServiceException;
 import com.my.repairagency007.controller.command.Command;
-import com.my.repairagency007.exception.DAOException;
-import com.my.repairagency007.model.entity.User;
+import com.my.repairagency007.model.services.impl.UserServiceImpl;
 import org.mindrot.jbcrypt.BCrypt;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
-import java.io.IOException;
+
+import static com.my.repairagency007.util.MapperDTOUtil.fillUserDTO;
 
 /**
  * New user registration controller command.
@@ -25,78 +24,31 @@ public class RegistrationCommand implements Command {
 
   private static final Logger log = LoggerFactory.getLogger(RegistrationCommand.class);
 
+  private final UserServiceImpl userService;
+
+  public RegistrationCommand() {
+    userService = AppContext.getAppContext().getUserService();
+  }
+
   @Override
   public String execute(HttpServletRequest request, HttpServletResponse response) {
 
     log.debug("Start registration command");
-    String email = request.getParameter("email").trim();
-    String firstName = request.getParameter("firstname").trim();
-    String lastName = request.getParameter("lastname").trim();
-    String password = request.getParameter("password").trim();
-    String phoneNumber = request.getParameter("phoneNumber").trim();
-
-    int roleId = 3;
-    log.debug("Read info from request");
-    UserDAO userDAO = new UserDAOImpl();
-    /*IContactDetailsService detailsService = AppContext.getInstance().getDetailsService();
-    IAccountService accountService = AppContext.getInstance().getAccountService();
-    ITariffService tariffService = AppContext.getInstance().getTariffService();
-
-    ContactDetails details = new ContactDetails();
-    details.setId(detailsService.getNextIdValue());
-    details.setCity(city);
-    details.setStreet(street);
-    details.setHome(home);
-    details.setApartment(apartment);
-    details.setEmail(email);
-    details.setPhone(phone);
-    detailsService.save(details);
-
-    Account account = new Account();
-    account.setId(accountService.getNextIdValue());
-    account.setNumber(accountService.getNumberContract());
-    account.setBalance(BigDecimal.ZERO);
-    accountService.save(account);
-
-    Set<Tariff> tariffs;
-    if (trafficsId != null) {
-      tariffs = new HashSet<>();
-      for (String item : trafficsId) {
-        tariffs.add(tariffService.find(Long.parseLong(item)));
-      }
-    } else {
-      tariffs = Collections.emptySet();
-    }*/
-    log.debug("Fill info into User");
-    User newUser;
-    newUser = User.builder()
-            .email(email)
-            .password(BCrypt.hashpw(password, BCrypt.gensalt()))
-            .firstName(firstName)
-            .lastName(lastName)
-            .roleId(1)
-            .account(0)
-            .phoneNumber(phoneNumber)
-            .build();
+    String resp;
+    UserDTO userDTO = UserDTO.builder().build();
+    fillUserDTO(request, userDTO);
+    userDTO.setRole("UNREGISTRED");
+    userDTO.setAccount("0");
+    userDTO.setPassword(BCrypt.hashpw(request.getParameter("password").trim(), BCrypt.gensalt()));
+    resp = "login.jsp";
     try {
       log.debug("Try to create new user in Data Base");
-      userDAO.create(newUser);
-    } catch (DAOException e) {
-      throw new RuntimeException(e);
+      userService.create(userDTO);
+    } catch (ServiceException e) {
+      log.error("Error registration new user", e);
+      resp = "error_page.jsp";
     }
 
-
-    HttpSession session = request.getSession();
-    session.setAttribute("newUser", newUser);
-    log.debug("Save new user in session attribute");
-    String resp = Path.COMMAND_LOGIN;
-    log.debug("Form path to profile command: " + resp);
-    try {
-      response.sendRedirect("login.jsp");
-      resp = Path.COMMAND_REDIRECT;
-    } catch (IOException e) {
-      resp = Path.PAGE_ERROR_PAGE;
-    }
     return resp;
   }
 }

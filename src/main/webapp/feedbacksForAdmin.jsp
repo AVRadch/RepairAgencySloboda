@@ -20,6 +20,10 @@
   <meta name="description" content="Repair Agency"/>
   <meta name="keywords" content="repair, parts">
   <meta name="author" content="AVRad">
+  <link rel="stylesheet" href="css/bootstrap.min.css">
+  <link rel="stylesheet" href="css/bootstrap-icons.css">
+  <link rel="stylesheet" href="css/my.css">
+  <script src="assets/js/bootstrap.min.js"></script>
   <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.1/jquery.min.js"></script>
   <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
@@ -30,16 +34,29 @@
 <%@ include file="/header.jsp" %>
 
 
-<div class="container table-responsive">
-  <table class="table table-striped table-hover w-auto">
+<div class="bd-example-snippet bd-code-snippet">
+  <div class="bd-example">
+    <table class="table table-striped" aria-label="user-table">
     <thead>
+    <c:set var="base" value="controller?action=adminAllFeedbacks&date=${param.date}&"/>
+    <c:set var="byDate" value="sort=date_time&"/>
+    <c:set var="byRating" value="sort=rating&"/>
+    <c:set var="dateOrder"
+           value="order=${param.sort ne 'date_time' || param.order eq 'DESC' ? 'ASC' : 'DESC'}"/>
+    <c:set var="ratingOrder"
+           value="order=${param.sort ne 'rating' || param.order eq 'DESC' ? 'ASC' : 'DESC'}"/>
+    <c:set var="limits" value="&offset=0&records=${param.records}"/>
     <tr>
       <th>id</th>
       <th>User</th>
       <th>Feedback</th>
       <th>Repairer</th>
-      <th>Date</th>
-      <th>Rating</th>
+      <th>Date<a href="${base.concat(byDate).concat(dateOrder).concat(limits)}">
+        <i class="bi bi-arrow-down-up link-dark"></i>
+      </a></th>
+      <th>Rating<a href="${base.concat(byRating).concat(ratingOrder).concat(limits)}">
+        <i class="bi bi-arrow-down-up link-dark"></i>
+      </a></th>
       <th>Request</th>
       <th>Action</th>
     </tr>
@@ -70,7 +87,28 @@
 
     </tbody>
   </table>
+  </div>
 </div>
+
+<form method="GET" action="controller" class="flex">
+  <div class="d-flex justify-content-between text-center">
+    <input type="hidden" name="action" value="adminAllFeedbacks">
+    <input type="hidden" name="offset" value="0">
+    <div class="form-row ">
+      <div class="flex-column">
+        <label for="records"><fmt:message key="label.numberRecords"/></label>
+        <input class="col-2" type="number" min="1" name="records" id="records"
+               value="${not empty requestScope.records ? requestScope.records : "6"}">&nbsp&nbsp&nbsp&nbsp&nbsp
+        <button type="submit" class="btn btn-dark mt-2 mb-3"><fmt:message key="label.submit"/></button>
+      </div>
+    </div>
+  </div>
+</form>
+
+<c:set var="href" scope="request"
+       value="controller?action=adminAllFeedbacks&date=${param.date}&sort=${param.sort}&order=${param.order}&"/>
+
+<jsp:include page="pagination.jsp"/>
 
 </body>
 </html>

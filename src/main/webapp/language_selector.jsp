@@ -18,12 +18,18 @@
 </head>
 <body>
 <div class="container-fluid">
-     <form action="controller?action=locale-handler" method="post">
-         <select class="form-select form-select-lg" name = "language" onchange='submit();' aria-label="close">
-             <option value = "en" ${requestScope.language == 'en' ? 'selected' : ''}>English</option>
-             <option value = "ru" ${requestScope.language == 'ru' ? 'selected' : ''}>Русский</option>
-         </select>
-     </form>
+    <form method="POST" class="d-flex mt-3">
+        <label>
+            <select name="language" onchange='submit();'>
+                <option value="en" ${sessionScope.language eq 'en' ? 'selected' : ''}>
+                    <fmt:message key="label.selectEnglish"/>
+                </option>
+                <option value="ru" ${sessionScope.language eq 'ru' ? 'selected' : ''}>
+                    <fmt:message key="label.selectRussian"/>
+                </option>
+            </select>
+        </label>
+    </form>
 </div>
 </body>
 </html>

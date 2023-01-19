@@ -16,6 +16,22 @@ public class RequestDAOImpl extends GenericDAO implements RequestDAO {
 
     private static final Logger log = LoggerFactory.getLogger(RequestDAOImpl.class);
 
+    public int getNumberOfRecords(String filter) throws DAOException {
+        int numberOfRecords = 0;
+        String query = String.format(GET_NUMBER_OF_REQUEST_RECORDS, filter);
+        try (Connection connection = getConnection();
+             PreparedStatement preparedStatement = connection.prepareStatement(query)) {
+            try (ResultSet resultSet = preparedStatement.executeQuery()) {
+                if (resultSet.next()) {
+                    numberOfRecords = resultSet.getInt("numberOfRecords");
+                }
+            }
+        }catch (SQLException e) {
+            throw new DAOException(e);
+        }
+        return numberOfRecords;
+    }
+
     @Override
     public List<Request> findAll(String query) throws DAOException {
 
@@ -28,7 +44,7 @@ public class RequestDAOImpl extends GenericDAO implements RequestDAO {
 
         try {
             begin(connection);
-            ps = connection.prepareStatement(SQL_SELECT_ALL_REQUEST);
+            ps = connection.prepareStatement(SQL_SELECT_ALL_REQUEST+query);
             rs = ps.executeQuery();
             result = extractRequestsFromResultSet(rs);
             commit(connection);
@@ -46,7 +62,7 @@ public class RequestDAOImpl extends GenericDAO implements RequestDAO {
 
     @Override
     public Request getEntityById(int id) throws DAOException {
-        log.debug("Find request by id");
+//        log.debug("Find request by id");
         Connection connection = getConnection();
         ResultSet rs = null;
         PreparedStatement ps = null;

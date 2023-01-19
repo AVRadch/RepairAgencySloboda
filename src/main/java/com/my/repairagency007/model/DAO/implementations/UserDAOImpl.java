@@ -12,6 +12,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 
 import static com.my.repairagency007.model.DAO.implementations.SQLQuery.UserSQL.*;
@@ -19,6 +20,23 @@ import static com.my.repairagency007.model.DAO.implementations.SQLQuery.UserSQL.
 public class UserDAOImpl extends GenericDAO implements UserDAO {
 
     private static final Logger log = LoggerFactory.getLogger(UserDAOImpl.class);
+
+    @Override
+    public int getNumberOfRecords(String filter) throws DAOException {
+        int numberOfRecords = 0;
+        String query = String.format(GET_NUMBER_OF_USERS_RECORDS, filter);
+        try (Connection connection = getConnection();
+             PreparedStatement preparedStatement = connection.prepareStatement(query)) {
+            try (ResultSet resultSet = preparedStatement.executeQuery()) {
+                if (resultSet.next()) {
+                    numberOfRecords = resultSet.getInt("numberOfRecords");
+                }
+            }
+        }catch (SQLException e) {
+            throw new DAOException(e);
+        }
+        return numberOfRecords;
+    }
 
     @Override
     public List<User> findAll(String query) throws DAOException {
@@ -32,11 +50,11 @@ public class UserDAOImpl extends GenericDAO implements UserDAO {
 
         try{
             begin(connection);
-            ps = connection.prepareStatement(SQL_SELECT_ALL_USERS);
+            ps = connection.prepareStatement(SQL_SELECT_ALL_USERS + query);
             rs = ps.executeQuery();
             result = extractUsersFromResultSet(rs);
             commit(connection);
-            log.trace("ArrayList of Users created");
+            log.debug("ArrayList of Users created" + SQL_SELECT_ALL_USERS + query);
         } catch (SQLException e) {
             rollback(connection);
             log.error("Error in find All Users methods", e);
@@ -47,15 +65,13 @@ public class UserDAOImpl extends GenericDAO implements UserDAO {
 
         return result;
     }
+
     @Override
     public User getEntityById(int id) throws DAOException {
-
-        log.debug("Find user by id" + id);
         Connection connection = getConnection();
         ResultSet rs = null;
         PreparedStatement ps = null;
         User user = null;
-
         try{
             begin(connection);
             ps = connection.prepareStatement(SQL_GET_USER_BY_ID);
@@ -142,7 +158,7 @@ public class UserDAOImpl extends GenericDAO implements UserDAO {
     @Override
     public User update(User user) throws DAOException {
 
-        log.debug("Update user");
+        log.debug("Try to update user");
         Connection connection = getConnection();
         PreparedStatement ps = null;
 
@@ -178,7 +194,7 @@ public class UserDAOImpl extends GenericDAO implements UserDAO {
     }
 
     private void fillUser(PreparedStatement ps, User user)throws SQLException{
-
+        log.debug("Move user to prepared statement = " + user);
         ps.setString(1, user.getNotification());
         ps.setString(2, user.getPhoneNumber());
         ps.setInt(3, user.getAccount());
@@ -207,7 +223,7 @@ public class UserDAOImpl extends GenericDAO implements UserDAO {
     }
 
     @Override
-    public User getByEmail(String email) throws DAOException {
+    public Optional<User> getByEmail(String email) throws DAOException {
 
         log.debug("Find user by email: " + email);
         Connection connection = getConnection();
@@ -233,6 +249,6 @@ public class UserDAOImpl extends GenericDAO implements UserDAO {
         } finally {
             close(connection, ps, rs);
         }
-        return user;
+        return Optional.ofNullable(user);
     }
 }

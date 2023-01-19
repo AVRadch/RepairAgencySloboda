@@ -8,20 +8,18 @@ import com.my.repairagency007.exception.ServiceException;
 import com.my.repairagency007.model.services.impl.FeedbackServiceImpl;
 import com.my.repairagency007.util.query.FeedbackQueryBuilder;
 import com.my.repairagency007.util.query.QueryBuilder;
-import com.my.repairagency007.util.query.RequestQueryBuilder;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import javax.servlet.RequestDispatcher;
-import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
-import java.io.IOException;
 import java.util.List;
 
 import static com.my.repairagency007.model.entity.Role.CRAFTSMAN;
 import static com.my.repairagency007.model.entity.Role.MANAGER;
+import static com.my.repairagency007.util.PaginationUtil.paginate;
 
 public class AllFeedbacksCommand implements Command {
 
@@ -38,38 +36,22 @@ public class AllFeedbacksCommand implements Command {
 
         HttpSession session = request.getSession();
         log.debug("Получили сессию");
-        RequestDispatcher dispatcher;
 
-        UserDTO currentUser = (UserDTO) session.getAttribute("user");
+        UserDTO currentUser = (UserDTO) session.getAttribute("logged_user");
         log.debug("Получили юзера из сессии");
+
+        String forward = "feedbacksForAdmin.jsp";
         List<FeedbackDTO> feedbackDTOS;
 
-        if (currentUser.getRole().equals(MANAGER.getName()) || currentUser.getRole().equals(CRAFTSMAN.getName()) ) {
-            try {
-                log.debug("создание списка фидбеков");
-                QueryBuilder queryBuilder = getQueryBuilder(request);
-                feedbackDTOS = feedbackService.getAll(queryBuilder.getQuery());
-                int numberOfRecords = feedbackService.getNumberOfRecords(queryBuilder.getRecordQuery());
-            } catch (ServiceException e) {
-                log.error("Не получилось создать список фидбеков");
-                return "error_page.jsp";
-            }
-            request.setAttribute("feedbackDTOS", feedbackDTOS);
+        log.debug("создание списка фидбеков");
+        QueryBuilder queryBuilder = getQueryBuilder(request);
+        feedbackDTOS = feedbackService.getAll(queryBuilder.getQuery());
+        int numberOfRecords = feedbackService.getNumberOfRecords(queryBuilder.getRecordQuery());
 
-            dispatcher = request.getRequestDispatcher("feedbacksForAdmin.jsp");
-            try {
-                dispatcher.forward(request, response);
-            } catch (ServletException | IOException e) {
-                log.error("Ошибка перехода на страницу со списком запросов", e);
-            }
-        } else {
-            try {
-                response.sendRedirect("controller?action=registration");
-            } catch (IOException e) {
-                log.error("Не получилось перейти на страницу Sign In");
-            }
-        }
-        return null;
+        request.setAttribute("feedbackDTOS", feedbackDTOS);
+        paginate(numberOfRecords, request);
+
+        return forward;
     }
 
     private QueryBuilder getQueryBuilder(HttpServletRequest request) {
