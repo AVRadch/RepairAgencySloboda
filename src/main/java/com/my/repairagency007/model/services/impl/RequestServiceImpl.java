@@ -96,17 +96,38 @@ public class RequestServiceImpl implements RequestService {
         return requestDTO;
     }
 
+
+    public List<RequestDTO> getAllForUser(String query, int userId) throws ServiceException {
+
+        List<RequestDTO> requestDTOS = new ArrayList<>();
+        try {
+            log.debug("Try to execute requestDAO findAllForUser method");
+            List<Request> requests = requestDAO.findAllForUser(query, userId);
+            log.debug("convert request to dto");
+            for (Request request : requests
+            ) {
+                requestDTOS.add(fillDTOFromRequestAndUsers(request));
+            }
+            log.debug("All OK inside getAllForUser Request");
+        } catch (DAOException e) {
+            log.error("Error to find request and form DTO");
+            throw new ServiceException(e);
+        }
+        return requestDTOS;
+    }
+
     @Override
     public List<RequestDTO> getAll(String query) throws ServiceException {
         List<RequestDTO> requestDTOS = new ArrayList<>();
         try {
-            log.trace("Try to execute requestDAO findAll method");
+            log.debug("Try to execute requestDAO findAll method");
             List<Request> requests = requestDAO.findAll(query);
-            log.trace("convert request to dto");
-            for (Request request: requests
-                 ) {
+            log.debug("convert request to dto");
+            for (Request request : requests
+            ) {
                 requestDTOS.add(fillDTOFromRequestAndUsers(request));
             }
+            log.debug("All OK inside getAll Request");
         } catch (DAOException e) {
             log.error("Error to find request and form DTO");
             throw new ServiceException(e);
@@ -116,6 +137,17 @@ public class RequestServiceImpl implements RequestService {
 
     public List<RequestDTO> getSorted(String query) throws ServiceException {
         return null;
+    }
+
+
+    public int getNumberOfUserRecords(String filter, int userId) throws ServiceException {
+        int records;
+        try {
+            records = requestDAO.getNumberOfUserRecords(filter, userId);
+        } catch (DAOException e) {
+            throw new ServiceException(e);
+        }
+        return records;
     }
 
     public int getNumberOfRecords(String filter) throws ServiceException {
@@ -144,10 +176,34 @@ public class RequestServiceImpl implements RequestService {
         }
     }
 
+    @Override
+    public void create(RequestDTO requestDTO) throws ServiceException {
+
+        Request req = convertDTOToRequest(requestDTO);
+        try {
+            requestDAO.create(req);
+        } catch (DAOException e) {
+            log.error("Error create request", e);
+            throw new ServiceException(e);
+        }
+    }
+
     private RequestDTO fillDTOFromRequestAndUsers(Request request) throws DAOException {
+        log.debug("take user by id");
         User user = userDAO.getEntityById(request.getUser_id());
-        User repairer = userDAO.getEntityById(request.getRepairer_id());
-        return convertRequestToDTO(request, user, repairer);
+        log.debug("take repairer by id " + request.getRepairer_id());
+        User repairer = null;
+        RequestDTO requestDTO = convertRequestToDTO(request, user);
+        log.debug("Fill requestDTO = " + requestDTO);
+        int repairer_id = request.getRepairer_id();
+        if (repairer_id != 0) {
+           repairer = userDAO.getEntityById(repairer_id);
+                          requestDTO.setRepairer_id(request.getRepairer_id());
+                          requestDTO.setRepairerFirstName(repairer.getFirstName());
+                          requestDTO.setRepairerLastName(repairer.getLastName());
+        }
+        log.debug("Convert request to DTO");
+        return requestDTO;
     }
 
 }

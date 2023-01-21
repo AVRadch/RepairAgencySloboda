@@ -17,7 +17,7 @@
     <title>Title</title>
 </head>
 <body>
-<div class="container-fluid">
+<div class="container-fluid text-center">
     <form method="POST" class="d-flex mt-3">
         <label>
             <select name="language" onchange='submit();'>

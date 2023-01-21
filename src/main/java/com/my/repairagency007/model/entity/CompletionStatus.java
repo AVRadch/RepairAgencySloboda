@@ -13,4 +13,13 @@ public enum CompletionStatus {
         return name().toLowerCase();
     }
 
+    public CompletionStatus getCompletionStatus(String name){
+        for(CompletionStatus completionStatus : CompletionStatus.values()){
+            if(completionStatus.getName().equals(name)){
+                return completionStatus;
+            }
+        }
+        return CompletionStatus.NOT_STARTED;
+    }
+
 }

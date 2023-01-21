@@ -19,8 +19,7 @@ import org.slf4j.LoggerFactory;
 import java.util.ArrayList;
 import java.util.List;
 
-import static com.my.repairagency007.util.MapperDTOUtil.convertFeedbackToDTO;
-import static com.my.repairagency007.util.MapperDTOUtil.convertRequestToDTO;
+import static com.my.repairagency007.util.MapperDTOUtil.*;
 
 public class FeedbackServiceImpl implements FeedbackService {
 
@@ -75,6 +74,18 @@ public class FeedbackServiceImpl implements FeedbackService {
     @Override
     public void update(FeedbackDTO entity) throws ServiceException {
 
+    }
+
+    @Override
+    public void create(FeedbackDTO feedbackDTO) throws ServiceException {
+
+       Feedback feedback = convertDTOToFeedback(feedbackDTO);
+        try {
+            feedbackDAO.create(feedback);
+        } catch (DAOException e) {
+            log.error("Error create feedback", e);
+            throw new ServiceException(e);
+        }
     }
 
     @Override

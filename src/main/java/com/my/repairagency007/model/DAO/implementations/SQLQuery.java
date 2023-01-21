@@ -16,15 +16,17 @@ public abstract class SQLQuery {
 
     static class RequestSQL {
         public static final String SQL_SELECT_ALL_REQUEST = "SELECT * FROM request";
+        public static final String SQL_SELECT_ALL_USER_REQUEST = "SELECT * FROM request where users_id = ?";
         public static final String SQL_GET_REQUEST_BY_ID = "SELECT * FROM request WHERE r_id = ?";
         public static final String GET_NUMBER_OF_REQUEST_RECORDS = "SELECT COUNT(r_id) AS numberOfRecords FROM request %s";
+        public static final String GET_NUMBER_OF_USER_REQUEST_RECORDS = "SELECT COUNT(r_id) AS numberOfRecords FROM request where users_id = ? %s";
         public static final String SQL_DELETE_REQUEST_BY_ID = "DELETE FROM request WHERE id = ?";
-        public static final String SQL_CREATE_REQUEST = "INSERT INTO request(description, date, completion_status, " +
-                "payment_status, total_cost) VALUES(?, ?, ?, ?, ?)";
-        public static final String SQL_UPDATE_REQUEST = "UPDATE request SET description = ?, date = ?, " +
-                "completion_status = ?, payment_status = ?, total_cost = ? WHERE id = ?";
-        public static final String SQL_SELECT_REQUESTS_BY_COMPLETION_STATUS = "SELECT * FROM request WHERE completion_status = ?";
-        public static final String SQL_SELECT_REQUESTS_BY_PAYMENT_STATUS = "SELECT * FROM request WHERE payment_status = ?";
+        public static final String SQL_CREATE_REQUEST = "INSERT INTO request(users_id, descriptions, date, completion_status_id, " +
+                "payment_status_id, total_cost) VALUES(?, ?, ?, ?, ?, ?)";
+        public static final String SQL_UPDATE_REQUEST = "UPDATE request SET user_id = ?, descriptions = ?, date = ?, " +
+                "completion_status_id = ?, payment_status_id = ?, total_cost = ? WHERE id = ?";
+        public static final String SQL_SELECT_REQUESTS_BY_COMPLETION_STATUS = "SELECT * FROM request WHERE completion_status_id = ?";
+        public static final String SQL_SELECT_REQUESTS_BY_PAYMENT_STATUS = "SELECT * FROM request WHERE payment_status_id = ?";
     }
     static class FeedbackSQL {
         public static final String SQL_SELECT_ALL_FEEDBACKS = "SELECT * FROM feedback";

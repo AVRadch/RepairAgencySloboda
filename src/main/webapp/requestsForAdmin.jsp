@@ -34,6 +34,14 @@
 <body>
 <%@ include file="/header.jsp" %>
 
+
+<div class="container-fluid">
+    <div class="form-row text-center">
+        <div class="btn-group">
+            <a href="addRequest.jsp" class="btn btn" role="button"><fmt:message key="button.addRequest"/></a>
+        </div>
+    </div>
+</div>
 <br>
 
 <div class="bd-example-snippet bd-code-snippet">
@@ -55,23 +63,23 @@
                value="order=${param.sort ne 'total_cost' || param.order eq 'DESC' ? 'ASC' : 'DESC'}"/>
         <c:set var="limits" value="&offset=0&records=${param.records}"/>
         <tr>
-            <th>id</th>
-            <th>User</th>
-            <th>Description</th>
-            <th scope="col">Date<a href="${base.concat(byDate).concat(dateOrder).concat(limits)}">
+            <th><fmt:message key="table.id"/></th>
+            <th><fmt:message key="table.user"/></th>
+            <th><fmt:message key="table.description"/></th>
+            <th scope="col"><fmt:message key="table.date"/><a href="${base.concat(byDate).concat(dateOrder).concat(limits)}">
                 <i class="bi bi-arrow-down-up link-dark"></i>
             </a></th>
-            <th scope="col">Completion<a href="${base.concat(byCompletionStatus).concat(completionStatusOrder).concat(limits)}">
+            <th scope="col"><fmt:message key="table.completion"/><a href="${base.concat(byCompletionStatus).concat(completionStatusOrder).concat(limits)}">
                 <i class="bi bi-arrow-down-up link-dark"></i>
             </a></th>
-            <th>Repairer</th>
-            <th scope="col">Payment<a href="${base.concat(byPaymentStatus).concat(paymentStatusOrder).concat(limits)}">
+            <th><fmt:message key="table.repairer"/></th>
+            <th scope="col"><fmt:message key="table.payment"/><a href="${base.concat(byPaymentStatus).concat(paymentStatusOrder).concat(limits)}">
                 <i class="bi bi-arrow-down-up link-dark"></i>
             </a></th>
-            <th scope="col">Total Cost<a href="${base.concat(byTotalCost).concat(totalCostOrder).concat(limits)}">
+            <th scope="col"><fmt:message key="table.totalCost"/><a href="${base.concat(byTotalCost).concat(totalCostOrder).concat(limits)}">
                 <i class="bi bi-arrow-down-up link-dark"></i>
             </a></th>
-            <th>Action</th>
+            <th><fmt:message key="table.action"/></th>
         </tr>
         </thead>
         <tbody>

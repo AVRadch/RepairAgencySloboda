@@ -4,6 +4,8 @@ import com.my.repairagency007.controller.command.admin.*;
 import com.my.repairagency007.controller.command.common.LocaleHandlerCommand;
 import com.my.repairagency007.controller.command.common.LoginCommand;
 import com.my.repairagency007.controller.command.common.LogoutCommand;
+import com.my.repairagency007.controller.command.user.EditRequestCommand;
+import com.my.repairagency007.controller.command.user.UserRequestCommand;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -32,11 +34,16 @@ public class CommandFactory {
     }
 
     static {
+        //user commands
+        commands.put("userRequest", new UserRequestCommand());
+        commands.put("editRequest", new EditRequestCommand());
+
         // common commands
         commands.put("login", new LoginCommand());
         commands.put("logout", new LogoutCommand());
         commands.put("redirect", null);
         commands.put("locale-handler", new LocaleHandlerCommand());
+        commands.put("addRequest", new AddRequestCommand());
         //admin commands
         commands.put("registration", new RegistrationCommand());
         commands.put("adminAllRequest", new AllRequestCommand());
@@ -46,6 +53,7 @@ public class CommandFactory {
         commands.put("editUser", new EditUserCommand());
         commands.put("updateUser", new UpdateUserCommand());
         commands.put("addUser", new AddUserCommand());
+
         commands.put("registrationAdmin", new RegistrationAdminCommand());
     }
 

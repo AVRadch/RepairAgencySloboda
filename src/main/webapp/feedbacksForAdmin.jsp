@@ -47,18 +47,18 @@
            value="order=${param.sort ne 'rating' || param.order eq 'DESC' ? 'ASC' : 'DESC'}"/>
     <c:set var="limits" value="&offset=0&records=${param.records}"/>
     <tr>
-      <th>id</th>
-      <th>User</th>
-      <th>Feedback</th>
-      <th>Repairer</th>
-      <th>Date<a href="${base.concat(byDate).concat(dateOrder).concat(limits)}">
+      <th><fmt:message key="table.id"/></th>
+      <th><fmt:message key="table.user"/></th>
+      <th><fmt:message key="table.feedback"/></th>
+      <th><fmt:message key="table.repairer"/></th>
+      <th><fmt:message key="table.date"/><a href="${base.concat(byDate).concat(dateOrder).concat(limits)}">
         <i class="bi bi-arrow-down-up link-dark"></i>
       </a></th>
-      <th>Rating<a href="${base.concat(byRating).concat(ratingOrder).concat(limits)}">
+      <th><fmt:message key="table.rating"/><a href="${base.concat(byRating).concat(ratingOrder).concat(limits)}">
         <i class="bi bi-arrow-down-up link-dark"></i>
       </a></th>
-      <th>Request</th>
-      <th>Action</th>
+      <th><fmt:message key="table.request"/></th>
+      <th><fmt:message key="table.action"/></th>
     </tr>
     </thead>
     <tbody>

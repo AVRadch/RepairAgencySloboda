@@ -57,12 +57,12 @@ CREATE TABLE IF NOT EXISTS `repair-agency`.`users` (
 -- Table `repair-agency`.`request`
 -- -----------------------------------------------------
 CREATE TABLE IF NOT EXISTS `repair-agency`.`request` (
-                                                         `r_id` INT NOT NULL,
+                                                         `r_id` INT NOT NULL AUTO_INCREMENT,
                                                          `users_id` INT NOT NULL,
                                                          `descriptions` VARCHAR(10000) NULL,
                                                          `date` DATETIME NULL,
                                                          `completion_status_id` INT NULL,
-                                                         `repairer_id` INT NOT NULL,
+                                                         `repairer_id` INT NULL,
                                                          `payment_status_id` INT NULL,
                                                          `total_cost` INT NULL,
                                                          PRIMARY KEY (`r_id`),
@@ -135,9 +135,9 @@ values (1, 3, 'описание 1', '2022-12-01', 1, 2, 1, 500000),
 insert into feedback
 (feedback_id, date_time, feedback_text, rating, request_id)
 values (1, '2022-12-06', 'текст отзыва 1', 10, 1),
-       (2, '2022-12-07', 'текст отзыва 2', 10, 2),
-       (3, '2022-12-08', 'текст отзыва 3', 10, 3),
-       (4, '2022-12-09', 'текст отзыва 4', 10, 4);
+       (2, '2022-12-07', 'текст отзыва 2', 9, 2),
+       (3, '2022-12-08', 'текст отзыва 3', 6, 3),
+       (4, '2022-12-09', 'текст отзыва 4', 2, 4);
 
 delete from feedback;
 delete from request;

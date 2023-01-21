@@ -21,7 +21,7 @@
 <html lang="en">
 <head>
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <link rel="stylesheet" type="text/css" href="assets/css/bootstrap.css">
+    <link rel="stylesheet" type="text/css" href="css/bootstrap.css">
 
     <!-- Website CSS style -->
     <link rel="stylesheet" type="text/css" href="assets/css/main.css">
@@ -43,66 +43,69 @@
         <div class="panel-heading">
             <div class="panel-title text-center">
                 <h1 class="title">Sloboda Repair Company</h1>
-                <hr />
             </div>
         </div>
         <div class="main-login main-center">
             <form class="form-horizontal" method="post" action="controller?action=registrationAdmin">
 
                 <div class="form-group">
-                    <label for="email" class="cols-sm-2 control-label">Your Email</label>
+                    <label for="email" class="cols-sm-2 control-label"><fmt:message key="table.email"/></label>
                     <div class="cols-sm-10">
                         <div class="input-group">
                             <span class="input-group-addon"><i class="fa fa-envelope fa" aria-hidden="true"></i></span>
-                            <input type="text" class="form-control" name="email" id="email"  placeholder="<fmt:message key="label.email"/>"/>
+                            <input type="text" class="form-control" name="email" id="email"
+                                   placeholder="<fmt:message key="label.email"/>"/>
                         </div>
                     </div>
                 </div>
 
                 <div class="form-group">
-                    <label for="firstname" class="cols-sm-2 control-label">First Name</label>
+                    <label for="firstname" class="cols-sm-2 control-label"><fmt:message key="table.firstname"/></label>
                     <div class="cols-sm-10">
                         <div class="input-group">
                             <span class="input-group-addon"><i class="fa fa-user fa" aria-hidden="true"></i></span>
-                            <input type="text" class="form-control" name="firstname" id="firstname"  placeholder="<fmt:message key="label.firstName"/>"/>
+                            <input type="text" class="form-control" name="firstname" id="firstname"
+                                   placeholder="<fmt:message key="label.firstName"/>"/>
                         </div>
                     </div>
                 </div>
 
 
-
                 <div class="form-group">
-                    <label for="lastname" class="cols-sm-2 control-label">Lastname</label>
+                    <label for="lastname" class="cols-sm-2 control-label"><fmt:message key="table.lastname"/></label>
                     <div class="cols-sm-10">
                         <div class="input-group">
                             <span class="input-group-addon"><i class="fa fa-users fa" aria-hidden="true"></i></span>
-                            <input type="text" class="form-control" name="lastname" id="lastname"  placeholder="<fmt:message key="label.lastName"/>"/>
+                            <input type="text" class="form-control" name="lastname" id="lastname"
+                                   placeholder="<fmt:message key="label.lastName"/>"/>
                         </div>
                     </div>
                 </div>
 
                 <div class="form-group">
-                    <label for="password" class="cols-sm-2 control-label">Password</label>
+                    <label for="password" class="cols-sm-2 control-label"><fmt:message key="label.password"/></label>
                     <div class="cols-sm-10">
                         <div class="input-group">
                             <span class="input-group-addon"><i class="fa fa-lock fa-lg" aria-hidden="true"></i></span>
-                            <input type="password" class="form-control" name="password" id="password"  placeholder="<fmt:message key="label.password"/>"/>
+                            <input type="password" class="form-control" name="password" id="password"
+                                   placeholder="<fmt:message key="label.password"/>"/>
                         </div>
                     </div>
                 </div>
 
                 <div class="form-group">
-                    <label for="confirm" class="cols-sm-2 control-label">Confirm Password</label>
+                    <label for="confirm" class="cols-sm-2 control-label"><fmt:message key="label.confirm.password"/></label>
                     <div class="cols-sm-10">
                         <div class="input-group">
                             <span class="input-group-addon"><i class="fa fa-lock fa-lg" aria-hidden="true"></i></span>
-                            <input type="password" class="form-control" name="confirm" id="confirm"  placeholder="<fmt:message key="label.password"/>"/>
+                            <input type="password" class="form-control" name="confirm" id="confirm"
+                                   placeholder="<fmt:message key="label.confirm.password"/>"/>
                         </div>
                     </div>
                 </div>
 
                 <div class="form-group">
-                    <label for="phoneNumber" class="cols-sm-2 control-label">Phone Number</label>
+                    <label for="phoneNumber" class="cols-sm-2 control-label"><fmt:message key="table.phoneNumber"/></label>
                     <div class="cols-sm-10">
                         <div class="input-group">
                             <span class="input-group-addon"><i class="fa fa-users fa" aria-hidden="true"></i></span>
@@ -111,8 +114,7 @@
                         </div>
                     </div>
                 </div>
-                <br>
-                User Role: <select name="role">
+                <fmt:message key="table.role"/>: <select name="role">
                 <option>MANAGER</option>
                 <option>USER</option>
                 <option>CRAFTSMAN</option>
@@ -124,6 +126,8 @@
                 </div>
             </form>
         </div>
+        <br>
+        <%@ include file="/language_selector.jsp" %>
     </div>
 </div>
 

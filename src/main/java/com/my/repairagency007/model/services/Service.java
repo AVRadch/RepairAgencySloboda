@@ -1,6 +1,7 @@
 package com.my.repairagency007.model.services;
 
 import com.my.repairagency007.DTO.UserDTO;
+import com.my.repairagency007.exception.DAOException;
 import com.my.repairagency007.exception.ServiceException;
 
 import java.util.List;
@@ -14,6 +15,8 @@ public interface Service<T> {
     void update(T entity) throws ServiceException;
 
     void delete(int id) throws ServiceException;
+
+    void create(T t) throws ServiceException;
 
     public int getNumberOfRecords(String filter) throws ServiceException;
 }

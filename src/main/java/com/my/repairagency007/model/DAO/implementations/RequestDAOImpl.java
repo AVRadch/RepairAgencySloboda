@@ -1,7 +1,7 @@
 package com.my.repairagency007.model.DAO.implementations;
 
-import com.my.repairagency007.model.DAO.RequestDAO;
 import com.my.repairagency007.exception.DAOException;
+import com.my.repairagency007.model.DAO.RequestDAO;
 import com.my.repairagency007.model.entity.Request;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -32,6 +32,52 @@ public class RequestDAOImpl extends GenericDAO implements RequestDAO {
         return numberOfRecords;
     }
 
+    public int getNumberOfUserRecords(String filter, int userId) throws DAOException {
+        int numberOfRecords = 0;
+        String query = String.format(GET_NUMBER_OF_USER_REQUEST_RECORDS, filter);
+        try (Connection connection = getConnection();
+             PreparedStatement preparedStatement = connection.prepareStatement(query)) {
+            preparedStatement.setInt(1, userId);
+            try (ResultSet resultSet = preparedStatement.executeQuery()) {
+                if (resultSet.next()) {
+                    numberOfRecords = resultSet.getInt("numberOfRecords");
+                }
+            }
+        }catch (SQLException e) {
+            throw new DAOException(e);
+        }
+        return numberOfRecords;
+    }
+
+    @Override
+    public List<Request> findAllForUser(String query, int userId) throws DAOException {
+
+        log.trace("Find all for user request");
+        Connection connection = getConnection();
+        ResultSet rs = null;
+        PreparedStatement ps = null;
+
+        ArrayList<Request> result;
+
+        try {
+            begin(connection);
+            ps = connection.prepareStatement(SQL_SELECT_ALL_USER_REQUEST + query);
+            ps.setInt(1, userId);
+            rs = ps.executeQuery();
+            result = extractRequestsFromResultSet(rs);
+            commit(connection);
+            log.trace("ArrayList of Request created");
+        } catch (SQLException e) {
+            rollback(connection);
+            log.error("Error in find All Request methods", e);
+            throw new DAOException(e);
+        } finally {
+            close(connection, ps, rs);
+        }
+
+        return result;
+    }
+
     @Override
     public List<Request> findAll(String query) throws DAOException {
 
@@ -44,7 +90,7 @@ public class RequestDAOImpl extends GenericDAO implements RequestDAO {
 
         try {
             begin(connection);
-            ps = connection.prepareStatement(SQL_SELECT_ALL_REQUEST+query);
+            ps = connection.prepareStatement(SQL_SELECT_ALL_REQUEST + query);
             rs = ps.executeQuery();
             result = extractRequestsFromResultSet(rs);
             commit(connection);
@@ -165,7 +211,7 @@ public class RequestDAOImpl extends GenericDAO implements RequestDAO {
 
             ps = connection.prepareStatement(SQL_UPDATE_REQUEST);
             fillRequest(ps, request);
-            ps.setInt(6, request.getId());
+            ps.setInt(7, request.getId());
             ps.executeUpdate();
 
             connection.commit();
@@ -260,11 +306,12 @@ public class RequestDAOImpl extends GenericDAO implements RequestDAO {
 
     private void fillRequest(PreparedStatement ps, Request request)throws SQLException{
 
-        ps.setString(1, request.getDescription());
-        ps.setDate(2, Date.valueOf(request.getDate()));
-        ps.setInt(3, request.getCompletionStatusId());
-        ps.setInt(4, request.getPaymentStatusId());
-        ps.setInt(5, request.getTotalCost());
+        ps.setInt(1, request.getUser_id());
+        ps.setString(2, request.getDescription());
+        ps.setDate(3, Date.valueOf(request.getDate()));
+        ps.setInt(4, request.getCompletionStatusId());
+        ps.setInt(5, request.getPaymentStatusId());
+        ps.setInt(6, request.getTotalCost());
 
     }
 }

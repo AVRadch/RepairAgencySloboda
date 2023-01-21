@@ -37,7 +37,7 @@ public class RegistrationCommand implements Command {
     String resp;
     UserDTO userDTO = UserDTO.builder().build();
     fillUserDTO(request, userDTO);
-    userDTO.setRole("UNREGISTRED");
+    userDTO.setRole("REGISTRED");
     userDTO.setAccount("0");
     userDTO.setPassword(BCrypt.hashpw(request.getParameter("password").trim(), BCrypt.gensalt()));
     resp = "login.jsp";

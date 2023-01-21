@@ -16,10 +16,17 @@ public class MapperDTOUtil {
     private static final Logger log = LoggerFactory.getLogger(MapperDTOUtil.class);
 
     public static Request convertDTOToRequest(RequestDTO requestDTO) {
+        int completionStatusNumber = CompletionStatus.valueOf(requestDTO.getCompletionStatus().toUpperCase()).ordinal();
+        log.debug("Completion Status = " + completionStatusNumber++);
+        int paymentStatusNumber = PaymentStatus.valueOf(requestDTO.getPaymentStatus().toUpperCase()).ordinal();
+        log.debug("Payment Status = " + paymentStatusNumber++);
         return Request.builder()
                 .user_id(requestDTO.getUser_id())
                 .description(requestDTO.getDescription())
                 .date(LocalDate.parse(requestDTO.getDate()))
+                .completionStatusId(completionStatusNumber)
+                .paymentStatusId(paymentStatusNumber)
+                .totalCost(requestDTO.getTotalCost())
                 .build();
     }
 
@@ -29,21 +36,28 @@ public class MapperDTOUtil {
      * @return UserDTO
      */
 
-    public static RequestDTO convertRequestToDTO(Request request, User user, User repairer){
-        return RequestDTO.builder()
-                .id(request.getId())
-                .user_id(request.getUser_id())
-                .userFirstName(user.getFirstName())
-                .userLastName(user.getLastName())
-                .description(request.getDescription())
-                .date(request.getDate().toString())
-                .completionStatus(CompletionStatus.getCompletionStatusId(request).getName())
-                .repairer_id(request.getRepairer_id())
-                .repairerFirstName(repairer.getFirstName())
-                .repairerLastName(repairer.getLastName())
-                .paymentStatus(PaymentStatus.getPaymentStatusId(request).getName())
-                .totalCost(request.getTotalCost())
-                .build();
+    public static RequestDTO convertRequestToDTO(Request request, User user){
+
+        RequestDTO requestDTO = RequestDTO.builder().build();
+        log.debug("req id = " + request.getId());
+        requestDTO.setId(request.getId());
+        log.debug("req id = " + request.getUser_id());
+        requestDTO.setUser_id(request.getUser_id());
+        log.debug("req id = " + user.getFirstName());
+        requestDTO.setUserFirstName(user.getFirstName());
+        log.debug("req id = " + user.getLastName());
+        requestDTO.setUserLastName(user.getLastName());
+        log.debug("req id = " + request.getDescription());
+        requestDTO.setDescription(request.getDescription());
+        log.debug("req id = " + request.getDate().toString());
+        requestDTO.setDate(request.getDate().toString());
+        log.debug("Completion status = " + CompletionStatus.getCompletionStatusId(request).getName());
+        requestDTO.setCompletionStatus(CompletionStatus.getCompletionStatusId(request).getName());
+        log.debug("Payment status = " + PaymentStatus.getPaymentStatusId(request).getName());
+        requestDTO.setPaymentStatus(PaymentStatus.getPaymentStatusId(request).getName());
+        requestDTO.setTotalCost(request.getTotalCost());
+
+        return requestDTO;
     }
 
     /**
