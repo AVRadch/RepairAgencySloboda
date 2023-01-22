@@ -35,5 +35,5 @@ public class RequestDTO implements Serializable {
 
     private String paymentStatus;
 
-    private int totalCost;
+    private String totalCost;
 }

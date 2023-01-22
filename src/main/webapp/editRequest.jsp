@@ -51,15 +51,18 @@
                     <span class="text-danger"><fmt:message key="${requestScope.error}"/></span>
                 </c:if>
                 <input type="hidden" id="custId" name="request-id" value="${requestScope.requestDTO.id}">
+                <input type="hidden" id="userId" name="user-id" value="${requestScope.requestDTO.user_id}">
 
                 <div class="form-group">
                     <label for="user" class="cols-sm-3 control-label"><fmt:message key="label.userName"/></label>
                     <div class="cols-sm-10">
                         <div class="input-group">
                        <%--     <span class="input-group-addon"><i class="fa fa-envelope fa" aria-hidden="true"></i></span> --%>
+                           <span class="input-group-addon"><i class="fa fa" aria-hidden="true"></i></span>
                             <input type="text" class="form-control" name="user" id="user"
                                    pattern="^[A-Za-zА-ЩЬЮЯҐІЇЄа-щьюяґіїє'\- ]{1,30}"
-                                   required value="${requestScope.requestDTO.userFirstName} ${requestScope.requestDTO.userLastName}" />
+                                   required value="${requestScope.requestDTO.userFirstName} ${requestScope.requestDTO.userLastName}"
+                                   disabled/>
                         </div>
                     </div>
                 </div>
@@ -68,7 +71,8 @@
                     <label for="message" class="cols-sm-3 control-label"><fmt:message key="label.description"/></label>
                     <div class="cols-sm-10">
                         <div class="input-group">
-                    <textarea id="message" name="description1" class="form-control" >${requestScope.requestDTO.description}</textarea>
+                            <span class="input-group-addon"><i class="fa fa" aria-hidden="true"></i></span>
+                    <textarea id="message" name="description" class="form-control" disabled>${requestScope.requestDTO.description}</textarea>
                         </div>
                     </div>
                 </div>
@@ -77,21 +81,69 @@
                     <label for="date" class="cols-sm-3 control-label"><fmt:message key="table.date"/></label>
                     <div class="cols-sm-10">
                         <div class="input-group">
-                            <span class="input-group"></span>
+                            <span class="input-group-addon"><i class="fa fa" aria-hidden="true"></i></span>
                             <input type="text" class="form-control" name="date" id="date"
-                                    required value="${requestScope.requestDTO.date}"/>
+                                    required value="${requestScope.requestDTO.date}"
+                                   disabled/>
                         </div>
                     </div>
                 </div>
 
                 <div class="form-group">
-                    <label for="completionStatus" class="cols-sm-3 control-label"><fmt:message key="label.phoneNumber"/></label>
-                    <div class="cols-sm-10">
-                        <div class="input-group">
-                            <span class="input-group-addon"><i class="fa fa-users fa" aria-hidden="true"></i></span>
-                            <input type="text" class="form-control" name="completionStatus" id="completionStatus"
-                                   required value="${requestScope.requestDTO.completionStatus}"/>
-                        </div>
+                    <div class="input-group mb-3">
+     <%--                   <div class="input-group-prepend">       --%>
+                            <label class="input-group-text" for="completionStatus"><fmt:message
+                                    key="table.completion"/>   :</label>
+       <%--                 </div>      --%>
+                        <select class="custom-select" id="completionStatus" name="completionStatus">
+                            <option value="not_started"
+                            ${requestScope.requestDTO.completionStatus eq 'not_started' ? 'selected' : ''}><fmt:message
+                                    key="label.select.notStarted"/>
+                            </option>
+                            <option value="in_progress"
+                            ${requestScope.requestDTO.completionStatus eq 'in_progress' ? 'selected' : ''}><fmt:message
+                                    key="label.select.inProgress"/>
+                            </option>
+                            <option value="completed"
+                            ${requestScope.requestDTO.completionStatus eq 'completed' ? 'selected' : ''}><fmt:message
+                                    key="label.select.completed"/>
+                            </option>
+                        </select>
+                    </div>
+                </div>
+
+ <%--               <form method="post" action="controller">
+                    <input type="hidden" name="action" value="set-repairer">    --%>
+
+                <div class="form-group">
+                    <div class="input-group mb-3">
+                        <label class="input-group-text" for="repairer-id">
+                            <span><fmt:message key="table.repairer"/>:</span>
+                        </label>
+                            <select id="repairer-id" name="repairer-id">
+                                <option value="0"><fmt:message key="label.selectRepairer"/></option>
+                                <c:forEach var="repairer" items="${requestScope.repairers}">
+                                    <option value="${repairer.id}">${repairer.lastName} ${repairer.firstName}</option>
+                                </c:forEach>
+                            </select>
+                    </div>
+                </div>
+
+
+            <%--                  <button type="submit">Set  speaker/></button>
+                </form>     --%>
+
+
+                <div class="form-group">
+                    <div class="input-group mb-3">
+                        <label class="input-group-text" for="paymentStatus">
+                            <span><fmt:message key="table.payment"/>:</span>
+                        </label>
+                        <select class="custom-select" id="paymentStatus" name="paymentStatus">
+                            <option value="panding_payment" ${requestScope.requestDTO.paymentStatus eq 'panding_payment' ? 'selected' : ''}><fmt:message key="label.select.pandingPayment"/></option>
+                            <option value="paid" ${requestScope.requestDTO.paymentStatus eq 'paid' ? 'selected' : ''}><fmt:message key="label.select.paid"/></option>
+                            <option value="canceled" ${requestScope.requestDTO.paymentStatus eq 'canceled' ? 'selected' : ''}><fmt:message key="label.select.canceled"/></option>
+                        </select>
                     </div>
                 </div>
 
@@ -99,9 +151,9 @@
                     <label for="totalCost" class="cols-sm-3 control-label"><fmt:message key="label.account"/></label>
                     <div class="cols-sm-10">
                         <div class="input-group">
-                            <span class="input-group-addon"><i class="fa fa-user fa" aria-hidden="true"></i></span>
+                            <span class="input-group-addon"><i class="fa fa" aria-hidden="true"></i></span>
                             <input type="text" class="form-control" name="totalCost" id="totalCost"
-                                   required value="${requestScope.requestDTO.totalCost}"/>
+                             value="${requestScope.requestDTO.totalCost}"/>
                         </div>
                     </div>
                 </div>
@@ -123,14 +175,7 @@
                                       </select>
                                   </label>
                               </form> --%>
-                <label for="paymentStatus">
-                    <span><fmt:message key="table.payment"/>:</span>
-                </label>
-                <select id="paymentStatus" name="paymentStatus">
-                    <option value="1"><fmt:message key="label.select.pandingPayment"/></option>
-                    <option value="2"><fmt:message key="label.select.paid"/></option>
-                    <option value="3"><fmt:message key="label.select.canceled"/></option>
-                </select>
+
 
                 <div class="form-group ">
                     <button type="submit" class="btn btn-primary btn-lg btn-block login-button"><fmt:message key="button.update"/></button>

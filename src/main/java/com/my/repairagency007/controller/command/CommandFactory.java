@@ -52,6 +52,7 @@ public class CommandFactory {
         commands.put("deleteUser", new DeleteUserCommand());
         commands.put("editUser", new EditUserCommand());
         commands.put("updateUser", new UpdateUserCommand());
+        commands.put("updateRequest", new UpdateRequestAdminCommand());
         commands.put("addUser", new AddUserCommand());
 
         commands.put("registrationAdmin", new RegistrationAdminCommand());

@@ -15,8 +15,7 @@ import org.slf4j.LoggerFactory;
 import java.util.ArrayList;
 import java.util.List;
 
-import static com.my.repairagency007.util.MapperDTOUtil.convertDTOToRequest;
-import static com.my.repairagency007.util.MapperDTOUtil.convertRequestToDTO;
+import static com.my.repairagency007.util.MapperDTOUtil.*;
 import static com.my.repairagency007.util.ValidatorUtil.validateDescription;
 
 public class RequestServiceImpl implements RequestService {
@@ -161,8 +160,31 @@ public class RequestServiceImpl implements RequestService {
     }
 
     @Override
-    public void update(RequestDTO request) throws ServiceException {
+    public void update(RequestDTO requestDTO) throws ServiceException {
+        log.debug("Update request. RequestDTO = " + requestDTO);
+        Request request = convertDTOToRequest(requestDTO);
+        if (requestDTO.getId() != 0){
+            request.setId(requestDTO.getId());
+        }
+        try {
+            requestDAO.update(request);
+        } catch (DAOException e) {
+            log.error("Error update user", e);
+            throw new ServiceException(e);
+        }
+    }
 
+    public void updateRepairForRequest(RequestDTO requestDTO) throws ServiceException{
+
+        Request request = convertDTOToRequest(requestDTO);
+        if (requestDTO.getId() != 0){
+            request.setId(requestDTO.getId());
+        }
+        try {
+            requestDAO.updateRepairForRequest(request);
+        } catch (DAOException e) {
+            throw new RuntimeException(e);
+        }
     }
 
     @Override

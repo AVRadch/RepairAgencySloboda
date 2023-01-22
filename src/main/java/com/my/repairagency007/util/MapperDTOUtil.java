@@ -20,13 +20,15 @@ public class MapperDTOUtil {
         log.debug("Completion Status = " + completionStatusNumber++);
         int paymentStatusNumber = PaymentStatus.valueOf(requestDTO.getPaymentStatus().toUpperCase()).ordinal();
         log.debug("Payment Status = " + paymentStatusNumber++);
+        int intTotalCost = (int) Math.round(Double.parseDouble(requestDTO.getTotalCost()) * 100);
         return Request.builder()
                 .user_id(requestDTO.getUser_id())
                 .description(requestDTO.getDescription())
                 .date(LocalDate.parse(requestDTO.getDate()))
                 .completionStatusId(completionStatusNumber)
+                .repairer_id(requestDTO.getRepairer_id())
                 .paymentStatusId(paymentStatusNumber)
-                .totalCost(requestDTO.getTotalCost())
+                .totalCost(intTotalCost)
                 .build();
     }
 
@@ -38,6 +40,7 @@ public class MapperDTOUtil {
 
     public static RequestDTO convertRequestToDTO(Request request, User user){
 
+        String formattedTotalCost = new DecimalFormat("#0.00").format(request.getTotalCost()/100.0);
         RequestDTO requestDTO = RequestDTO.builder().build();
         log.debug("req id = " + request.getId());
         requestDTO.setId(request.getId());
@@ -55,7 +58,7 @@ public class MapperDTOUtil {
         requestDTO.setCompletionStatus(CompletionStatus.getCompletionStatusId(request).getName());
         log.debug("Payment status = " + PaymentStatus.getPaymentStatusId(request).getName());
         requestDTO.setPaymentStatus(PaymentStatus.getPaymentStatusId(request).getName());
-        requestDTO.setTotalCost(request.getTotalCost());
+        requestDTO.setTotalCost(formattedTotalCost);
 
         return requestDTO;
     }
@@ -149,4 +152,14 @@ public class MapperDTOUtil {
         userDTO.setLastName(request.getParameter("lastname").trim());
         userDTO.setPhoneNumber(request.getParameter("phoneNumber").trim());
     }
+
+    public static void fillRequestDTO(HttpServletRequest request, RequestDTO requestDTO){
+
+        requestDTO.setCompletionStatus(request.getParameter("completionStatus").trim());
+        requestDTO.setPaymentStatus(request.getParameter("paymentStatus").trim());
+        requestDTO.setRepairer_id(Integer.parseInt(request.getParameter("repairer-id")));
+        requestDTO.setTotalCost(request.getParameter("totalCost").replace(",", ".").trim());
+    }
+
+    //public static void fillRequestDTO
 }

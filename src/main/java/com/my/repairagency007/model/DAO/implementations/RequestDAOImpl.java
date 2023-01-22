@@ -202,7 +202,7 @@ public class RequestDAOImpl extends GenericDAO implements RequestDAO {
     @Override
     public Request update(Request request) throws DAOException {
 
-        log.debug("Update request");
+        log.debug("Update request = " + request);
         Connection connection = getConnection();
         PreparedStatement ps = null;
 
@@ -210,8 +210,10 @@ public class RequestDAOImpl extends GenericDAO implements RequestDAO {
             begin(connection);
 
             ps = connection.prepareStatement(SQL_UPDATE_REQUEST);
-            fillRequest(ps, request);
-            ps.setInt(7, request.getId());
+            log.debug("try to update request. Query = " + SQL_UPDATE_REQUEST);
+            fillRequestUpdate(ps, request);
+            ps.setInt(4, request.getId());
+            log.debug("Fill statement = " + ps);
             ps.executeUpdate();
 
             connection.commit();
@@ -224,6 +226,33 @@ public class RequestDAOImpl extends GenericDAO implements RequestDAO {
             close(connection, ps, null);
         }
         return request;
+    }
+
+    public void updateRepairForRequest(Request request) throws DAOException{
+
+        log.debug("Update request = " + request);
+        Connection connection = getConnection();
+        PreparedStatement ps = null;
+
+        try{
+            begin(connection);
+
+            ps = connection.prepareStatement(SQL_UPDATE_REPAIRER_FOR_REQUEST);
+            log.debug("try to update request. Query = " + SQL_UPDATE_REPAIRER_FOR_REQUEST);
+            ps.setInt(1, request.getRepairer_id());
+            ps.setInt(2, request.getId());
+            log.debug("Fill statement = " + ps);
+            ps.executeUpdate();
+
+            connection.commit();
+            log.trace("Request updated");
+        } catch (SQLException e) {
+            rollback(connection);
+            log.error("Error update request", e);
+            throw new DAOException(e);
+        } finally {
+            close(connection, ps, null);
+        }
     }
 
     @Override
@@ -312,6 +341,11 @@ public class RequestDAOImpl extends GenericDAO implements RequestDAO {
         ps.setInt(4, request.getCompletionStatusId());
         ps.setInt(5, request.getPaymentStatusId());
         ps.setInt(6, request.getTotalCost());
+    }
 
+    private void fillRequestUpdate(PreparedStatement ps, Request request)throws SQLException{
+        ps.setInt(1, request.getCompletionStatusId());
+        ps.setInt(2, request.getPaymentStatusId());
+        ps.setInt(3, request.getTotalCost());
     }
 }

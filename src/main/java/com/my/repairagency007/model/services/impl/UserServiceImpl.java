@@ -47,6 +47,13 @@ public class UserServiceImpl implements UserService {
         return userDTO;
     }
 
+    public List<UserDTO> getAllRepairer() throws ServiceException{
+        List<UserDTO> userDTOS = new ArrayList<>();
+        String query = " where role_id=2";
+        userDTOS=getAll(query);
+        return userDTOS;
+    }
+
     @Override
     public UserDTO getById(int id) throws ServiceException{
         UserDTO userDTO;
@@ -63,7 +70,7 @@ public class UserServiceImpl implements UserService {
     public List<UserDTO> getAll(String query) throws ServiceException {
         List<UserDTO> userDTOS = new ArrayList<>();
         try {
-            log.debug("Try to execute userDAO findAll method");
+            log.debug("Try to execute userDAO findAll method.");
             List<User> users = userDAO.findAll(query);
             log.debug("convert users to dto");
             for (User user: users){

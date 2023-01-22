@@ -15,4 +15,6 @@ public interface RequestDAO extends BaseDAO<Request> {
     List<Request> findAllForUser(String query, int userId) throws DAOException;
 
     int getNumberOfUserRecords(String filter, int userId) throws DAOException;
+
+    void updateRepairForRequest(Request request) throws DAOException;
 }

@@ -23,8 +23,10 @@ public abstract class SQLQuery {
         public static final String SQL_DELETE_REQUEST_BY_ID = "DELETE FROM request WHERE id = ?";
         public static final String SQL_CREATE_REQUEST = "INSERT INTO request(users_id, descriptions, date, completion_status_id, " +
                 "payment_status_id, total_cost) VALUES(?, ?, ?, ?, ?, ?)";
-        public static final String SQL_UPDATE_REQUEST = "UPDATE request SET user_id = ?, descriptions = ?, date = ?, " +
-                "completion_status_id = ?, payment_status_id = ?, total_cost = ? WHERE id = ?";
+        public static final String SQL_UPDATE_REQUEST = "UPDATE request SET " +
+                "completion_status_id = ?, payment_status_id = ?, total_cost = ? WHERE r_id = ?";
+        public static final String SQL_UPDATE_REPAIRER_FOR_REQUEST = "UPDATE request SET " +
+                "repairer_id = ? WHERE r_id = ?";
         public static final String SQL_SELECT_REQUESTS_BY_COMPLETION_STATUS = "SELECT * FROM request WHERE completion_status_id = ?";
         public static final String SQL_SELECT_REQUESTS_BY_PAYMENT_STATUS = "SELECT * FROM request WHERE payment_status_id = ?";
     }

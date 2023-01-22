@@ -50,6 +50,7 @@ public class UserDAOImpl extends GenericDAO implements UserDAO {
 
         try{
             begin(connection);
+            log.debug("Try to exec query = " + SQL_SELECT_ALL_USERS + query);
             ps = connection.prepareStatement(SQL_SELECT_ALL_USERS + query);
             rs = ps.executeQuery();
             result = extractUsersFromResultSet(rs);
