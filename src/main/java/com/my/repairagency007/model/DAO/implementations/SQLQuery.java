@@ -27,6 +27,8 @@ public abstract class SQLQuery {
                 "payment_status_id, total_cost) VALUES(?, ?, ?, ?, ?, ?)";
         public static final String SQL_UPDATE_REQUEST = "UPDATE request SET " +
                 "completion_status_id = ?, payment_status_id = ?, total_cost = ? WHERE r_id = ?";
+        public static final String SQL_UPDATE_REQUEST_SET_START = "UPDATE request SET " +
+                "repairer_id = ?, completion_status_id = ? WHERE r_id = ?";
         public static final String SQL_UPDATE_REPAIRER_FOR_REQUEST = "UPDATE request SET " +
                 "repairer_id = ? WHERE r_id = ?";
         public static final String SQL_SELECT_REQUESTS_BY_COMPLETION_STATUS = "SELECT * FROM request WHERE completion_status_id = ?";

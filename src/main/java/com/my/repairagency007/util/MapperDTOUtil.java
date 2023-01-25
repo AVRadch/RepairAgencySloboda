@@ -18,6 +18,11 @@ public class MapperDTOUtil {
     public static Request convertDTOToRequest(RequestDTO requestDTO) {
 
         Request request = Request.builder().build();
+        int requestId = requestDTO.getId();
+        if (requestId != 0){
+            log.debug("request id = " + requestDTO.getId());
+            request.setId(requestId);
+        }
 
         log.debug("user_ id" + requestDTO.getUser_id());
         request.setUser_id(requestDTO.getUser_id());
@@ -34,10 +39,8 @@ public class MapperDTOUtil {
         log.debug("Payment Status = " + paymentStatusNumber++);
         request.setPaymentStatusId(paymentStatusNumber);
         if (requestDTO.getTotalCost() != null) {
-            log.debug("text field TotalCost = " + requestDTO.getTotalCost());
-            log.debug("double parse = " + Double.parseDouble(requestDTO.getTotalCost()));
-            log.debug("round = " + Math.round(Double.parseDouble(requestDTO.getTotalCost()) * 100));
-            int intTotalCost = (int) Math.round(Double.parseDouble(requestDTO.getTotalCost()) * 100);
+            log.debug("text field TotalCost = " + requestDTO.getTotalCost().replace(",", ".").trim());
+            int intTotalCost = (int) Math.round(Double.parseDouble(requestDTO.getTotalCost().replace(",", ".").trim()) * 100);
             log.debug("total Cost = " + intTotalCost);
             request.setTotalCost(intTotalCost);
         }
@@ -106,7 +109,7 @@ public class MapperDTOUtil {
 
         int intAccount;
         if (userDTO.getAccount() != null) {
-        intAccount = (int) Math.round(Double.parseDouble(userDTO.getAccount()) * 100);
+        intAccount = (int) Math.round(Double.parseDouble(userDTO.getAccount().replace(",", ".").trim()) * 100);
         } else {
             intAccount = 0;
         }

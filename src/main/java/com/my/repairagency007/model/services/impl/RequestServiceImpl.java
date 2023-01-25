@@ -6,6 +6,7 @@ import com.my.repairagency007.model.DAO.RequestDAO;
 import com.my.repairagency007.DTO.RequestDTO;
 import com.my.repairagency007.exception.ServiceException;
 import com.my.repairagency007.model.DAO.UserDAO;
+import com.my.repairagency007.model.entity.CompletionStatus;
 import com.my.repairagency007.model.entity.Request;
 import com.my.repairagency007.model.entity.User;
 import com.my.repairagency007.model.services.RequestService;
@@ -40,7 +41,7 @@ public class RequestServiceImpl implements RequestService {
 
         try {
             log.debug("try to create request");
-            if (!requestDAO.create(request)){
+            if (!requestDAO.create(request)) {
                 log.error("error create request");
                 throw new ServiceException();
             }
@@ -157,7 +158,7 @@ public class RequestServiceImpl implements RequestService {
 
         List<RequestDTO> requestDTOS = new ArrayList<>();
         String addQuery = null;
-        if( repairerId == 0) {
+        if (repairerId == 0) {
             addQuery = " where repairer_id=nullif()" + query;
         } else {
             addQuery = " where repairer_id=" + repairerId + query;
@@ -178,7 +179,7 @@ public class RequestServiceImpl implements RequestService {
         return requestDTOS;
     }
 
-    public boolean setPaymentStatusPaid(int requestId) throws ServiceException{
+    public boolean setPaymentStatusPaid(int requestId) throws ServiceException {
 
         boolean result;
         Request request = null;
@@ -194,7 +195,7 @@ public class RequestServiceImpl implements RequestService {
         return result;
     }
 
-    public void setPaymentStatusCanceled(int requestId) throws ServiceException{
+    public void setPaymentStatusCanceled(int requestId) throws ServiceException {
 
         Request request = null;
         try {
@@ -235,7 +236,7 @@ public class RequestServiceImpl implements RequestService {
     public void update(RequestDTO requestDTO) throws ServiceException {
         log.debug("Update request. RequestDTO = " + requestDTO);
         Request request = convertDTOToRequest(requestDTO);
-        if (requestDTO.getId() != 0){
+        if (requestDTO.getId() != 0) {
             request.setId(requestDTO.getId());
         }
         try {
@@ -246,10 +247,10 @@ public class RequestServiceImpl implements RequestService {
         }
     }
 
-    public void updateRepairForRequest(RequestDTO requestDTO) throws ServiceException{
+    public void updateRepairForRequest(RequestDTO requestDTO) throws ServiceException {
 
         Request request = convertDTOToRequest(requestDTO);
-        if (requestDTO.getId() != 0){
+        if (requestDTO.getId() != 0) {
             request.setId(requestDTO.getId());
         }
         try {
@@ -291,13 +292,45 @@ public class RequestServiceImpl implements RequestService {
         log.debug("Fill requestDTO = " + requestDTO);
         int repairer_id = request.getRepairer_id();
         if (repairer_id != 0) {
-           repairer = userDAO.getEntityById(repairer_id);
-                          requestDTO.setRepairer_id(request.getRepairer_id());
-                          requestDTO.setRepairerFirstName(repairer.getFirstName());
-                          requestDTO.setRepairerLastName(repairer.getLastName());
+            repairer = userDAO.getEntityById(repairer_id);
+            requestDTO.setRepairer_id(request.getRepairer_id());
+            requestDTO.setRepairerFirstName(repairer.getFirstName());
+            requestDTO.setRepairerLastName(repairer.getLastName());
         }
         log.debug("Convert request to DTO");
         return requestDTO;
     }
 
+    public void setStartRepair(RequestDTO requestDTO, UserDTO currentUser) throws ServiceException {
+
+        Request request = convertDTOToRequest(requestDTO);
+        log.debug("Try to set status in progress");
+        request.setCompletionStatusId((CompletionStatus.IN_PROGRESS.ordinal() + 1));
+        log.debug("Set Completion status 'in progress' = " + request.getCompletionStatusId());
+        request.setRepairer_id(currentUser.getId());
+        log.debug("Set repair id = " + request.getRepairer_id());
+        try {
+            requestDAO.setStartRepair(request);
+        } catch (DAOException e) {
+            log.error("Error set start repair");
+            throw new ServiceException(e);
+        }
+    }
+
+    public void setCompletedRepair(RequestDTO requestDTO) throws ServiceException {
+
+        Request request = convertDTOToRequest(requestDTO);
+        log.debug("Try to set status completed");
+        request.setCompletionStatusId((CompletionStatus.COMPLETED.ordinal() + 1));
+        log.debug("Set Completion status 'completed' = " + request.getCompletionStatusId());
+        log.debug("Set repair id = " + request.getRepairer_id());
+        try {
+            requestDAO.setStartRepair(request);
+        } catch (DAOException e) {
+            log.error("Error set completed repair");
+            throw new ServiceException(e);
+        }
+    }
 }
+
+

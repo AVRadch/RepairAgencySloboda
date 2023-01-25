@@ -230,6 +230,36 @@ public class RequestDAOImpl extends GenericDAO implements RequestDAO {
         return result;
     }
 
+    public void setStartRepair(Request request) throws DAOException {
+
+        log.debug("Update request = " + request);
+        Connection connection = getConnection();
+        PreparedStatement ps = null;
+
+        try{
+            begin(connection);
+
+            ps = connection.prepareStatement(SQL_UPDATE_REQUEST_SET_START);
+            log.debug("try to update request. Query = " + SQL_UPDATE_REQUEST_SET_START);
+
+            ps.setInt(1, request.getRepairer_id());
+            ps.setInt(2, request.getCompletionStatusId());
+            ps.setInt(3, request.getId());
+
+            log.debug("Fill statement = " + ps);
+            ps.executeUpdate();
+
+            connection.commit();
+            log.trace("Request updated");
+        } catch (SQLException e) {
+            rollback(connection);
+            log.error("Error update request", e);
+            throw new DAOException(e);
+        } finally {
+            close(connection, ps, null);
+        }
+    }
+
     @Override
     public Request update(Request request) throws DAOException {
 

@@ -4,6 +4,8 @@ import com.my.repairagency007.controller.command.admin.*;
 import com.my.repairagency007.controller.command.common.*;
 import com.my.repairagency007.controller.command.craftsman.CraftsmanFeedmackCommand;
 import com.my.repairagency007.controller.command.craftsman.CraftsmanRequestCommand;
+import com.my.repairagency007.controller.command.craftsman.SetCompletedRepairCommand;
+import com.my.repairagency007.controller.command.craftsman.SetStartRepairCommand;
 import com.my.repairagency007.controller.command.user.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -37,6 +39,8 @@ public class CommandFactory {
         //craftsman commands
         commands.put("craftsmanRequest", new CraftsmanRequestCommand());
         commands.put("craftsmanFeedbacks", new CraftsmanFeedmackCommand());
+        commands.put("setStartRepair", new SetStartRepairCommand());
+        commands.put("setCompletedRepair", new SetCompletedRepairCommand());
         //user commands
         commands.put("userRequest", new UserRequestCommand());
         commands.put("userEditRequest", new UserEditRequestCommand());
@@ -57,6 +61,7 @@ public class CommandFactory {
         commands.put("adminAllUsers", new AllUsersCommand());
         commands.put("adminAllFeedbacks", new AllFeedbacksCommand());
         commands.put("adminFilteredRepairerUsers", new AdminFilteredRepairedUserCommand());
+        commands.put("deleteRequest", new DeleteRequestCommand());
         commands.put("deleteUser", new DeleteUserCommand());
         commands.put("editUser", new EditUserCommand());
         commands.put("updateUser", new UpdateUserCommand());

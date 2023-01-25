@@ -34,14 +34,6 @@
 <body>
 <%@ include file="/headerCraftsman.jsp" %>
 
-
-<div class="container-fluid">
-    <div class="form-row text-center">
-        <div class="btn-group">
-            <a href="addRequest.jsp" class="btn btn" role="button"><fmt:message key="button.addRequest"/></a>
-        </div>
-    </div>
-</div>
 <br>
 
 <div class="bd-example-snippet bd-code-snippet">
@@ -96,12 +88,18 @@
                     <td><c:out value="${request.paymentStatus}"/></td>
                     <td><c:out value="${request.totalCost}"/></td>
                     <td>
-                        <a class="link-dark" href=controller?action=deleteRequest&request-id=${request.id}>
-                            <fmt:message key="button.deleteRequest"/>
-                        </a> <br>
-                        <a class="link-dark" href=controller?action=craftsmanEditRequest&request-id=${request.id}>
-                            <fmt:message key="button.editRequest"/>
-                        </a>
+                        <c:if test="${request.paymentStatus eq 'paid'}">
+                            <c:if test="${request.completionStatus eq 'not_started'}">
+                                <a class="link-dark" href=controller?action=setStartRepair&request-id=${request.id}>
+                                    <fmt:message key="button.startRepair"/>
+                                </a> <br>
+                            </c:if>
+                            <c:if test="${request.completionStatus eq 'in_progress'}">
+                                <a class="link-dark" href=controller?action=setCompletedRepair&request-id=${request.id}>
+                                    <fmt:message key="button.completionRequest"/>
+                                </a>
+                            </c:if>
+                        </c:if>
                     </td>
                 </tr>
             </c:forEach>

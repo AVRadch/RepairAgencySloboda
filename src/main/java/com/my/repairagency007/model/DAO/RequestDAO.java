@@ -24,4 +24,6 @@ public interface RequestDAO extends BaseDAO<Request> {
     public boolean setPaymentStatusPaid(Request request, User user) throws DAOException;
 
     public void setPaymentStatusCanceled(Request request) throws DAOException;
+
+    public void setStartRepair(Request request) throws DAOException;
 }
