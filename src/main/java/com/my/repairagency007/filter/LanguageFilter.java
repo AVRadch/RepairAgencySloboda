@@ -1,5 +1,9 @@
 package com.my.repairagency007.filter;
 
+import com.my.repairagency007.controller.command.admin.UpdateRequestAdminCommand;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import javax.servlet.*;
 import javax.servlet.annotation.WebFilter;
 import javax.servlet.annotation.WebInitParam;
@@ -16,6 +20,8 @@ import java.io.IOException;
 @WebFilter(urlPatterns = "/*",
 initParams = @WebInitParam(name = "characterEncoding", value = "UTF-8"))
 public class LanguageFilter implements Filter {
+
+    private static final Logger log = LoggerFactory.getLogger(LanguageFilter.class);
     private String encoding;
     private ServletContext context;
 
@@ -52,6 +58,7 @@ public class LanguageFilter implements Filter {
      */
     public void init(FilterConfig config) throws ServletException {
         encoding = config.getInitParameter("characterEncoding");
+        log.debug("Set encoding filter to " + encoding);
         context = config.getServletContext();
     }
 }

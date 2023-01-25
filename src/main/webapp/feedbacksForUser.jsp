@@ -1,8 +1,8 @@
 <%--
   Created by IntelliJ IDEA.
   User: Алексей Радченко
-  Date: 09.01.2023
-  Time: 21:22
+  Date: 24.01.2023
+  Time: 13:59
   To change this template use File | Settings | File Templates.
 --%>
 <%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
@@ -13,6 +13,7 @@
 
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
   <meta http-equiv="X-UA-Compatible" content="IE=chrome">
   <meta charset="UTF-8">
@@ -31,62 +32,62 @@
   <title>Admin Page | Repair Agency</title>
 </head>
 <body>
-<%@ include file="/header.jsp" %>
+<%@ include file="/headerUser.jsp" %>
 
 
 <div class="bd-example-snippet bd-code-snippet">
   <div class="bd-example">
     <table class="table table-striped" aria-label="user-table">
-    <thead>
-    <c:set var="base" value="controller?action=userFeedbacks&date=${param.date}&"/>
-    <c:set var="byDate" value="sort=date_time&"/>
-    <c:set var="byRating" value="sort=rating&"/>
-    <c:set var="dateOrder"
-           value="order=${param.sort ne 'date_time' || param.order eq 'DESC' ? 'ASC' : 'DESC'}"/>
-    <c:set var="ratingOrder"
-           value="order=${param.sort ne 'rating' || param.order eq 'DESC' ? 'ASC' : 'DESC'}"/>
-    <c:set var="limits" value="&offset=0&records=${param.records}"/>
-    <tr>
-      <th><fmt:message key="table.id"/></th>
-      <th><fmt:message key="table.user"/></th>
-      <th><fmt:message key="table.feedback"/></th>
-      <th><fmt:message key="table.repairer"/></th>
-      <th><fmt:message key="table.date"/><a href="${base.concat(byDate).concat(dateOrder).concat(limits)}">
-        <i class="bi bi-arrow-down-up link-dark"></i>
-      </a></th>
-      <th><fmt:message key="table.rating"/><a href="${base.concat(byRating).concat(ratingOrder).concat(limits)}">
-        <i class="bi bi-arrow-down-up link-dark"></i>
-      </a></th>
-      <th><fmt:message key="table.request"/></th>
-      <th><fmt:message key="table.action"/></th>
-    </tr>
-    </thead>
-    <tbody>
-
-    <c:forEach var="feedback" items="${requestScope.feedbackDTOS}" varStatus="status">
+      <thead>
+      <c:set var="base" value="controller?action=userFeedbacks&date=${param.date}&"/>
+      <c:set var="byDate" value="sort=date_time&"/>
+      <c:set var="byRating" value="sort=rating&"/>
+      <c:set var="dateOrder"
+             value="order=${param.sort ne 'date_time' || param.order eq 'DESC' ? 'ASC' : 'DESC'}"/>
+      <c:set var="ratingOrder"
+             value="order=${param.sort ne 'rating' || param.order eq 'DESC' ? 'ASC' : 'DESC'}"/>
+      <c:set var="limits" value="&offset=0&records=${param.records}"/>
       <tr>
-        <td><c:out value="${feedback.id}"/></td>
-        <td><c:out value="${feedback.userFirstName}"/><br>
-            <c:out value="${feedback.userLastName}"/></td>
-        <td><c:out value="${feedback.feedback}"/></td>
-        <td><c:out value="${feedback.repairerFirstName}"/><br>
-              <c:out value="${feedback.repairerLastName}"/> </td>
-        <td><c:out value="${feedback.date}"/></td>
-        <td><c:out value="${feedback.rating}"/></td>
-        <td><c:out value="${feedback.requestDescription}"/></td>
-        <td>
-          <a class="link-dark" href=controller?action=deleteFeedback&feedback-id=${feedback.id}>
-            <fmt:message key="button.deleteFeedback"/>
-          </a> <br>
-          <a class="link-dark" href=controller?action=editFeedback&user-id=${feedback.id}>
-            <fmt:message key="button.editFeedback"/>
-          </a>
-        </td>
+        <th><fmt:message key="table.id"/></th>
+        <th><fmt:message key="table.user"/></th>
+        <th><fmt:message key="table.feedback"/></th>
+        <th><fmt:message key="table.repairer"/></th>
+        <th><fmt:message key="table.date"/><a href="${base.concat(byDate).concat(dateOrder).concat(limits)}">
+          <i class="bi bi-arrow-down-up link-dark"></i>
+        </a></th>
+        <th><fmt:message key="table.rating"/><a href="${base.concat(byRating).concat(ratingOrder).concat(limits)}">
+          <i class="bi bi-arrow-down-up link-dark"></i>
+        </a></th>
+        <th><fmt:message key="table.request"/></th>
+        <th><fmt:message key="table.action"/></th>
       </tr>
-    </c:forEach>
+      </thead>
+      <tbody>
 
-    </tbody>
-  </table>
+      <c:forEach var="feedback" items="${requestScope.feedbackDTOS}" varStatus="status">
+        <tr>
+          <td><c:out value="${feedback.id}"/></td>
+          <td><c:out value="${feedback.userFirstName}"/><br>
+            <c:out value="${feedback.userLastName}"/></td>
+          <td><c:out value="${feedback.feedback}"/></td>
+          <td><c:out value="${feedback.repairerFirstName}"/><br>
+            <c:out value="${feedback.repairerLastName}"/> </td>
+          <td><c:out value="${feedback.date}"/></td>
+          <td><c:out value="${feedback.rating}"/></td>
+          <td><c:out value="${feedback.requestDescription}"/></td>
+          <td>
+            <a class="link-dark" href=controller?action=deleteFeedback&feedback-id=${feedback.id}>
+              <fmt:message key="button.deleteFeedback"/>
+            </a> <br>
+            <a class="link-dark" href=controller?action=editFeedback&user-id=${feedback.id}>
+              <fmt:message key="button.editFeedback"/>
+            </a>
+          </td>
+        </tr>
+      </c:forEach>
+
+      </tbody>
+    </table>
   </div>
 </div>
 
@@ -112,3 +113,4 @@
 
 </body>
 </html>
+

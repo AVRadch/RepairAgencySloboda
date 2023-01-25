@@ -127,9 +127,11 @@
                                   </label>
                               </form> --%>
                 <fmt:message key="table.role"/>: <select name="role">
-                <option>MANAGER</option>
-                <option>USER</option>
-                <option>CRAFTSMAN</option>
+                <option value="manager" ${requestScope.userDTO.role eq 'manager' ? 'selected' : ''}><fmt:message key="label.selectManager"/></option>
+                <option value="user" ${requestScope.userDTO.role eq 'user' ? 'selected' : ''}><fmt:message key="label.selectUser"/></option>
+                <option value="craftsman" ${requestScope.userDTO.role eq 'craftsman' ? 'selected' : ''}><fmt:message key="label.selectCraftsman"/></option>
+                <option value="unregistred" ${requestScope.userDTO.role eq 'unregistred' ? 'selected' : ''}><fmt:message key="label.selectUnregistred"/></option>
+
             </select>
 
                 <div class="form-group ">

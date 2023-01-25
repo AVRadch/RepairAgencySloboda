@@ -209,10 +209,9 @@ public class FeedbackDAOImpl extends GenericDAO implements FeedbackDAO {
 
     private void fillFeedback(PreparedStatement ps, Feedback feedback)throws SQLException {
 
-        ps.setInt(1, feedback.getRepairerId());
-        ps.setDate(2, Date.valueOf( feedback.getDate()));
-        ps.setString(3, feedback.getFeedback());
-        ps.setInt(4, feedback.getRating());
-        ps.setInt(5, feedback. getRequestId());
+        ps.setDate(1, Date.valueOf( feedback.getDate()));
+        ps.setString(2, feedback.getFeedback());
+        ps.setInt(3, feedback.getRating());
+        ps.setInt(4, feedback. getRequestId());
     }
 }

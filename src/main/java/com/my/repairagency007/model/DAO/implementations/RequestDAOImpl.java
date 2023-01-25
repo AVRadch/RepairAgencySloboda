@@ -2,7 +2,9 @@ package com.my.repairagency007.model.DAO.implementations;
 
 import com.my.repairagency007.exception.DAOException;
 import com.my.repairagency007.model.DAO.RequestDAO;
+import com.my.repairagency007.model.entity.PaymentStatus;
 import com.my.repairagency007.model.entity.Request;
+import com.my.repairagency007.model.entity.User;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -11,6 +13,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import static com.my.repairagency007.model.DAO.implementations.SQLQuery.RequestSQL.*;
+import static com.my.repairagency007.model.DAO.implementations.SQLQuery.UserSQL.SQL_UPDATE_USER_ACCOUNT;
 
 public class RequestDAOImpl extends GenericDAO implements RequestDAO {
 
@@ -47,6 +50,34 @@ public class RequestDAOImpl extends GenericDAO implements RequestDAO {
             throw new DAOException(e);
         }
         return numberOfRecords;
+    }
+
+    public List<Request> findAllForCraftsman(String query, int userId) throws DAOException {
+
+        log.trace("Find all for user request");
+        Connection connection = getConnection();
+        ResultSet rs = null;
+        PreparedStatement ps = null;
+
+        ArrayList<Request> requests;
+
+        try {
+            begin(connection);
+            ps = connection.prepareStatement(SQL_SELECT_ALL_CRAFTSMAN_REQUEST + query);
+            ps.setInt(1, userId);
+            rs = ps.executeQuery();
+            requests = extractRequestsFromResultSet(rs);
+            commit(connection);
+            log.trace("ArrayList of Request created");
+        } catch (SQLException e) {
+            rollback(connection);
+            log.error("Error in find All Request methods", e);
+            throw new DAOException(e);
+        } finally {
+            close(connection, ps, rs);
+        }
+
+        return requests;
     }
 
     @Override
@@ -226,6 +257,72 @@ public class RequestDAOImpl extends GenericDAO implements RequestDAO {
             close(connection, ps, null);
         }
         return request;
+    }
+
+    public boolean setPaymentStatusPaid(Request request, User user) throws DAOException {
+
+        log.debug("Start transaction with set payment status");
+        boolean result = false;
+
+        if (user.getAccount() > request.getTotalCost()){
+            Connection connection = getConnection();
+            PreparedStatement ps = null;
+            PreparedStatement ps1 = null;
+            try {
+                begin(connection);
+                int new_account = user.getAccount() - request.getTotalCost();
+                ps = connection.prepareStatement(SQL_UPDATE_USER_ACCOUNT);
+                ps.setInt(1, new_account);
+                ps.setInt(2, user.getId());
+                ps.executeUpdate();
+
+                ps1 = connection.prepareStatement(SQL_UPDATE_REQUEST_PAYMENTSTATUS);
+                log.debug("Set Payment Status = " + PaymentStatus.PAID.ordinal());
+                ps1.setInt(1, PaymentStatus.PAID.ordinal() + 1);
+                ps1.setInt(2, request.getId());
+                ps1.executeUpdate();
+
+                connection.commit();
+                log.trace("Payment status PAID");
+                result = true;
+            } catch (SQLException e) {
+                rollback(connection);
+                log.error("Error update payment status to paid", e);
+                throw new DAOException(e);
+            } finally {
+                close(null, ps1, null);
+                close(connection, ps, null);
+            }
+        }
+        return result;
+
+    }
+
+    public void setPaymentStatusCanceled(Request request) throws DAOException {
+
+        Connection connection = getConnection();
+        PreparedStatement ps = null;
+
+        try {
+            begin(connection);
+            ps = connection.prepareStatement(SQL_UPDATE_REQUEST_PAYMENTSTATUS);
+            int newPaymentStatus = PaymentStatus.CANCELED.ordinal() + 1;
+            log.debug("Set Payment Status = " + newPaymentStatus);
+            log.debug("SQL for Payment Status Canceled" + SQL_UPDATE_REQUEST_PAYMENTSTATUS);
+            log.debug("set request id = " + request.getId());
+
+            ps.setInt(1, newPaymentStatus);
+            ps.setInt(2, request.getId());
+            ps.executeUpdate();
+
+            connection.commit();
+        } catch (SQLException e) {
+            rollback(connection);
+            log.error("Error update payment status to canceled", e);
+            throw new DAOException(e);
+        } finally {
+            close(connection, ps, null);
+        }
     }
 
     public void updateRepairForRequest(Request request) throws DAOException{

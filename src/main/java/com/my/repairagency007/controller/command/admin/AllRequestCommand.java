@@ -6,6 +6,7 @@ import com.my.repairagency007.controller.context.AppContext;
 import com.my.repairagency007.exception.ServiceException;
 import com.my.repairagency007.controller.command.Command;
 import com.my.repairagency007.model.services.impl.RequestServiceImpl;
+import com.my.repairagency007.model.services.impl.UserServiceImpl;
 import com.my.repairagency007.util.query.QueryBuilder;
 import com.my.repairagency007.util.query.RequestQueryBuilder;
 import org.slf4j.Logger;
@@ -26,8 +27,11 @@ public class AllRequestCommand implements Command {
 
     private final RequestServiceImpl requestService;
 
+    private final UserServiceImpl userService;
+
     public AllRequestCommand() {
         requestService = AppContext.getAppContext().getRequestService();
+        userService = AppContext.getAppContext().getUserService();
     }
 
     @Override
@@ -45,9 +49,11 @@ public class AllRequestCommand implements Command {
         log.debug("получена query builder " + queryBuilder);
         requests = requestService.getAll(queryBuilder.getQuery());
         int numberOfRecords = requestService.getNumberOfRecords(queryBuilder.getRecordQuery());
+        List<UserDTO> repairers = userService.getAllRepairer();
 
         paginate(numberOfRecords, request);
-        request.setAttribute("requestDTOS", requests);
+        session.setAttribute("requestDTOS", requests);
+        session.setAttribute("repairers", repairers);
 
         return forward;
     }

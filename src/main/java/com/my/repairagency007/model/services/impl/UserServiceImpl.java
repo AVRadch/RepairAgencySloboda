@@ -101,6 +101,7 @@ public class UserServiceImpl implements UserService {
     }
 
     public void create(UserDTO userDTO) throws ServiceException {
+        log.debug("Try to convert userDTO to user " + userDTO);
         User user = convertDTOToUser(userDTO);
         try {
             userDAO.create(user);

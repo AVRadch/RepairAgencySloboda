@@ -5,6 +5,7 @@ import com.my.repairagency007.DTO.UserDTO;
 import com.my.repairagency007.controller.context.AppContext;
 import com.my.repairagency007.exception.ServiceException;
 import com.my.repairagency007.controller.command.Command;
+import com.my.repairagency007.model.entity.Role;
 import com.my.repairagency007.model.services.impl.UserServiceImpl;
 import org.mindrot.jbcrypt.BCrypt;
 import org.slf4j.Logger;
@@ -37,7 +38,7 @@ public class RegistrationCommand implements Command {
     String resp;
     UserDTO userDTO = UserDTO.builder().build();
     fillUserDTO(request, userDTO);
-    userDTO.setRole("REGISTRED");
+    userDTO.setRole(Role.UNREGISTRED.getName());
     userDTO.setAccount("0");
     userDTO.setPassword(BCrypt.hashpw(request.getParameter("password").trim(), BCrypt.gensalt()));
     resp = "login.jsp";

@@ -1,4 +1,4 @@
-package com.my.repairagency007.controller.command.user;
+package com.my.repairagency007.controller.command.craftsman;
 
 import com.my.repairagency007.DTO.RequestDTO;
 import com.my.repairagency007.DTO.UserDTO;
@@ -19,13 +19,13 @@ import java.util.List;
 
 import static com.my.repairagency007.util.PaginationUtil.paginate;
 
-public class UserRequestCommand implements Command {
+public class CraftsmanRequestCommand implements Command {
 
-    private static final Logger log = LoggerFactory.getLogger(UserRequestCommand.class);
+    private static final Logger log = LoggerFactory.getLogger( CraftsmanRequestCommand.class);
 
     private final RequestServiceImpl requestService;
 
-    public UserRequestCommand() {
+    public  CraftsmanRequestCommand() {
         requestService = AppContext.getAppContext().getRequestService();
     }
 
@@ -36,13 +36,13 @@ public class UserRequestCommand implements Command {
         UserDTO currentUser = (UserDTO) session.getAttribute("logged_user");
         int loggedUserID = currentUser.getId();
         log.debug("Получили юзера из сессии");
-        String forward = "requestsForUser.jsp";
+        String forward = "requestsForCraftsman.jsp";
         List<RequestDTO> requests;
 
         log.debug("создание списка реквестов");
         QueryBuilder queryBuilder = getQueryBuilder(request);
         log.debug("получена query builder " + queryBuilder);
-        requests = requestService.getAllForUser(queryBuilder.getQuery(), loggedUserID);
+        requests = requestService.getAllForCraftsman(queryBuilder.getQuery(), loggedUserID);
         int numberOfRecords = requestService.getNumberOfUserRecords(queryBuilder.getRecordQuery(), loggedUserID);
 
         paginate(numberOfRecords, request);

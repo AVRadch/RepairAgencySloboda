@@ -1,14 +1,14 @@
-package com.my.repairagency007.controller.command.user;
+package com.my.repairagency007.controller.command.craftsman;
 
-import com.my.repairagency007.DTO.RequestDTO;
+import com.my.repairagency007.DTO.FeedbackDTO;
 import com.my.repairagency007.DTO.UserDTO;
 import com.my.repairagency007.controller.command.Command;
-import com.my.repairagency007.controller.command.admin.AllRequestCommand;
+import com.my.repairagency007.controller.command.user.UserFeedbacksCommand;
 import com.my.repairagency007.controller.context.AppContext;
 import com.my.repairagency007.exception.ServiceException;
-import com.my.repairagency007.model.services.impl.RequestServiceImpl;
+import com.my.repairagency007.model.services.impl.FeedbackServiceImpl;
+import com.my.repairagency007.util.query.FeedbackQueryBuilder;
 import com.my.repairagency007.util.query.QueryBuilder;
-import com.my.repairagency007.util.query.RequestQueryBuilder;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -19,43 +19,45 @@ import java.util.List;
 
 import static com.my.repairagency007.util.PaginationUtil.paginate;
 
-public class UserRequestCommand implements Command {
+public class CraftsmanFeedmackCommand implements Command {
 
-    private static final Logger log = LoggerFactory.getLogger(UserRequestCommand.class);
+    private static final Logger log = LoggerFactory.getLogger(CraftsmanFeedmackCommand.class);
 
-    private final RequestServiceImpl requestService;
+    private final FeedbackServiceImpl feedbackService;
 
-    public UserRequestCommand() {
-        requestService = AppContext.getAppContext().getRequestService();
+    public CraftsmanFeedmackCommand() {
+        feedbackService = AppContext.getAppContext().getFeedbackService();
     }
 
     @Override
     public String execute(HttpServletRequest request, HttpServletResponse response) throws ServiceException {
+
         HttpSession session = request.getSession();
+        log.debug("Получили сессию");
 
         UserDTO currentUser = (UserDTO) session.getAttribute("logged_user");
-        int loggedUserID = currentUser.getId();
         log.debug("Получили юзера из сессии");
-        String forward = "requestsForUser.jsp";
-        List<RequestDTO> requests;
 
-        log.debug("создание списка реквестов");
+        String forward = "feedbacksForCraftsman.jsp";
+        List<FeedbackDTO> feedbackDTOS;
+
+        log.debug("создание списка фидбеков");
         QueryBuilder queryBuilder = getQueryBuilder(request);
-        log.debug("получена query builder " + queryBuilder);
-        requests = requestService.getAllForUser(queryBuilder.getQuery(), loggedUserID);
-        int numberOfRecords = requestService.getNumberOfUserRecords(queryBuilder.getRecordQuery(), loggedUserID);
+        feedbackDTOS = feedbackService.getAll(queryBuilder.getQuery());
+        int numberOfRecords = feedbackService.getNumberOfRecords(queryBuilder.getRecordQuery());
 
+        request.setAttribute("feedbackDTOS", feedbackDTOS);
         paginate(numberOfRecords, request);
-        session.setAttribute("requestDTOS", requests);
 
         return forward;
     }
 
     private QueryBuilder getQueryBuilder(HttpServletRequest request) {
-        return new RequestQueryBuilder()
+        return new FeedbackQueryBuilder()
                 .setDateFilter(request.getParameter("date"))
                 .setSortField(request.getParameter("sort"))
                 .setOrder(request.getParameter("order"))
                 .setLimits(request.getParameter("offset"), request.getParameter("records"));
     }
 }
+

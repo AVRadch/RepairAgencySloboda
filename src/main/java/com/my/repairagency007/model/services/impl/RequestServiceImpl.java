@@ -95,6 +95,25 @@ public class RequestServiceImpl implements RequestService {
         return requestDTO;
     }
 
+    public List<RequestDTO> getAllForCraftsman(String query, int userId) throws ServiceException {
+
+        List<RequestDTO> requestDTOS = new ArrayList<>();
+        try {
+            log.debug("Try to execute requestDAO findAllForCraftsman method");
+            List<Request> requests = requestDAO.findAllForCraftsman(query, userId);
+            log.debug("convert request to dto");
+            for (Request request : requests
+            ) {
+                requestDTOS.add(fillDTOFromRequestAndUsers(request));
+            }
+            log.debug("All OK inside getAllForUser Request");
+        } catch (DAOException e) {
+            log.error("Error to find request and form DTO");
+            throw new ServiceException(e);
+        }
+
+        return requestDTOS;
+    }
 
     public List<RequestDTO> getAllForUser(String query, int userId) throws ServiceException {
 
@@ -132,6 +151,59 @@ public class RequestServiceImpl implements RequestService {
             throw new ServiceException(e);
         }
         return requestDTOS;
+    }
+
+    public List<RequestDTO> getByReparierId(String query, int repairerId) throws ServiceException {
+
+        List<RequestDTO> requestDTOS = new ArrayList<>();
+        String addQuery = null;
+        if( repairerId == 0) {
+            addQuery = " where repairer_id=nullif()" + query;
+        } else {
+            addQuery = " where repairer_id=" + repairerId + query;
+        }
+        try {
+            log.debug("Try to execute requestDAO findAll method with addQuery = " + addQuery);
+            List<Request> requests = requestDAO.findAll(addQuery);
+            log.debug("convert request to dto");
+            for (Request request : requests
+            ) {
+                requestDTOS.add(fillDTOFromRequestAndUsers(request));
+            }
+            log.debug("All OK inside getAll Request");
+        } catch (DAOException e) {
+            log.error("Error to find request and form DTO");
+            throw new ServiceException(e);
+        }
+        return requestDTOS;
+    }
+
+    public boolean setPaymentStatusPaid(int requestId) throws ServiceException{
+
+        boolean result;
+        Request request = null;
+
+        try {
+            request = requestDAO.getEntityById(requestId);
+            User user = userDAO.getEntityById(request.getUser_id());
+            result = requestDAO.setPaymentStatusPaid(request, user);
+        } catch (DAOException e) {
+            log.error("Error to Set Payment PAID");
+            throw new ServiceException(e);
+        }
+        return result;
+    }
+
+    public void setPaymentStatusCanceled(int requestId) throws ServiceException{
+
+        Request request = null;
+        try {
+            request = requestDAO.getEntityById(requestId);
+            requestDAO.setPaymentStatusCanceled(request);
+        } catch (DAOException e) {
+            log.error("Error to Set Payment CANCELED");
+            throw new ServiceException(e);
+        }
     }
 
     public List<RequestDTO> getSorted(String query) throws ServiceException {

@@ -39,10 +39,21 @@
     <div class="form-row text-center">
         <div class="btn-group">
             <a href="addRequest.jsp" class="btn btn" role="button"><fmt:message key="button.addRequest"/></a>
+            <form method="post" action="controller">
+                <input type="hidden" name="action" value="adminFilteredRepairerUsers">
+                <label>
+                    <select name="reparier-id">
+                        <option value="0"><fmt:message key="label.selectRepairer"/></option>
+                        <c:forEach var="repairer" items="${sessionScope.repairers}">
+                            <option value="${repairer.id}">${repairer.lastName} ${repairer.firstName}</option>
+                        </c:forEach>
+                    </select>
+                </label>
+                <button type="submit">Filter repairer</button>
+            </form>
         </div>
     </div>
 </div>
-<br>
 
 <div class="bd-example-snippet bd-code-snippet">
     <div class="bd-example">
@@ -84,7 +95,7 @@
         </thead>
         <tbody>
 
-        <c:forEach var="request" items="${requestScope.requestDTOS}" varStatus="status">
+        <c:forEach var="request" items="${sessionScope.requestDTOS}" varStatus="status">
             <tr>
                 <td><c:out value="${request.id}"/></td>
                 <td><c:out value="${request.userFirstName}"/><br>

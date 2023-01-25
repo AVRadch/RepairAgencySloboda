@@ -19,7 +19,6 @@ import java.time.LocalDate;
 
 import static com.my.repairagency007.controller.command.CommandUtility.moveAttributeFromSessionToRequest;
 import static com.my.repairagency007.util.MapperDTOUtil.fillRequestDTO;
-import static com.my.repairagency007.util.MapperDTOUtil.fillUserDTO;
 
 public class UpdateRequestAdminCommand implements Command {
 

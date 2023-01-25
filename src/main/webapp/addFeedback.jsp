@@ -1,8 +1,8 @@
 <%--
   Created by IntelliJ IDEA.
   User: Алексей Радченко
-  Date: 19.01.2023
-  Time: 22:28
+  Date: 24.01.2023
+  Time: 17:15
   To change this template use File | Settings | File Templates.
 --%>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
@@ -20,12 +20,14 @@
 
 <div class="container">
     <div class="row">
-        <form role="form" class="col-md-9 go-right" method="post" action="controller?action=addRequest">
-            <h2>New Request</h2>
+        <form role="form" class="col-md-9 go-right" method="post" action="controller?action=createFeedback">
+            <h2>New Feedback</h2>
             <div class="form-group">
-                <textarea id="message" name="description" class="form-control" required></textarea>
+                <textarea id="message" name="feedback" class="form-control" required></textarea>
                 <label for="message">Insert request text</label>
             </div>
+            <input class="col-2" type="number" min="1" name="rating" id="records"
+                   value="10">&nbsp&nbsp&nbsp&nbsp&nbsp
             <div class="form-group ">
                 <button type="submit" class="btn btn-primary btn-lg btn-block login-button"><fmt:message key="label.submit"/></button>
             </div>

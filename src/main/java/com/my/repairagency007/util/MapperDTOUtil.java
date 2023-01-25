@@ -16,20 +16,32 @@ public class MapperDTOUtil {
     private static final Logger log = LoggerFactory.getLogger(MapperDTOUtil.class);
 
     public static Request convertDTOToRequest(RequestDTO requestDTO) {
+
+        Request request = Request.builder().build();
+
+        log.debug("user_ id" + requestDTO.getUser_id());
+        request.setUser_id(requestDTO.getUser_id());
+        log.debug("description = " + requestDTO.getDescription());
+        request.setDescription(requestDTO.getDescription());
+        log.debug("date = " + LocalDate.parse(requestDTO.getDate()));
+        request.setDate(LocalDate.parse(requestDTO.getDate()));
         int completionStatusNumber = CompletionStatus.valueOf(requestDTO.getCompletionStatus().toUpperCase()).ordinal();
         log.debug("Completion Status = " + completionStatusNumber++);
+        request.setCompletionStatusId(completionStatusNumber);
+        log.debug("repairer_id = " + requestDTO.getRepairer_id());
+        request.setRepairer_id(requestDTO.getRepairer_id());
         int paymentStatusNumber = PaymentStatus.valueOf(requestDTO.getPaymentStatus().toUpperCase()).ordinal();
         log.debug("Payment Status = " + paymentStatusNumber++);
-        int intTotalCost = (int) Math.round(Double.parseDouble(requestDTO.getTotalCost()) * 100);
-        return Request.builder()
-                .user_id(requestDTO.getUser_id())
-                .description(requestDTO.getDescription())
-                .date(LocalDate.parse(requestDTO.getDate()))
-                .completionStatusId(completionStatusNumber)
-                .repairer_id(requestDTO.getRepairer_id())
-                .paymentStatusId(paymentStatusNumber)
-                .totalCost(intTotalCost)
-                .build();
+        request.setPaymentStatusId(paymentStatusNumber);
+        if (requestDTO.getTotalCost() != null) {
+            log.debug("text field TotalCost = " + requestDTO.getTotalCost());
+            log.debug("double parse = " + Double.parseDouble(requestDTO.getTotalCost()));
+            log.debug("round = " + Math.round(Double.parseDouble(requestDTO.getTotalCost()) * 100));
+            int intTotalCost = (int) Math.round(Double.parseDouble(requestDTO.getTotalCost()) * 100);
+            log.debug("total Cost = " + intTotalCost);
+            request.setTotalCost(intTotalCost);
+        }
+        return request;
     }
 
     /**
@@ -91,7 +103,17 @@ public class MapperDTOUtil {
      * @return User
      */
     public static User convertDTOToUser(UserDTO userDTO) {
-        int intAccount = (int) Math.round(Double.parseDouble(userDTO.getAccount()) * 100);
+
+        int intAccount;
+        if (userDTO.getAccount() != null) {
+        intAccount = (int) Math.round(Double.parseDouble(userDTO.getAccount()) * 100);
+        } else {
+            intAccount = 0;
+        }
+        log.debug("intAccount = " + intAccount);
+        log.debug("Role userDTO = " + userDTO.getRole().toUpperCase());
+        log.debug("Role = " + Role.valueOf(userDTO.getRole().toUpperCase()));
+        log.debug("Role number = " + Role.valueOf(userDTO.getRole().toUpperCase()).ordinal());
         int roleNumber = Role.valueOf(userDTO.getRole().toUpperCase()).ordinal();
         log.debug("Role userDTO = " + userDTO.getRole());
         log.debug("Number of role userDTO = " + roleNumber++);
@@ -159,6 +181,25 @@ public class MapperDTOUtil {
         requestDTO.setPaymentStatus(request.getParameter("paymentStatus").trim());
         requestDTO.setRepairer_id(Integer.parseInt(request.getParameter("repairer-id")));
         requestDTO.setTotalCost(request.getParameter("totalCost").replace(",", ".").trim());
+    }
+
+    public static void fillFeedbackDTO(HttpServletRequest request, RequestDTO requestDTO, FeedbackDTO feedbackDTO){
+        log.debug("Repairer id = " + requestDTO.getRepairer_id());
+        feedbackDTO.setRepairerId(requestDTO.getRepairer_id());
+        log.debug("Repairer First Name = " + requestDTO.getRepairerFirstName());
+        feedbackDTO.setRepairerFirstName(requestDTO.getRepairerFirstName());
+        log.debug("Repairer Last Name = " + requestDTO.getRepairerLastName());
+        feedbackDTO.setRepairerLastName(requestDTO.getRepairerLastName());
+        log.debug("Feedback = " + request.getParameter("feedback"));
+        feedbackDTO.setFeedback(request.getParameter("feedback"));
+        log.debug("Rating = " + request.getParameter("rating"));
+        feedbackDTO.setRating(Integer.parseInt(request.getParameter("rating")));
+        feedbackDTO.setDate(LocalDate.now().toString());
+        log.debug("request id = " + requestDTO.getId());
+        feedbackDTO.setRequestId(requestDTO.getId());
+        feedbackDTO.setUserFirstName(requestDTO.getUserFirstName());
+        feedbackDTO.setUserLastName(requestDTO.getUserLastName());
+        feedbackDTO.setRequestDescription(requestDTO.getDescription());
     }
 
     //public static void fillRequestDTO

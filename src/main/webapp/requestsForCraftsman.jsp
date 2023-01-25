@@ -1,15 +1,8 @@
 <%--
   Created by IntelliJ IDEA.
   User: Алексей Радченко
-  Date: 20.01.2023
-  Time: 19:15
-  To change this template use File | Settings | File Templates.
---%>
-<%--
-  Created by IntelliJ IDEA.
-  User: Алексей Радченко
-  Date: 29.12.2022
-  Time: 18:46
+  Date: 24.01.2023
+  Time: 13:09
   To change this template use File | Settings | File Templates.
 --%>
 <%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
@@ -39,14 +32,13 @@
     <title>Admin Page | Repair Agency</title>
 </head>
 <body>
-<%@ include file="/headerUser.jsp" %>
+<%@ include file="/headerCraftsman.jsp" %>
 
 
 <div class="container-fluid">
     <div class="form-row text-center">
         <div class="btn-group">
             <a href="addRequest.jsp" class="btn btn" role="button"><fmt:message key="button.addRequest"/></a>
-            <a href="addFeedback.jsp" class="btn btn" role="button"><fmt:message key="button.addFeedback"/></a>"
         </div>
     </div>
 </div>
@@ -56,7 +48,7 @@
     <div class="bd-example">
         <table class="table table-striped" aria-label="user-table">
             <thead>
-            <c:set var="base" value="controller?action=userRequest&date=${param.date}&"/>
+            <c:set var="base" value="controller?action=craftsmanRequest&date=${param.date}&"/>
             <c:set var="byDate" value="sort=date&"/>
             <c:set var="byCompletionStatus" value="sort=completion_status_id&"/>
             <c:set var="byPaymentStatus" value="sort=payment_status_id&"/>
@@ -104,10 +96,10 @@
                     <td><c:out value="${request.paymentStatus}"/></td>
                     <td><c:out value="${request.totalCost}"/></td>
                     <td>
-                        <a class="link-dark" href=controller?action=addFeedback&request-id=${request.id}>
-                            <fmt:message key="button.createFeedback"/>
+                        <a class="link-dark" href=controller?action=deleteRequest&request-id=${request.id}>
+                            <fmt:message key="button.deleteRequest"/>
                         </a> <br>
-                        <a class="link-dark" href=controller?action=userEditRequest&request-id=${request.id}>
+                        <a class="link-dark" href=controller?action=craftsmanEditRequest&request-id=${request.id}>
                             <fmt:message key="button.editRequest"/>
                         </a>
                     </td>
@@ -121,7 +113,7 @@
 
 <form method="GET" action="controller" class="flex">
     <div class="d-flex justify-content-between text-center">
-        <input type="hidden" name="action" value="userRequest">
+        <input type="hidden" name="action" value="craftsmanRequest">
         <input type="hidden" name="offset" value="0">
         <div class="form-row ">
             <div class="flex-column">
@@ -135,9 +127,10 @@
 </form>
 
 <c:set var="href" scope="request"
-       value="controller?action=userRequest&date=${param.date}&sort=${param.sort}&order=${param.order}&"/>
+       value="controller?action=craftsmanRequest&date=${param.date}&sort=${param.sort}&order=${param.order}&"/>
 
 <jsp:include page="pagination.jsp"/>
 
 </body>
 </html>
+

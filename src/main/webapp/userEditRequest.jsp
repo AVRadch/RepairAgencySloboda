@@ -1,10 +1,11 @@
 <%--
   Created by IntelliJ IDEA.
   User: Алексей Радченко
-  Date: 20.01.2023
-  Time: 20:24
+  Date: 22.01.2023
+  Time: 23:14
   To change this template use File | Settings | File Templates.
 --%>
+
 <%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
@@ -35,7 +36,7 @@
 
     <link rel="stylesheet" type="text/css" href="registration.css">
 
-    <title>>Edit user | Repair Agency</title>
+    <title>Edit request | Repair Agency</title>
 </head>
 <body>
 <div class="container">
@@ -46,7 +47,7 @@
             </div>
         </div>
         <div class="main-login main-center">
-            <form class="form-horizontal" method="post" action="controller?action=updateRequest">
+            <form class="form-horizontal" method="post" action="controller?action=userUpdateRequest">
                 <c:if test="${not empty requestScope.error}">
                     <span class="text-danger"><fmt:message key="${requestScope.error}"/></span>
                 </c:if>
@@ -57,8 +58,7 @@
                     <label for="user" class="cols-sm-3 control-label"><fmt:message key="label.userName"/></label>
                     <div class="cols-sm-10">
                         <div class="input-group">
-                       <%--     <span class="input-group-addon"><i class="fa fa-envelope fa" aria-hidden="true"></i></span> --%>
-                           <span class="input-group-addon"><i class="fa fa" aria-hidden="true"></i></span>
+                            <span class="input-group-addon"><i class="fa fa" aria-hidden="true"></i></span>
                             <input type="text" class="form-control" name="user" id="user"
                                    pattern="^[A-Za-zА-ЩЬЮЯҐІЇЄа-щьюяґіїє'\- ]{1,30}"
                                    required value="${requestScope.requestDTO.userFirstName} ${requestScope.requestDTO.userLastName}"
@@ -72,7 +72,7 @@
                     <div class="cols-sm-10">
                         <div class="input-group">
                             <span class="input-group-addon"><i class="fa fa" aria-hidden="true"></i></span>
-                    <textarea id="message" name="description" class="form-control" disabled>${requestScope.requestDTO.description}</textarea>
+                            <textarea id="message" name="description" class="form-control" disabled>${requestScope.requestDTO.description}</textarea>
                         </div>
                     </div>
                 </div>
@@ -83,7 +83,7 @@
                         <div class="input-group">
                             <span class="input-group-addon"><i class="fa fa" aria-hidden="true"></i></span>
                             <input type="text" class="form-control" name="date" id="date"
-                                    required value="${requestScope.requestDTO.date}"
+                                   required value="${requestScope.requestDTO.date}"
                                    disabled/>
                         </div>
                     </div>
@@ -91,11 +91,9 @@
 
                 <div class="form-group">
                     <div class="input-group mb-3">
-     <%--                   <div class="input-group-prepend">       --%>
-                            <label class="input-group-text" for="completionStatus"><fmt:message
-                                    key="table.completion"/>   :</label>
-       <%--                 </div>      --%>
-                        <select class="custom-select" id="completionStatus" name="completionStatus">
+                        <label class="input-group-text" for="completionStatus"><fmt:message
+                                key="table.completion"/>   :</label>
+                        <select class="custom-select" id="completionStatus" name="completionStatus" disabled>
                             <option value="not_started"
                             ${requestScope.requestDTO.completionStatus eq 'not_started' ? 'selected' : ''}><fmt:message
                                     key="label.select.notStarted"/>
@@ -111,28 +109,19 @@
                         </select>
                     </div>
                 </div>
-
- <%--               <form method="post" action="controller">
-                    <input type="hidden" name="action" value="set-repairer">    --%>
-
                 <div class="form-group">
                     <div class="input-group mb-3">
                         <label class="input-group-text" for="repairer-id">
                             <span><fmt:message key="table.repairer"/>:</span>
                         </label>
-                            <select id="repairer-id" name="repairer-id">
-                                <option value="0" ${requestScope.requestDTO.id eq '0'? 'selected': ''}><fmt:message key="label.selectRepairer"/></option>
-                                <c:forEach var="repairer" items="${requestScope.repairers}">
-                                    <option value="${repairer.id}" ${requestScope.requestDTO.repairer_id eq repairer.id ? 'selected': ''}>${repairer.lastName} ${repairer.firstName}</option>
-                                </c:forEach>
-                            </select>
+                        <select id="repairer-id" name="repairer-id" disabled>
+                            <option value="0" ${requestScope.requestDTO.id eq '0'? 'selected': ''}><fmt:message key="label.selectRepairer"/></option>
+                            <c:forEach var="repairer" items="${requestScope.repairers}">
+                                <option value="${repairer.id}" ${requestScope.requestDTO.repairer_id eq repairer.id ? 'selected': ''}>${repairer.lastName} ${repairer.firstName}</option>
+                            </c:forEach>
+                        </select>
                     </div>
                 </div>
-
-
-            <%--                  <button type="submit">Set  speaker/></button>
-                </form>     --%>
-
 
                 <div class="form-group">
                     <div class="input-group mb-3">
@@ -153,38 +142,16 @@
                         <div class="input-group">
                             <span class="input-group-addon"><i class="fa fa" aria-hidden="true"></i></span>
                             <input type="text" class="form-control" name="totalCost" id="totalCost"
-                             value="${requestScope.requestDTO.totalCost}"/>
+                                   value="${requestScope.requestDTO.totalCost}" disabled/>
                         </div>
                     </div>
                 </div>
-                <%--
-                                <form method="POST" class="d-flex mt-3">
-                                    <label>
-                                        <select name="role" <%--onchange='submit();' --%>
-                <%--                >
-                                        <option value="manager">
-                                              <fmt:message key="label.selectManager"/>
-                                          </option>
-                                          <option value="craftsman">
-                                              <fmt:message key="label.selectCraftsman"/>
-                                          </option>
-                                          <option value="user">
-                                              <fmt:message key="label.selectUser"/>
-                                          </option>
-
-                                      </select>
-                                  </label>
-                              </form> --%>
-
 
                 <div class="form-group ">
                     <button type="submit" class="btn btn-primary btn-lg btn-block login-button"><fmt:message key="button.update"/></button>
                 </div>
             </form>
-            <%--
-                        <p class="fs-6 col-md-8">
-                            <a href="changePassword.jsp" class="link-dark"><fmt:message key="change.password"/></a>
-                        </p>    --%>
+
         </div>
 
         <br>
@@ -195,3 +162,4 @@
 <script type="text/javascript" src="assets/js/bootstrap.js"></script>
 </body>
 </html>
+
