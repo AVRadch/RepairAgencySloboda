@@ -21,6 +21,12 @@ public class DeleteRequestCommand implements Command {
 
     @Override
     public String execute(HttpServletRequest httpRequest, HttpServletResponse httpResponse) throws ServiceException {
-        return null;
+
+        int requestId = Integer.parseInt(httpRequest.getParameter("request-id"));
+        log.debug("Delete user with id = " + requestId);
+        String forward = "controller?action=adminAllRequest";
+        requestService.delete(requestId);
+
+        return forward;
     }
 }

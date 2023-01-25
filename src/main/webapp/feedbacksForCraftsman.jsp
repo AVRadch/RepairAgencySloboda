@@ -76,12 +76,7 @@
           <td><c:out value="${feedback.rating}"/></td>
           <td><c:out value="${feedback.requestDescription}"/></td>
           <td>
-            <a class="link-dark" href=controller?action=deleteFeedback&feedback-id=${feedback.id}>
-              <fmt:message key="button.deleteFeedback"/>
-            </a> <br>
-            <a class="link-dark" href=controller?action=editFeedback&user-id=${feedback.id}>
-              <fmt:message key="button.editFeedback"/>
-            </a>
+
           </td>
         </tr>
       </c:forEach>

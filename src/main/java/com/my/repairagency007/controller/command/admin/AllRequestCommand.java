@@ -39,8 +39,6 @@ public class AllRequestCommand implements Command {
 
         HttpSession session = request.getSession();
 
-        UserDTO currentUser = (UserDTO) session.getAttribute("logged_user");
-        log.debug("Получили юзера из сессии");
         String forward = "requestsForAdmin.jsp";
         List<RequestDTO> requests;
 

@@ -32,12 +32,6 @@ public class CraftsmanFeedmackCommand implements Command {
     @Override
     public String execute(HttpServletRequest request, HttpServletResponse response) throws ServiceException {
 
-        HttpSession session = request.getSession();
-        log.debug("Получили сессию");
-
-        UserDTO currentUser = (UserDTO) session.getAttribute("logged_user");
-        log.debug("Получили юзера из сессии");
-
         String forward = "feedbacksForCraftsman.jsp";
         List<FeedbackDTO> feedbackDTOS;
 

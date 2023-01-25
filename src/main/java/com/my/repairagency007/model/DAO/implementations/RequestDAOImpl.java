@@ -178,9 +178,14 @@ public class RequestDAOImpl extends GenericDAO implements RequestDAO {
         Connection connection = getConnection();
         PreparedStatement ps = null;
         boolean result = false;
+        boolean result1 = false;
 
         try{
             begin(connection);
+
+            ps = connection.prepareStatement(SQL_DELETE_FEEDBACKS_REQUEST_BY_ID);
+            ps.setInt(1, id);
+            if(ps.executeUpdate() > 0) {result1 = true;}
             ps = connection.prepareStatement(SQL_DELETE_REQUEST_BY_ID);
             ps.setInt(1, id);
             if(ps.executeUpdate() > 0) {result = true;}
@@ -193,7 +198,7 @@ public class RequestDAOImpl extends GenericDAO implements RequestDAO {
         } finally {
             close(connection, ps, null);
         }
-        return result;
+        return result&&result1;
     }
 
     @Override

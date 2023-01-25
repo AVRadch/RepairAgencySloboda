@@ -46,7 +46,6 @@
     <div class="form-row text-center">
         <div class="btn-group">
             <a href="addRequest.jsp" class="btn btn" role="button"><fmt:message key="button.addRequest"/></a>
-            <a href="addFeedback.jsp" class="btn btn" role="button"><fmt:message key="button.addFeedback"/></a>"
         </div>
     </div>
 </div>
@@ -107,9 +106,10 @@
                         <a class="link-dark" href=controller?action=addFeedback&request-id=${request.id}>
                             <fmt:message key="button.createFeedback"/>
                         </a> <br>
+                        <c:if test="${request.totalCost ne '0,00'}">
                         <a class="link-dark" href=controller?action=userEditRequest&request-id=${request.id}>
                             <fmt:message key="button.editRequest"/>
-                        </a>
+                        </a></c:if>
                     </td>
                 </tr>
             </c:forEach>

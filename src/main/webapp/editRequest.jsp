@@ -91,10 +91,8 @@
 
                 <div class="form-group">
                     <div class="input-group mb-3">
-     <%--                   <div class="input-group-prepend">       --%>
                             <label class="input-group-text" for="completionStatus"><fmt:message
                                     key="table.completion"/>   :</label>
-       <%--                 </div>      --%>
                         <select class="custom-select" id="completionStatus" name="completionStatus">
                             <option value="not_started"
                             ${requestScope.requestDTO.completionStatus eq 'not_started' ? 'selected' : ''}><fmt:message
@@ -112,9 +110,6 @@
                     </div>
                 </div>
 
- <%--               <form method="post" action="controller">
-                    <input type="hidden" name="action" value="set-repairer">    --%>
-
                 <div class="form-group">
                     <div class="input-group mb-3">
                         <label class="input-group-text" for="repairer-id">
@@ -128,11 +123,6 @@
                             </select>
                     </div>
                 </div>
-
-
-            <%--                  <button type="submit">Set  speaker/></button>
-                </form>     --%>
-
 
                 <div class="form-group">
                     <div class="input-group mb-3">
