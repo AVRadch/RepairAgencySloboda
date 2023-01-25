@@ -6,6 +6,7 @@ import com.my.repairagency007.model.entity.User;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import javax.sql.DataSource;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -20,6 +21,12 @@ import static com.my.repairagency007.model.DAO.implementations.SQLQuery.UserSQL.
 public class UserDAOImpl extends GenericDAO implements UserDAO {
 
     private static final Logger log = LoggerFactory.getLogger(UserDAOImpl.class);
+
+    private final DataSource dataSource;
+
+    public UserDAOImpl(DataSource dataSource) {
+        this.dataSource = dataSource;
+    }
 
     @Override
     public int getNumberOfRecords(String filter) throws DAOException {
@@ -68,7 +75,7 @@ public class UserDAOImpl extends GenericDAO implements UserDAO {
     }
 
     @Override
-    public User getEntityById(int id) throws DAOException {
+    public Optional<User> getEntityById(int id) throws DAOException {
         Connection connection = getConnection();
         ResultSet rs = null;
         PreparedStatement ps = null;
@@ -89,7 +96,7 @@ public class UserDAOImpl extends GenericDAO implements UserDAO {
             close(connection, ps, rs);
         }
 
-        return user;
+        return Optional.ofNullable(user);
     }
 
     @Override
@@ -251,5 +258,19 @@ public class UserDAOImpl extends GenericDAO implements UserDAO {
             close(connection, ps, rs);
         }
         return Optional.ofNullable(user);
+    }
+
+    protected Connection getConnection(){
+
+        Connection connection = null;
+
+        try {
+            connection = dataSource.getConnection();
+        } catch (SQLException e) {
+            e.printStackTrace();
+            throw new RuntimeException(e);
+        }
+
+        return connection;
     }
 }

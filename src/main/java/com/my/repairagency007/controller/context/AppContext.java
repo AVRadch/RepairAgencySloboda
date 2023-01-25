@@ -23,7 +23,7 @@ public class AppContext {
 
     @Getter private static final DataSource dataSource = JDBCDataSource.getDataSource();
 
-    @Getter private final UserDAO userDAO = new UserDAOImpl();
+    @Getter private final UserDAO userDAO = new UserDAOImpl(dataSource);
 
     @Getter private final UserServiceImpl userService = new UserServiceImpl(getUserDAO());
 

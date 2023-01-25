@@ -88,7 +88,7 @@ public class RequestServiceImpl implements RequestService {
         RequestDTO requestDTO;
 
         try {
-            requestDTO = fillDTOFromRequestAndUsers(requestDAO.getEntityById(id));
+            requestDTO = fillDTOFromRequestAndUsers(requestDAO.getEntityById(id).orElse(null));
         } catch (DAOException e) {
             log.error("Error getEntity by id method", e);
             throw new ServiceException(e);
@@ -185,8 +185,8 @@ public class RequestServiceImpl implements RequestService {
         Request request = null;
 
         try {
-            request = requestDAO.getEntityById(requestId);
-            User user = userDAO.getEntityById(request.getUser_id());
+            request = requestDAO.getEntityById(requestId).orElse(null);
+            User user = userDAO.getEntityById(request.getUser_id()).orElse(null);
             result = requestDAO.setPaymentStatusPaid(request, user);
         } catch (DAOException e) {
             log.error("Error to Set Payment PAID");
@@ -199,7 +199,7 @@ public class RequestServiceImpl implements RequestService {
 
         Request request = null;
         try {
-            request = requestDAO.getEntityById(requestId);
+            request = requestDAO.getEntityById(requestId).orElse(null);
             requestDAO.setPaymentStatusCanceled(request);
         } catch (DAOException e) {
             log.error("Error to Set Payment CANCELED");
@@ -285,14 +285,14 @@ public class RequestServiceImpl implements RequestService {
 
     private RequestDTO fillDTOFromRequestAndUsers(Request request) throws DAOException {
         log.debug("take user by id");
-        User user = userDAO.getEntityById(request.getUser_id());
+        User user = userDAO.getEntityById(request.getUser_id()).orElse(null);
         log.debug("take repairer by id " + request.getRepairer_id());
         User repairer = null;
         RequestDTO requestDTO = convertRequestToDTO(request, user);
         log.debug("Fill requestDTO = " + requestDTO);
         int repairer_id = request.getRepairer_id();
         if (repairer_id != 0) {
-            repairer = userDAO.getEntityById(repairer_id);
+            repairer = userDAO.getEntityById(repairer_id).orElse(null);
             requestDTO.setRepairer_id(request.getRepairer_id());
             requestDTO.setRepairerFirstName(repairer.getFirstName());
             requestDTO.setRepairerLastName(repairer.getLastName());

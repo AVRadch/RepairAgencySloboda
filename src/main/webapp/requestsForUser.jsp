@@ -103,9 +103,11 @@
                     <td><c:out value="${request.paymentStatus}"/></td>
                     <td><c:out value="${request.totalCost}"/></td>
                     <td>
+                        <c:if test="${request.completionStatus eq 'completed'}">
                         <a class="link-dark" href=controller?action=addFeedback&request-id=${request.id}>
                             <fmt:message key="button.createFeedback"/>
                         </a> <br>
+                        </c:if>
                         <c:if test="${request.totalCost ne '0,00'}">
                         <a class="link-dark" href=controller?action=userEditRequest&request-id=${request.id}>
                             <fmt:message key="button.editRequest"/>

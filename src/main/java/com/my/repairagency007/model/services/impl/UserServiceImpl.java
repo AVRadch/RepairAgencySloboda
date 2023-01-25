@@ -58,7 +58,7 @@ public class UserServiceImpl implements UserService {
     public UserDTO getById(int id) throws ServiceException{
         UserDTO userDTO;
         try {
-            User user = userDAO.getEntityById(id);
+            User user = userDAO.getEntityById(id).orElse(null);
             userDTO = convertUserToDTO(user);
         } catch (DAOException e) {
             throw new ServiceException(e);

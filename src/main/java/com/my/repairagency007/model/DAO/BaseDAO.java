@@ -1,16 +1,15 @@
 package com.my.repairagency007.model.DAO;
 
 import com.my.repairagency007.exception.DAOException;
+import com.my.repairagency007.model.entity.User;
 
-import java.sql.Connection;
-import java.sql.SQLException;
-import java.sql.Statement;
 import java.util.List;
+import java.util.Optional;
 
 public interface BaseDAO<T> {
     List<T> findAll(String query) throws DAOException;
 
-    T getEntityById(int id) throws DAOException;
+    Optional<T> getEntityById(int id) throws DAOException;
 
     boolean delete(T t) throws DAOException;
 

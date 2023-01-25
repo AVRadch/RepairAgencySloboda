@@ -1,5 +1,6 @@
 package com.my.repairagency007.controller.command.admin;
 
+import com.my.repairagency007.controller.context.AppContext;
 import com.my.repairagency007.model.DAO.UserDAO;
 import com.my.repairagency007.model.DAO.implementations.UserDAOImpl;
 import com.my.repairagency007.controller.Path;
@@ -36,10 +37,10 @@ public class ProfileCommand implements Command {
   }
 
   private void show(HttpServletRequest request, int id) {
-    UserDAO userDAO = new UserDAOImpl();
+    UserDAO userDAO = new UserDAOImpl(AppContext.getDataSource());
     User user = null;
     try {
-      user = userDAO.getEntityById(id);
+      user = userDAO.getEntityById(id).orElse(null);
     } catch (DAOException e) {
       throw new RuntimeException(e);
     }

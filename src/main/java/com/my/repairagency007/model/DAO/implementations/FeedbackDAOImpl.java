@@ -4,6 +4,7 @@ import com.my.repairagency007.model.DAO.FeedbackDAO;
 import com.my.repairagency007.exception.DAOException;
 import com.my.repairagency007.model.entity.Feedback;
 
+import com.my.repairagency007.model.entity.User;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -12,13 +13,11 @@ import java.sql.Date;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 import static com.my.repairagency007.model.DAO.implementations.SQLQuery.FeedbackSQL.*;
-import static com.my.repairagency007.model.DAO.implementations.SQLQuery.RequestSQL.GET_NUMBER_OF_REQUEST_RECORDS;
-import static com.my.repairagency007.model.DAO.implementations.SQLQuery.UserSQL.SQL_SELECT_ALL_USERS;
 
 public class FeedbackDAOImpl extends GenericDAO implements FeedbackDAO {
     private static final Logger log = LoggerFactory.getLogger(FeedbackDAOImpl.class);
@@ -66,7 +65,7 @@ public class FeedbackDAOImpl extends GenericDAO implements FeedbackDAO {
     }
 
     @Override
-    public Feedback getEntityById(int id) throws DAOException {
+    public Optional<Feedback> getEntityById(int id) throws DAOException {
 
         log.debug("Find feedback by id");
         Connection connection = getConnection();
@@ -90,7 +89,7 @@ public class FeedbackDAOImpl extends GenericDAO implements FeedbackDAO {
             close(connection, ps, rs);
         }
 
-        return feedback;
+        return Optional.ofNullable(feedback);
     }
 
     @Override

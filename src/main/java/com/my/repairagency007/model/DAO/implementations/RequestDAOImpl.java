@@ -11,6 +11,7 @@ import org.slf4j.LoggerFactory;
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 import static com.my.repairagency007.model.DAO.implementations.SQLQuery.RequestSQL.*;
 import static com.my.repairagency007.model.DAO.implementations.SQLQuery.UserSQL.SQL_UPDATE_USER_ACCOUNT;
@@ -138,7 +139,7 @@ public class RequestDAOImpl extends GenericDAO implements RequestDAO {
     }
 
     @Override
-    public Request getEntityById(int id) throws DAOException {
+    public Optional<Request> getEntityById(int id) throws DAOException {
 //        log.debug("Find request by id");
         Connection connection = getConnection();
         ResultSet rs = null;
@@ -163,7 +164,7 @@ public class RequestDAOImpl extends GenericDAO implements RequestDAO {
             close(connection, ps, rs);
         }
 
-        return request;
+        return Optional.ofNullable(request);
     }
 
     @Override
