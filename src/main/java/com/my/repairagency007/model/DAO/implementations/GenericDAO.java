@@ -13,11 +13,10 @@ import java.sql.Statement;
 public abstract class GenericDAO {
 
     private static final Logger log = LoggerFactory.getLogger(GenericDAO.class);
-    private final DataSource dataSource;
     public GenericDAO() {
-        this.dataSource = AppContext.getDataSource();
+
     }
-    protected Connection getConnection(){
+ /*   protected Connection getConnection(){
 
         Connection connection = null;
 
@@ -29,7 +28,7 @@ public abstract class GenericDAO {
             }
 
         return connection;
-    }
+    }       */
     public void begin(Connection connection) throws SQLException {
         connection.setAutoCommit(false);
     }
@@ -38,8 +37,10 @@ public abstract class GenericDAO {
     }
     public void rollback(Connection connection){
         try {
-            connection.rollback();
-            connection.setAutoCommit(true);
+            if (connection != null) {
+                connection.rollback();
+                connection.setAutoCommit(true);
+            }
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }

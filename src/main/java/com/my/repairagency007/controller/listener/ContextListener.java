@@ -12,16 +12,17 @@ import javax.servlet.annotation.WebListener;
 @WebListener
 public class ContextListener implements ServletContextListener {
 
-    private static final Logger log = LoggerFactory.getLogger(ContextListener.class);
+ //   private static final Logger log = LoggerFactory.getLogger(ContextListener.class);
 
     @Override
     public void contextInitialized(ServletContextEvent sce) {
-        log.info("AppContext initialized");
+//        log.info("AppContext initialized");
         AppContext.createAppContext(sce.getServletContext());
     }
 
     @Override
     public void contextDestroyed(ServletContextEvent servletContextEvent) {
-        log.debug("Servlet context destruction");
+
+      //  log.debug("Servlet context destruction");
     }
 }

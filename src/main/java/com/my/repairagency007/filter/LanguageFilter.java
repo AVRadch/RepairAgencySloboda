@@ -47,7 +47,8 @@ public class LanguageFilter implements Filter {
     public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain) throws IOException, ServletException {
         request.setCharacterEncoding(encoding);
         response.setCharacterEncoding(encoding);
-        context.log("charset set");
+        log.debug("Language filter work");
+ //       context.log("charset set");
         chain.doFilter(request, response);
     }
 

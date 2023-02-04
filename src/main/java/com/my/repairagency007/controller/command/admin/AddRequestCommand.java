@@ -25,7 +25,7 @@ public class AddRequestCommand implements Command {
 
     private final RequestServiceImpl requestService;
 
-    public AddRequestCommand() {requestService = AppContext.getAppContext().getRequestService();}
+    public AddRequestCommand(AppContext appContext) {requestService = appContext.getRequestService();}
 
 
     @Override
@@ -34,12 +34,12 @@ public class AddRequestCommand implements Command {
     }
     private String executeGet(HttpServletRequest request) {
         log.debug("Get method add request");
-        moveAttributeFromSessionToRequest(request, "message");
+        moveAttributeFromSessionToRequest(request, "requestDTO");
         moveAttributeFromSessionToRequest(request, "error");
         return "requestForUser.jsp";
     }
 
-    private String executePost(HttpServletRequest request, HttpServletResponse response) throws ServiceException {
+    private String executePost(HttpServletRequest request, HttpServletResponse response) {
 
         log.debug("Post method add request");
         HttpSession session = request.getSession();
@@ -55,9 +55,13 @@ public class AddRequestCommand implements Command {
 
         String forward = "controller?action=userRequest";
 
-        requestService.create(requestDTO);
-
-        String errorMessage;
+        try {
+            requestService.create(requestDTO);
+        } catch (ServiceException e) {
+            session.setAttribute("requestDTO", requestDTO);
+            session.setAttribute("error", e.getMessage());
+            forward = "controller?action=addRequest";
+        }
 
         return forward;
     }

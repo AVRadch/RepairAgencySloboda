@@ -29,13 +29,10 @@ public class FeedbackServiceImpl implements FeedbackService {
 
     private final RequestService requestService;
 
-    private final UserDAO userDAO;
-
-    public FeedbackServiceImpl (FeedbackDAO feedbackDAO, UserDAO userDAO, RequestService requestService) {
+    public FeedbackServiceImpl (FeedbackDAO feedbackDAO, RequestService requestService) {
 
         this.requestService = requestService;
         this.feedbackDAO = feedbackDAO;
-        this.userDAO = userDAO;
     }
 
 

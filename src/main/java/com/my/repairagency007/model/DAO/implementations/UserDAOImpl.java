@@ -233,7 +233,7 @@ public class UserDAOImpl extends GenericDAO implements UserDAO {
     @Override
     public Optional<User> getByEmail(String email) throws DAOException {
 
-        log.debug("Find user by email: " + email);
+        log.info("Find user by email: " + email);
         Connection connection = getConnection();
         ResultSet rs = null;
         PreparedStatement ps = null;
@@ -243,13 +243,13 @@ public class UserDAOImpl extends GenericDAO implements UserDAO {
             begin(connection);
             ps = connection.prepareStatement(SQL_GET_USER_BY_EMAIL);
             ps.setString(1, email);
-            log.debug("Prepare prepare statement");
+            log.info("Prepare prepare statement");
             rs = ps.executeQuery();
-            log.debug("execute ps and recieve result set");
+            log.info("execute ps and recieve result set");
             if (rs.next()){user = extractUserFromResultSet(rs);}
-            log.debug("Recieve user from rs");
+            log.info("Recieve user from rs");
             commit(connection);
-            log.trace("User found and created");
+            log.info("User found and created");
         } catch (SQLException e) {
             rollback(connection);
             log.error("Error in find User by email methods", e);

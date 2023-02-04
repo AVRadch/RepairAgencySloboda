@@ -41,7 +41,9 @@
 <body>
 <%@ include file="/headerUser.jsp" %>
 
-
+<c:if test="${not empty requestScope.error}">
+    <span class="text-danger text-center"><fmt:message key="${requestScope.error}"/></span>
+</c:if>
 <div class="container-fluid">
     <div class="form-row text-center">
         <div class="btn-group">

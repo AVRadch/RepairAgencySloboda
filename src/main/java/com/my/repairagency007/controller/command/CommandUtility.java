@@ -2,16 +2,16 @@ package com.my.repairagency007.controller.command;
 
 
 import com.my.repairagency007.DTO.UserDTO;
+import com.my.repairagency007.controller.command.common.LoginCommand;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import javax.servlet.http.HttpServletRequest;
 import java.util.Locale;
 
 public class CommandUtility {
 
-    static public Locale getSessionLocale(HttpServletRequest request) {
-        String locale = (String) request.getSession().getAttribute("language");
-        return locale != null ? Locale.forLanguageTag(locale) : Locale.getDefault();
-    }
+    private static final Logger log = LoggerFactory.getLogger(CommandUtility.class);
 
     /**
      * Move userDTO from session to request and delete user DTO from session
@@ -36,6 +36,8 @@ public class CommandUtility {
 
         String attributeValue = (String) request.getSession().getAttribute(attributeName);
         if (attributeValue != null) {
+            log.info("Set attribute = " + attributeName + " set value = " +
+             attributeValue);
             request.setAttribute(attributeName, attributeValue);
             request.getSession().removeAttribute(attributeName);
         }

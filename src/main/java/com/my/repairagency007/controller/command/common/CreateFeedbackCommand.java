@@ -25,9 +25,9 @@ public class CreateFeedbackCommand implements Command {
 
     private final FeedbackService feedbackService;
 
-    public CreateFeedbackCommand() {
-        requestService = AppContext.getAppContext().getRequestService();
-        feedbackService = AppContext.getAppContext().getFeedbackService();
+    public CreateFeedbackCommand(AppContext appContext) {
+        requestService = appContext.getRequestService();
+        feedbackService = appContext.getFeedbackService();
     }
 
     @Override
@@ -35,8 +35,6 @@ public class CreateFeedbackCommand implements Command {
 
         HttpSession session = request.getSession();
         FeedbackDTO feedbackDTO = FeedbackDTO.builder().build();
-        log.debug("Build feedback DTO");
-        log.debug("Session attr request-id = " + session.getAttribute("request-id"));
         String requestIdString = session.getAttribute("request-id").toString();
         log.debug("Session attr request-id = " + requestIdString);
         int requestId = Integer.parseInt(requestIdString);

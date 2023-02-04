@@ -11,8 +11,8 @@ public class AddUserCommand implements Command {
     public String execute(HttpServletRequest httpRequest, HttpServletResponse httpResponse) throws ServiceException {
 
         httpRequest.getSession().setAttribute("redirect", "controller?action=adminAllUsers");
-
         String forward = "adminAddUser.jsp";
+
         return forward;
     }
 }

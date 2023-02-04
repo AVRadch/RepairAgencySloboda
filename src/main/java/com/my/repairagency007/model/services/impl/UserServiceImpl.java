@@ -29,17 +29,16 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public UserDTO login(String login, String password) throws ServiceException {
+    public UserDTO login(String email, String password) throws ServiceException {
 
         UserDTO userDTO;
 
         try {
             User user;
-            user = userDAO.getByEmail(login).orElseThrow(NoSuchUserException::new);
-            if (!BCrypt.checkpw(password, user.getPassword())){
-                throw new IncorrectPasswordException();
-            }
-                userDTO = convertUserToDTO(user);
+            log.info("Try to userDAO.getByEmail email = " + email);
+            user = userDAO.getByEmail(email).orElseThrow(NoSuchUserException::new);
+            log.info("Try to convert to userDTO");
+            userDTO = convertUserToDTO(user);
         } catch (DAOException e) {
             log.error("Error get user by email", e);
             throw new ServiceException(e);

@@ -8,6 +8,7 @@ import com.my.repairagency007.model.entity.User;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import javax.sql.DataSource;
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
@@ -18,12 +19,18 @@ import static com.my.repairagency007.model.DAO.implementations.SQLQuery.UserSQL.
 
 public class RequestDAOImpl extends GenericDAO implements RequestDAO {
 
+    private final DataSource dataSource;
+
+    public RequestDAOImpl(DataSource dataSource) {
+        this.dataSource = dataSource;
+    }
+
     private static final Logger log = LoggerFactory.getLogger(RequestDAOImpl.class);
 
     public int getNumberOfRecords(String filter) throws DAOException {
         int numberOfRecords = 0;
         String query = String.format(GET_NUMBER_OF_REQUEST_RECORDS, filter);
-        try (Connection connection = getConnection();
+        try (Connection connection = dataSource.getConnection();
              PreparedStatement preparedStatement = connection.prepareStatement(query)) {
             try (ResultSet resultSet = preparedStatement.executeQuery()) {
                 if (resultSet.next()) {
@@ -39,7 +46,7 @@ public class RequestDAOImpl extends GenericDAO implements RequestDAO {
     public int getNumberOfUserRecords(String filter, int userId) throws DAOException {
         int numberOfRecords = 0;
         String query = String.format(GET_NUMBER_OF_USER_REQUEST_RECORDS, filter);
-        try (Connection connection = getConnection();
+        try (Connection connection = dataSource.getConnection();
              PreparedStatement preparedStatement = connection.prepareStatement(query)) {
             preparedStatement.setInt(1, userId);
             try (ResultSet resultSet = preparedStatement.executeQuery()) {
@@ -56,13 +63,14 @@ public class RequestDAOImpl extends GenericDAO implements RequestDAO {
     public List<Request> findAllForCraftsman(String query, int userId) throws DAOException {
 
         log.trace("Find all for user request");
-        Connection connection = getConnection();
+        Connection connection = null;
         ResultSet rs = null;
         PreparedStatement ps = null;
 
         ArrayList<Request> requests;
 
         try {
+            connection = dataSource.getConnection();
             begin(connection);
             ps = connection.prepareStatement(SQL_SELECT_ALL_CRAFTSMAN_REQUEST + query);
             ps.setInt(1, userId);
@@ -85,13 +93,14 @@ public class RequestDAOImpl extends GenericDAO implements RequestDAO {
     public List<Request> findAllForUser(String query, int userId) throws DAOException {
 
         log.trace("Find all for user request");
-        Connection connection = getConnection();
+        Connection connection = null;
         ResultSet rs = null;
         PreparedStatement ps = null;
 
         ArrayList<Request> result;
 
         try {
+            connection = dataSource.getConnection();
             begin(connection);
             ps = connection.prepareStatement(SQL_SELECT_ALL_USER_REQUEST + query);
             ps.setInt(1, userId);
@@ -114,13 +123,14 @@ public class RequestDAOImpl extends GenericDAO implements RequestDAO {
     public List<Request> findAll(String query) throws DAOException {
 
         log.trace("Find all request");
-        Connection connection = getConnection();
+        Connection connection = null;
         ResultSet rs = null;
         PreparedStatement ps = null;
 
         ArrayList<Request> result;
 
         try {
+            connection = dataSource.getConnection();
             begin(connection);
             ps = connection.prepareStatement(SQL_SELECT_ALL_REQUEST + query);
             rs = ps.executeQuery();
@@ -141,12 +151,13 @@ public class RequestDAOImpl extends GenericDAO implements RequestDAO {
     @Override
     public Optional<Request> getEntityById(int id) throws DAOException {
 //        log.debug("Find request by id");
-        Connection connection = getConnection();
+        Connection connection = null;
         ResultSet rs = null;
         PreparedStatement ps = null;
         Request request = null;
 
         try{
+            connection = dataSource.getConnection();
             begin(connection);
             ps = connection.prepareStatement(SQL_GET_REQUEST_BY_ID);
             ps.setInt(1, id);
@@ -176,12 +187,13 @@ public class RequestDAOImpl extends GenericDAO implements RequestDAO {
     public boolean deleteById(int id) throws DAOException {
 
         log.debug("Delete request by id");
-        Connection connection = getConnection();
+        Connection connection =null;
         PreparedStatement ps = null;
         boolean result = false;
         boolean result1 = false;
 
         try{
+            connection = dataSource.getConnection();
             begin(connection);
 
             ps = connection.prepareStatement(SQL_DELETE_FEEDBACKS_REQUEST_BY_ID);
@@ -206,12 +218,13 @@ public class RequestDAOImpl extends GenericDAO implements RequestDAO {
     public boolean create(Request request) throws DAOException {
 
         log.debug("Create request");
-        Connection connection = getConnection();
+        Connection connection = null;
         PreparedStatement ps = null;
         boolean result = false;
         ResultSet rs = null;
 
         try{
+            connection = dataSource.getConnection();
             begin(connection);
 
             ps = connection.prepareStatement(SQL_CREATE_REQUEST, PreparedStatement.RETURN_GENERATED_KEYS);
@@ -239,10 +252,11 @@ public class RequestDAOImpl extends GenericDAO implements RequestDAO {
     public void setStartRepair(Request request) throws DAOException {
 
         log.debug("Update request = " + request);
-        Connection connection = getConnection();
+        Connection connection = null;
         PreparedStatement ps = null;
 
         try{
+            connection = dataSource.getConnection();
             begin(connection);
 
             ps = connection.prepareStatement(SQL_UPDATE_REQUEST_SET_START);
@@ -270,10 +284,11 @@ public class RequestDAOImpl extends GenericDAO implements RequestDAO {
     public Request update(Request request) throws DAOException {
 
         log.debug("Update request = " + request);
-        Connection connection = getConnection();
+        Connection connection = null;
         PreparedStatement ps = null;
 
         try{
+            connection = dataSource.getConnection();
             begin(connection);
 
             ps = connection.prepareStatement(SQL_UPDATE_REQUEST);
@@ -301,10 +316,11 @@ public class RequestDAOImpl extends GenericDAO implements RequestDAO {
         boolean result = false;
 
         if (user.getAccount() > request.getTotalCost()){
-            Connection connection = getConnection();
+            Connection connection = null;
             PreparedStatement ps = null;
             PreparedStatement ps1 = null;
             try {
+                connection = dataSource.getConnection();
                 begin(connection);
                 int new_account = user.getAccount() - request.getTotalCost();
                 ps = connection.prepareStatement(SQL_UPDATE_USER_ACCOUNT);
@@ -336,10 +352,11 @@ public class RequestDAOImpl extends GenericDAO implements RequestDAO {
 
     public void setPaymentStatusCanceled(Request request) throws DAOException {
 
-        Connection connection = getConnection();
+        Connection connection = null;
         PreparedStatement ps = null;
 
         try {
+            connection = dataSource.getConnection();
             begin(connection);
             ps = connection.prepareStatement(SQL_UPDATE_REQUEST_PAYMENTSTATUS);
             int newPaymentStatus = PaymentStatus.CANCELED.ordinal() + 1;
@@ -364,10 +381,11 @@ public class RequestDAOImpl extends GenericDAO implements RequestDAO {
     public void updateRepairForRequest(Request request) throws DAOException{
 
         log.debug("Update request = " + request);
-        Connection connection = getConnection();
+        Connection connection = null;
         PreparedStatement ps = null;
 
         try{
+            connection = dataSource.getConnection();
             begin(connection);
 
             ps = connection.prepareStatement(SQL_UPDATE_REPAIRER_FOR_REQUEST);
@@ -392,13 +410,14 @@ public class RequestDAOImpl extends GenericDAO implements RequestDAO {
     public List<Request> findRequestByCompletionStatus() throws DAOException {
 
         log.trace("Find requests by completion Status");
-        Connection connection = getConnection();
+        Connection connection = null;
         ResultSet rs = null;
         PreparedStatement ps = null;
 
         ArrayList<Request> result;
 
         try {
+            connection = dataSource.getConnection();
             begin(connection);
             ps = connection.prepareStatement(SQL_SELECT_REQUESTS_BY_COMPLETION_STATUS);
             rs = ps.executeQuery();
@@ -419,13 +438,14 @@ public class RequestDAOImpl extends GenericDAO implements RequestDAO {
     public List<Request> findRequestByPaymentStatus() throws DAOException {
 
         log.trace("Find requests by payment status");
-        Connection connection = getConnection();
+        Connection connection = null;
         ResultSet rs = null;
         PreparedStatement ps = null;
 
         ArrayList<Request> result;
 
         try {
+            connection = dataSource.getConnection();
             begin(connection);
             ps = connection.prepareStatement(SQL_SELECT_REQUESTS_BY_PAYMENT_STATUS);
             rs = ps.executeQuery();

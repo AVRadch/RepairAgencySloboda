@@ -279,7 +279,7 @@ public class RequestServiceImpl implements RequestService {
             requestDAO.create(req);
         } catch (DAOException e) {
             log.error("Error create request", e);
-            throw new ServiceException(e);
+            throw new ServiceException("error.createRequest");
         }
     }
 

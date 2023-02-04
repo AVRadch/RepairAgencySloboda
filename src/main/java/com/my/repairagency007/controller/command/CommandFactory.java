@@ -7,6 +7,7 @@ import com.my.repairagency007.controller.command.craftsman.CraftsmanRequestComma
 import com.my.repairagency007.controller.command.craftsman.SetCompletedRepairCommand;
 import com.my.repairagency007.controller.command.craftsman.SetStartRepairCommand;
 import com.my.repairagency007.controller.command.user.*;
+import com.my.repairagency007.controller.context.AppContext;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -30,6 +31,7 @@ public class CommandFactory {
     public static CommandFactory commandFactory() {
         if (factory == null) {
             factory = new CommandFactory();
+            log.debug("Create command factory");
         }
         return factory;
     }
@@ -47,13 +49,12 @@ public class CommandFactory {
         commands.put("userUpdateRequest", new UserUpdateRequestCommand());
         commands.put("userFeedbacks", new UserFeedbacksCommand());
         commands.put("addFeedback", new AddFeedbackCommand());
-        commands.put("createFeedback", new CreateFeedbackCommand());
+        commands.put("createFeedback", new CreateFeedbackCommand(AppContext.getAppContext()));
         // common commands
-        commands.put("login", new LoginCommand());
+        commands.put("login", new LoginCommand(AppContext.getAppContext()));
         commands.put("logout", new LogoutCommand());
         commands.put("redirect", null);
-        commands.put("locale-handler", new LocaleHandlerCommand());
-        commands.put("addRequest", new AddRequestCommand());
+        commands.put("addRequest", new AddRequestCommand(AppContext.getAppContext()));
         commands.put("error", new ErrorCommand());
         //admin commands
         commands.put("registration", new RegistrationCommand());
@@ -74,7 +75,8 @@ public class CommandFactory {
 
     public Command getCommand(HttpServletRequest request) {
         String action = request.getParameter("action");
-        log.debug(action);
+        log.info("action = " + action + " session attribute error = " + request.getSession().getAttribute("error") +
+                " request parametr error = " + request.getAttribute("error"));
         return commands.get(action);
     }
 }

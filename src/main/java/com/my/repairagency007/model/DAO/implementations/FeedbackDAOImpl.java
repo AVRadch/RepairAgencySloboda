@@ -4,10 +4,10 @@ import com.my.repairagency007.model.DAO.FeedbackDAO;
 import com.my.repairagency007.exception.DAOException;
 import com.my.repairagency007.model.entity.Feedback;
 
-import com.my.repairagency007.model.entity.User;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import javax.sql.DataSource;
 import java.sql.Connection;
 import java.sql.Date;
 import java.sql.PreparedStatement;
@@ -20,12 +20,18 @@ import java.util.Optional;
 import static com.my.repairagency007.model.DAO.implementations.SQLQuery.FeedbackSQL.*;
 
 public class FeedbackDAOImpl extends GenericDAO implements FeedbackDAO {
+
+    private final DataSource dataSource;
+
+    public FeedbackDAOImpl(DataSource dataSource) {
+        this.dataSource = dataSource;
+    }
     private static final Logger log = LoggerFactory.getLogger(FeedbackDAOImpl.class);
 
     public int getNumberOfRecords(String filter) throws DAOException {
         int numberOfRecords = 0;
         String query = String.format(GET_NUMBER_OF_FEEDBACK_RECORDS, filter);
-        try (Connection connection = getConnection();
+        try (Connection connection = dataSource.getConnection();
              PreparedStatement preparedStatement = connection.prepareStatement(query)) {
             try (ResultSet resultSet = preparedStatement.executeQuery()) {
                 if (resultSet.next()) {
@@ -40,13 +46,14 @@ public class FeedbackDAOImpl extends GenericDAO implements FeedbackDAO {
     @Override
     public List<Feedback> findAll(String query) throws DAOException {
         log.trace("Find all feedbacks");
-        Connection connection = getConnection();
+        Connection connection = null;
         ResultSet rs = null;
         PreparedStatement ps = null;
 
         ArrayList<Feedback> result;
 
         try{
+            connection = dataSource.getConnection();
             begin(connection);
             ps = connection.prepareStatement(SQL_SELECT_ALL_FEEDBACKS + query);
             rs = ps.executeQuery();
@@ -68,12 +75,13 @@ public class FeedbackDAOImpl extends GenericDAO implements FeedbackDAO {
     public Optional<Feedback> getEntityById(int id) throws DAOException {
 
         log.debug("Find feedback by id");
-        Connection connection = getConnection();
+        Connection connection = null;
         ResultSet rs = null;
         PreparedStatement ps = null;
         Feedback feedback;
 
         try{
+            connection = dataSource.getConnection();
             begin(connection);
             ps = connection.prepareStatement(SQL_GET_FEEDBACK_BY_ID);
             ps.setInt(1, id);
@@ -101,11 +109,12 @@ public class FeedbackDAOImpl extends GenericDAO implements FeedbackDAO {
     public boolean deleteById(int id) throws DAOException {
 
         log.debug("Delete feedback by id");
-        Connection connection = getConnection();
+        Connection connection = null;
         PreparedStatement ps = null;
         boolean result = false;
 
         try{
+            connection = dataSource.getConnection();
             begin(connection);
             ps = connection.prepareStatement(SQL_DELETE_FEEDBACK_BY_ID);
             ps.setInt(1, id);
@@ -126,12 +135,13 @@ public class FeedbackDAOImpl extends GenericDAO implements FeedbackDAO {
     public boolean create(Feedback feedback) throws DAOException {
 
         log.debug("Create feedback");
-        Connection connection = getConnection();
+        Connection connection =  null;
         PreparedStatement ps = null;
         boolean result = false;
         ResultSet rs = null;
 
         try{
+            connection = dataSource.getConnection();
             begin(connection);
 
             ps = connection.prepareStatement(SQL_CREATE_FEEDBACK, PreparedStatement.RETURN_GENERATED_KEYS);
@@ -160,10 +170,11 @@ public class FeedbackDAOImpl extends GenericDAO implements FeedbackDAO {
     public Feedback update(Feedback feedback) throws DAOException {
 
         log.debug("Update feedback");
-        Connection connection = getConnection();
+        Connection connection = null;
         PreparedStatement ps = null;
 
         try{
+            connection = dataSource.getConnection();
             begin(connection);
 
             ps = connection.prepareStatement(SQL_UPDATE_FEEDBACK);

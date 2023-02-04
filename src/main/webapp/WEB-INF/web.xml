@@ -11,12 +11,12 @@
         <res-auth>Container</res-auth>
     </resource-ref>
 
-    <!--
+
         <listener>
             <listener-class>com.my.repairagency007.controller.listener.ContextListener</listener-class>
         </listener>
 
-
+    <!--
         <filter>
             <filter-name>LocaleFilter</filter-name>
             <filter-class>com.my.repairagency007.filter.LocaleFilter</filter-class>

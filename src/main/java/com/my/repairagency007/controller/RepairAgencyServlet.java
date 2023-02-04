@@ -29,22 +29,21 @@ public class RepairAgencyServlet extends HttpServlet {
 
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp)
-            throws ServletException, IOException {
+            throws IOException {
         log.debug("Make Redirect DoPost");
         resp.sendRedirect(processRequest(req, resp));
     }
 
     private String processRequest(HttpServletRequest req, HttpServletResponse resp)
-            throws ServletException, IOException {
-        req.setCharacterEncoding("UTF-8");
+            throws IOException {
         CommandFactory commandFactory = CommandFactory.commandFactory();
         log.debug("request " + req);
         Command command = commandFactory.getCommand(req);
         log.debug("Execute command " + command);
-        String page = null;
+        String page = "error_page.jsp";
         try {
             page = command.execute(req, resp);
-        } catch (ServiceException e) {
+        } catch (Exception e) {
             log.error("Error in main servlet", e);
             page = "controller?action=error";
         }

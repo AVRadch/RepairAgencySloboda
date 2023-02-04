@@ -1,21 +1,21 @@
-package model.DAO;
+package com.my.repairagency007;
 
-import com.my.repairagency007.model.entity.User;
+import com.my.repairagency007.DTO.UserDTO;
 
-public final class DAOTestEntity {
+public class CommonEntity {
 
-    public static User getTestUser() {
-        return User.builder()
+    public static UserDTO getTestUserDTO() {
+        return UserDTO.builder()
                 .id(1)
                 .notification("notification")
                 .phoneNumber("+380972866635")
-                .account(100000)
+                .account("1000.00")
                 .status("registred")
-                .password("1111")
+                .password("Aa111111")
                 .firstName("Alex")
                 .lastName("Petrov")
                 .email("asw1@aa.aaa")
-                .roleId(1)
+                .role("user")
                 .build();
     }
 }

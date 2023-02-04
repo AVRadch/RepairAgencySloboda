@@ -12,8 +12,9 @@ public class JDBCDataSource {
 
     private static final Logger log = LoggerFactory.getLogger(JDBCDataSource.class);
     private static volatile DataSource dataSource;
+    private JDBCDataSource() {};
 
-    static DataSource getDataSource() {
+    public static DataSource getDataSource() {
         if (dataSource == null) {
             synchronized (JDBCDataSource.class) {
                 if (dataSource == null) {

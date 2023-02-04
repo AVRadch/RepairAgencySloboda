@@ -37,7 +37,7 @@ public class ProfileCommand implements Command {
   }
 
   private void show(HttpServletRequest request, int id) {
-    UserDAO userDAO = new UserDAOImpl(AppContext.getDataSource());
+    UserDAO userDAO = AppContext.getAppContext().getUserDAO();
     User user = null;
     try {
       user = userDAO.getEntityById(id).orElse(null);
