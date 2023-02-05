@@ -10,6 +10,9 @@ import org.slf4j.LoggerFactory;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
+
+import static com.my.repairagency007.controller.command.CommandUtility.moveAttributeFromSessionToRequest;
 
 public class DeleteRequestCommand implements Command {
 
@@ -21,11 +24,30 @@ public class DeleteRequestCommand implements Command {
 
     @Override
     public String execute(HttpServletRequest httpRequest, HttpServletResponse httpResponse) throws ServiceException {
+            log.debug("get request method" + httpRequest.getMethod());
+            return httpRequest.getMethod().equals("POST") ? executePost(httpRequest, httpResponse) : executeGet(httpRequest);
+        }
 
-        int requestId = Integer.parseInt(httpRequest.getParameter("request-id"));
+    private String executeGet(HttpServletRequest request) {
+        log.info("Execute delete request Get");
+        moveAttributeFromSessionToRequest(request, "message");
+        moveAttributeFromSessionToRequest(request, "error");
+        log.info("request error = " + request.getAttribute("error"));
+        return "controller?action=adminAllRequest";
+    }
+
+    private String executePost(HttpServletRequest request, HttpServletResponse response){
+
+        HttpSession session = request.getSession();
+        int requestId = Integer.parseInt(request.getParameter("request-id"));
         log.debug("Delete user with id = " + requestId);
         String forward = "controller?action=adminAllRequest";
-        requestService.delete(requestId);
+        try {
+            requestService.delete(requestId);
+            session.setAttribute("message", "message.successDelete");
+        } catch (ServiceException e) {
+            session.setAttribute("error", "error.errorDelete");
+        }
 
         return forward;
     }

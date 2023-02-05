@@ -94,7 +94,6 @@ public class LoginCommand implements Command {
                             break;
             default: forward = "login.jsp";
         }
-
             return forward;
      }
 }
