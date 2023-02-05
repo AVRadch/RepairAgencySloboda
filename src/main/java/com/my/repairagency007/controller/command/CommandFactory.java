@@ -58,17 +58,17 @@ public class CommandFactory {
         commands.put("error", new ErrorCommand());
         //admin commands
         commands.put("registration", new RegistrationCommand());
-        commands.put("adminAllRequest", new AllRequestCommand());
-        commands.put("adminAllUsers", new AllUsersCommand());
-        commands.put("adminAllFeedbacks", new AllFeedbacksCommand());
-        commands.put("adminFilteredRepairerUsers", new AdminFilteredRepairedUserCommand());
-        commands.put("deleteRequest", new DeleteRequestCommand());
-        commands.put("deleteUser", new DeleteUserCommand());
-        commands.put("editUser", new EditUserCommand());
-        commands.put("updateUser", new UpdateUserCommand());
-        commands.put("updateRequest", new UpdateRequestAdminCommand());
+        commands.put("adminAllRequest", new AllRequestCommand(AppContext.getAppContext()));
+        commands.put("adminAllUsers", new AllUsersCommand(AppContext.getAppContext()));
+        commands.put("adminAllFeedbacks", new AllFeedbacksCommand(AppContext.getAppContext()));
+        commands.put("adminFilteredRepairerUsers", new AdminFilteredRepairedUserCommand(AppContext.getAppContext()));
+        commands.put("deleteRequest", new DeleteRequestCommand(AppContext.getAppContext()));
+        commands.put("deleteUser", new DeleteUserCommand(AppContext.getAppContext()));
+        commands.put("editUser", new EditUserCommand(AppContext.getAppContext()));
+        commands.put("updateUser", new UpdateUserCommand(AppContext.getAppContext()));
+        commands.put("updateRequest", new UpdateRequestAdminCommand(AppContext.getAppContext()));
         commands.put("addUser", new AddUserCommand());
-        commands.put("editRequest", new EditRequestCommand());
+        commands.put("editRequest", new EditRequestCommand(AppContext.getAppContext()));
 
         commands.put("registrationAdmin", new RegistrationAdminCommand());
     }

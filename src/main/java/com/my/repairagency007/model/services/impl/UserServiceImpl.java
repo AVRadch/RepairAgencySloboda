@@ -49,16 +49,18 @@ public class UserServiceImpl implements UserService {
     public List<UserDTO> getAllRepairer() throws ServiceException{
         List<UserDTO> userDTOS = new ArrayList<>();
         String query = " where role_id=2";
-        userDTOS=getAll(query);
+        userDTOS = getAll(query);
         return userDTOS;
     }
 
     @Override
     public UserDTO getById(int id) throws ServiceException{
-        UserDTO userDTO;
+        UserDTO userDTO = null;
         try {
             User user = userDAO.getEntityById(id).orElse(null);
-            userDTO = convertUserToDTO(user);
+            if (user != null) {
+                userDTO = convertUserToDTO(user);
+            }
         } catch (DAOException e) {
             throw new ServiceException(e);
         }

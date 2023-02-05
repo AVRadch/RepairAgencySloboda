@@ -84,7 +84,7 @@
             </thead>
             <tbody>
 
-            <c:forEach var="user" items="${requestScope.userDTOS}" varStatus="status">
+            <c:forEach var="user" items="${sessionScope.userDTOS}" varStatus="status">
                 <tr>
                     <td><c:out value="${user.id}"/></td>
                     <td><c:out value="${user.email}"/></td>

@@ -15,6 +15,7 @@ import org.slf4j.LoggerFactory;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
+import java.util.ArrayList;
 import java.util.List;
 
 import static com.my.repairagency007.util.PaginationUtil.paginate;
@@ -22,31 +23,26 @@ import static com.my.repairagency007.util.PaginationUtil.paginate;
 public class AdminFilteredRepairedUserCommand implements Command {
 
     private static final Logger log = LoggerFactory.getLogger(AdminFilteredRepairedUserCommand.class);
-
     private final RequestServiceImpl requestService;
-
     private final UserServiceImpl userService;
 
-    public AdminFilteredRepairedUserCommand() {
-        userService = AppContext.getAppContext().getUserService();
-        requestService = AppContext.getAppContext().getRequestService();
+    public AdminFilteredRepairedUserCommand(AppContext appContext) {
+        userService = appContext.getUserService();
+        requestService = appContext.getRequestService();
     }
     @Override
     public String execute(HttpServletRequest request, HttpServletResponse response) throws ServiceException {
 
         HttpSession session = request.getSession();
 
-        UserDTO currentUser = (UserDTO) session.getAttribute("logged_user");
-        log.debug("Получили юзера из сессии");
-
         int id = Integer.parseInt(request.getParameter("reparier-id"));
         String forward = "requestsForAdmin.jsp";
         QueryBuilder queryBuilder = getQueryBuilder(request);
         log.debug("получена query builder " + queryBuilder);
         List<RequestDTO> requests;
-        requests = requestService.getByReparierId( queryBuilder.getQuery(), id);
+        requests = requestService.getByReparierId(queryBuilder.getQuery(), id);
 
-        int numberOfRecords = requests.size();
+        int numberOfRecords = requestService.getNumberOfRecords(queryBuilder.getRecordQuery());
         log.debug("получение списка мастеров");
         List<UserDTO> repairers = userService.getAllRepairer();
         log.debug("repairs = " + repairers);

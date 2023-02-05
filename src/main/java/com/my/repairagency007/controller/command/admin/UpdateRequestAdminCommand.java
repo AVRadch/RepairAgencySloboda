@@ -28,9 +28,9 @@ public class UpdateRequestAdminCommand implements Command {
 
     private final UserServiceImpl userService;
 
-    public UpdateRequestAdminCommand() {
-        requestService = AppContext.getAppContext().getRequestService();
-        userService=AppContext.getAppContext().getUserService();
+    public UpdateRequestAdminCommand(AppContext appContext) {
+        requestService = appContext.getRequestService();
+        userService = appContext.getUserService();
     }
 
     @Override

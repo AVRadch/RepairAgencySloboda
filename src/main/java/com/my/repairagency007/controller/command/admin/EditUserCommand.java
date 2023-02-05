@@ -20,7 +20,7 @@ public class EditUserCommand implements Command {
 
     private final UserServiceImpl userService;
 
-    public EditUserCommand() {userService = AppContext.getAppContext().getUserService();}
+    public EditUserCommand(AppContext appContext) {userService = appContext.getUserService();}
 
     @Override
     public String execute(HttpServletRequest request, HttpServletResponse response) throws ServiceException {

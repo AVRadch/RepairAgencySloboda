@@ -23,7 +23,7 @@ public class UpdateUserCommand implements Command {
 
     private final UserServiceImpl userService;
 
-    public UpdateUserCommand() {userService = AppContext.getAppContext().getUserService();}
+    public UpdateUserCommand(AppContext appContext) {userService = appContext.getUserService();}
 
     @Override
     public String execute(HttpServletRequest request, HttpServletResponse response) throws ServiceException {

@@ -27,19 +27,14 @@ public class AllFeedbacksCommand implements Command {
 
     private final FeedbackServiceImpl feedbackService;
 
-    public AllFeedbacksCommand() {
-        feedbackService = AppContext.getAppContext().getFeedbackService();
+    public AllFeedbacksCommand(AppContext appContext) {
+        feedbackService = appContext.getFeedbackService();
     }
 
     @Override
     public String execute(HttpServletRequest request, HttpServletResponse response) throws ServiceException {
 
         HttpSession session = request.getSession();
-        log.debug("Получили сессию");
-
-        UserDTO currentUser = (UserDTO) session.getAttribute("logged_user");
-        log.debug("Получили юзера из сессии");
-
         String forward = "feedbacksForAdmin.jsp";
         List<FeedbackDTO> feedbackDTOS;
 
@@ -48,7 +43,7 @@ public class AllFeedbacksCommand implements Command {
         feedbackDTOS = feedbackService.getAll(queryBuilder.getQuery());
         int numberOfRecords = feedbackService.getNumberOfRecords(queryBuilder.getRecordQuery());
 
-        request.setAttribute("feedbackDTOS", feedbackDTOS);
+        session.setAttribute("feedbackDTOS", feedbackDTOS);
         paginate(numberOfRecords, request);
 
         return forward;

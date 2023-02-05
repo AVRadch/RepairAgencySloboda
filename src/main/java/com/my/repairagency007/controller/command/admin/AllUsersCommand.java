@@ -24,8 +24,8 @@ public class AllUsersCommand implements Command {
 
     private final UserServiceImpl userService;
 
-    public AllUsersCommand() {
-        userService = AppContext.getAppContext().getUserService();
+    public AllUsersCommand(AppContext appContext) {
+        userService = appContext.getUserService();
     }
 
     @Override
@@ -33,10 +33,8 @@ public class AllUsersCommand implements Command {
 
         HttpSession session = request.getSession();
 
-        UserDTO currentUser = (UserDTO) session.getAttribute("logged_user");
         List<UserDTO> users;
         String forward = "usersForAdmin.jsp";
-        log.debug("User role" + currentUser.getRole());
 
         log.debug("создание списка юзеров");
         QueryBuilder queryBuilder = getQueryBuilder(request);
@@ -46,7 +44,7 @@ public class AllUsersCommand implements Command {
         log.debug("залогированы user DTO");
         int numberOfRecords = userService.getNumberOfRecords(queryBuilder.getRecordQuery());
 
-        request.setAttribute("userDTOS", users);
+        session.setAttribute("userDTOS", users);
         paginate(numberOfRecords, request);
 
         return forward;

@@ -38,7 +38,7 @@
   <div class="bd-example">
     <table class="table table-striped" aria-label="user-table">
     <thead>
-    <c:set var="base" value="controller?action=userFeedbacks&date=${param.date}&"/>
+    <c:set var="base" value="controller?action=adminAllFeedbacks&date=${param.date}&"/>
     <c:set var="byDate" value="sort=date_time&"/>
     <c:set var="byRating" value="sort=rating&"/>
     <c:set var="dateOrder"
@@ -63,7 +63,7 @@
     </thead>
     <tbody>
 
-    <c:forEach var="feedback" items="${requestScope.feedbackDTOS}" varStatus="status">
+    <c:forEach var="feedback" items="${sessionScope.feedbackDTOS}" varStatus="status">
       <tr>
         <td><c:out value="${feedback.id}"/></td>
         <td><c:out value="${feedback.userFirstName}"/><br>
@@ -92,7 +92,7 @@
 
 <form method="GET" action="controller" class="flex">
   <div class="d-flex justify-content-between text-center">
-    <input type="hidden" name="action" value="userFeedbacks">
+    <input type="hidden" name="action" value="adminAllFeedbacks">
     <input type="hidden" name="offset" value="0">
     <div class="form-row ">
       <div class="flex-column">
@@ -106,7 +106,7 @@
 </form>
 
 <c:set var="href" scope="request"
-       value="controller?action=userFeedbacks&date=${param.date}&sort=${param.sort}&order=${param.order}&"/>
+       value="controller?action=adminAllFeedbacks&date=${param.date}&sort=${param.sort}&order=${param.order}&"/>
 
 <jsp:include page="pagination.jsp"/>
 

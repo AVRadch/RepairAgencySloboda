@@ -17,7 +17,7 @@ public class DeleteRequestCommand implements Command {
 
     private final RequestServiceImpl requestService;
 
-    public DeleteRequestCommand() {requestService = AppContext.getAppContext().getRequestService();}
+    public DeleteRequestCommand(AppContext appContext) {requestService = appContext.getRequestService();}
 
     @Override
     public String execute(HttpServletRequest httpRequest, HttpServletResponse httpResponse) throws ServiceException {

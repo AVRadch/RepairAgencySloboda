@@ -18,7 +18,7 @@ public class DeleteUserCommand implements Command {
 
     private final UserServiceImpl userService;
 
-    public DeleteUserCommand() {userService = AppContext.getAppContext().getUserService();}
+    public DeleteUserCommand(AppContext appContext) {userService = appContext.getUserService();}
 
 
     @Override

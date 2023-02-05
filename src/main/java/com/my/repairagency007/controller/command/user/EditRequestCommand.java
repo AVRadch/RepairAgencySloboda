@@ -22,9 +22,9 @@ public class EditRequestCommand implements Command {
 
     private final UserServiceImpl userService;
 
-    public EditRequestCommand() {
-        requestService = AppContext.getAppContext().getRequestService();
-        userService=AppContext.getAppContext().getUserService();
+    public EditRequestCommand(AppContext appContext) {
+        requestService = appContext.getRequestService();
+        userService = appContext.getUserService();
     }
 
     @Override

@@ -29,9 +29,9 @@ public class AllRequestCommand implements Command {
 
     private final UserServiceImpl userService;
 
-    public AllRequestCommand() {
-        requestService = AppContext.getAppContext().getRequestService();
-        userService = AppContext.getAppContext().getUserService();
+    public AllRequestCommand(AppContext appContext) {
+        requestService = appContext.getRequestService();
+        userService = appContext.getUserService();
     }
 
     @Override
