@@ -37,9 +37,9 @@ public class RepairAgencyServlet extends HttpServlet {
     private String processRequest(HttpServletRequest req, HttpServletResponse resp)
             throws IOException {
         CommandFactory commandFactory = CommandFactory.commandFactory();
-        log.debug("request " + req);
+        log.info("request " + req);
         Command command = commandFactory.getCommand(req);
-        log.debug("Execute command " + command);
+        log.info("Execute command " + command);
         String page = "error_page.jsp";
         try {
             page = command.execute(req, resp);

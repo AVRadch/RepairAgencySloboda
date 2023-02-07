@@ -94,12 +94,31 @@
                     <td><c:out value="${user.phoneNumber}"/></td>
                     <td><c:out value="${user.role}"/></td>
                     <td>
-                        <a class="link-dark" href=controller?action=deleteUser&user-id=${user.id}>
-                            <fmt:message key="button.deleteUser"/>
-                        </a> <br>
-                        <a class="link-dark" href=controller?action=editUser&user-id=${user.id}>
-                            <fmt:message key="button.editUser"/>
-                        </a>
+                        <div class="btn-group">
+                            <form method="post"
+                                  action="controller?action=deleteUser&user-id=${user.id}">
+                                <input type="submit" value=
+                                    <fmt:message key="button.deleteUser"/>>
+                            </form>
+                            <form method="post"
+                                  action="controller?action=editUser&user-id=${user.id}">
+                                <input type="submit" value=
+                                    <fmt:message key="button.editUser"/>>
+                            </form>
+<%--
+                            ```
+                            javascript
+                            var xhttp = new XMLHttpRequest();
+                            xhttp.open("POST", "your_url_here", true);
+                            xhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+                            xhttp.send("param1=value1&param2=value2");
+                            ```         --%>
+                            <%--
+                            <a class="link-dark" href=controller?action=editUser&user-id=${user.id} method="post">
+                                <fmt:message key="button.editUser"/>
+                            </a>
+                            --%>
+                        </div>
                     </td>
                 </tr>
             </c:forEach>

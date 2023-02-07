@@ -25,14 +25,10 @@ public class EditUserCommand implements Command {
     @Override
     public String execute(HttpServletRequest request, HttpServletResponse response) throws ServiceException {
 
-
-        RequestDispatcher dispatcher;
-
         int id = Integer.parseInt(request.getParameter("user-id"));
         UserDTO userDTO = userService.getById(id);
         request.setAttribute("userDTO", userDTO);
         log.debug("Get user" + userDTO.getLastName());
-        log.debug("get request method" + request.getMethod());
         return "editUser.jsp";
     }
 }

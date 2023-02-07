@@ -4,7 +4,6 @@ import com.my.repairagency007.controller.command.Command;
 import com.my.repairagency007.controller.context.AppContext;
 import com.my.repairagency007.exception.ServiceException;
 import com.my.repairagency007.model.services.impl.RequestServiceImpl;
-import com.my.repairagency007.model.services.impl.UserServiceImpl;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -25,7 +24,7 @@ public class DeleteRequestCommand implements Command {
     @Override
     public String execute(HttpServletRequest httpRequest, HttpServletResponse httpResponse) throws ServiceException {
             log.debug("get request method" + httpRequest.getMethod());
-            return httpRequest.getMethod().equals("POST") ? executePost(httpRequest, httpResponse) : executeGet(httpRequest);
+            return httpRequest.getMethod().equals("POST") ? executePost(httpRequest) : executeGet(httpRequest);
         }
 
     private String executeGet(HttpServletRequest request) {
@@ -36,7 +35,7 @@ public class DeleteRequestCommand implements Command {
         return "controller?action=adminAllRequest";
     }
 
-    private String executePost(HttpServletRequest request, HttpServletResponse response){
+    private String executePost(HttpServletRequest request){
 
         HttpSession session = request.getSession();
         int requestId = Integer.parseInt(request.getParameter("request-id"));

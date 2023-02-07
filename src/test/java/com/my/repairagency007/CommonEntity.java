@@ -49,7 +49,7 @@ public class CommonEntity {
                 .repairerFirstName("John")
                 .repairerLastName("Polansky")
                 .paymentStatus(PaymentStatus.PAID.getName())
-                .totalCost("1000,00")
+                .totalCost("1000.00")
                 .build();
     }
 
