@@ -25,8 +25,8 @@ public class CraftsmanFeedmackCommand implements Command {
 
     private final FeedbackServiceImpl feedbackService;
 
-    public CraftsmanFeedmackCommand() {
-        feedbackService = AppContext.getAppContext().getFeedbackService();
+    public CraftsmanFeedmackCommand(AppContext appContext) {
+        feedbackService = appContext.getFeedbackService();
     }
 
     @Override
@@ -35,7 +35,7 @@ public class CraftsmanFeedmackCommand implements Command {
         String forward = "feedbacksForCraftsman.jsp";
         List<FeedbackDTO> feedbackDTOS;
 
-        log.debug("создание списка фидбеков");
+        log.info("создание списка фидбеков");
         QueryBuilder queryBuilder = getQueryBuilder(request);
         feedbackDTOS = feedbackService.getAll(queryBuilder.getQuery());
         int numberOfRecords = feedbackService.getNumberOfRecords(queryBuilder.getRecordQuery());

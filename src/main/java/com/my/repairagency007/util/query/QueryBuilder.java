@@ -20,6 +20,13 @@ public abstract class QueryBuilder {
         filters.add("user_id=" + userIdFilter);
         return this;
     }
+    public QueryBuilder setCompletionStatusFilter(String completionStatusIdFilter) {
+
+        if (completionStatusIdFilter != null && isPositiveInt(completionStatusIdFilter)) {
+            filters.add("completion_status_id=" + completionStatusIdFilter);
+        }
+        return this;
+    }
 
     public QueryBuilder setDateFilter(String dateFilter) {
         if (dateFilter != null && dateFilter.equals("passed")) {

@@ -9,6 +9,7 @@ import com.my.repairagency007.exception.NoSuchUserException;
 import com.my.repairagency007.exception.ServiceException;
 import com.my.repairagency007.model.services.impl.UserServiceImpl;
 import org.junit.jupiter.api.Test;
+import org.mindrot.jbcrypt.BCrypt;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -17,6 +18,7 @@ import javax.servlet.http.HttpSession;
 import static com.my.repairagency007.CommonEntity.getTestUserDTO;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.mockito.ArgumentMatchers.isA;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
@@ -36,6 +38,7 @@ public class LoginCommandTest {
         when(request.getMethod()).thenReturn("POST");
         when(appContext.getUserService()).thenReturn(userService);
         when(userService.login("asw1@aa.aaa", "Aa111111")).thenReturn(getTestUserDTO());
+ //       when(bCrypt.checkpw(isA(String.class), isA(String.class))).thenReturn(true);
 
         String path = new LoginCommand(appContext).execute(testRequest, response);
 

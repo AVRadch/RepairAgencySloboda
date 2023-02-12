@@ -39,10 +39,10 @@ public class CommandFactory {
     static {
 
         //craftsman commands
-        commands.put("craftsmanRequest", new CraftsmanRequestCommand());
-        commands.put("craftsmanFeedbacks", new CraftsmanFeedmackCommand());
-        commands.put("setStartRepair", new SetStartRepairCommand());
-        commands.put("setCompletedRepair", new SetCompletedRepairCommand());
+        commands.put("craftsmanRequest", new CraftsmanRequestCommand(AppContext.getAppContext()));
+        commands.put("craftsmanFeedbacks", new CraftsmanFeedmackCommand(AppContext.getAppContext()));
+        commands.put("setStartRepair", new SetStartRepairCommand(AppContext.getAppContext()));
+        commands.put("setCompletedRepair", new SetCompletedRepairCommand(AppContext.getAppContext()));
         //user commands
         commands.put("userRequest", new UserRequestCommand());
         commands.put("userEditRequest", new UserEditRequestCommand());
@@ -62,6 +62,7 @@ public class CommandFactory {
         commands.put("adminAllUsers", new AllUsersCommand(AppContext.getAppContext()));
         commands.put("adminAllFeedbacks", new AllFeedbacksCommand(AppContext.getAppContext()));
         commands.put("adminFilteredRepairerUsers", new AdminFilteredRepairedUserCommand(AppContext.getAppContext()));
+        commands.put("adminFilteredStatus", new AdminFilteredStatusCommand(AppContext.getAppContext()));
         commands.put("deleteRequest", new DeleteRequestCommand(AppContext.getAppContext()));
         commands.put("deleteUser", new DeleteUserCommand(AppContext.getAppContext()));
         commands.put("editUser", new EditUserCommand(AppContext.getAppContext()));

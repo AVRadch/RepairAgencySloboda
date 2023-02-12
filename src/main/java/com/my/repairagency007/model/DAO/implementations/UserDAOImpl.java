@@ -49,13 +49,12 @@ public class UserDAOImpl extends GenericDAO implements UserDAO {
     public List<User> findAll(String query) throws DAOException {
 
         log.trace("Find all users");
-        Connection connection = getConnection();
+        Connection connection = null;
         ResultSet rs = null;
         PreparedStatement ps = null;
-
         ArrayList<User> result = null;
-
         try{
+            connection = getConnection();
             begin(connection);
             log.debug("Try to exec query = " + SQL_SELECT_ALL_USERS + query);
             ps = connection.prepareStatement(SQL_SELECT_ALL_USERS + query);
@@ -76,11 +75,12 @@ public class UserDAOImpl extends GenericDAO implements UserDAO {
 
     @Override
     public Optional<User> getEntityById(int id) throws DAOException {
-        Connection connection = getConnection();
+        Connection connection = null;
         ResultSet rs = null;
         PreparedStatement ps = null;
         User user = null;
         try{
+            connection = getConnection();
             begin(connection);
             ps = connection.prepareStatement(SQL_GET_USER_BY_ID);
             ps.setInt(1, id);
@@ -108,11 +108,12 @@ public class UserDAOImpl extends GenericDAO implements UserDAO {
     public boolean deleteById(int id) throws DAOException {
 
         log.debug("Delete user by id");
-        Connection connection = getConnection();
+        Connection connection = null;
         PreparedStatement ps = null;
         boolean result = false;
 
         try{
+            connection = getConnection();
             begin(connection);
             ps = connection.prepareStatement(SQL_DELETE_USER_BY_ID);
             ps.setInt(1, id);
@@ -133,12 +134,13 @@ public class UserDAOImpl extends GenericDAO implements UserDAO {
     public boolean create(User user) throws DAOException {
 
         log.debug("Create user");
-        Connection connection = getConnection();
+        Connection connection = null;
         PreparedStatement ps = null;
         boolean result = false;
         ResultSet rs = null;
 
         try{
+            connection = getConnection();
             begin(connection);
 
             ps = connection.prepareStatement(SQL_CREATE_USER, PreparedStatement.RETURN_GENERATED_KEYS);
@@ -150,7 +152,6 @@ public class UserDAOImpl extends GenericDAO implements UserDAO {
                 int id = rs.getInt(1);
                 user.setId(id);
             }
-
             connection.commit();
             log.trace("User created");
         } catch (SQLException e) {
@@ -166,11 +167,12 @@ public class UserDAOImpl extends GenericDAO implements UserDAO {
     @Override
     public User update(User user) throws DAOException {
 
-        log.debug("Try to update user");
-        Connection connection = getConnection();
+        log.info("Try to update user");
+        Connection connection = null;
         PreparedStatement ps = null;
 
         try{
+            connection = getConnection();
             begin(connection);
 
             ps = connection.prepareStatement(SQL_UPDATE_USER);
@@ -202,7 +204,7 @@ public class UserDAOImpl extends GenericDAO implements UserDAO {
     }
 
     private void fillUser(PreparedStatement ps, User user)throws SQLException{
-        log.debug("Move user to prepared statement = " + user);
+        log.info("Move user to prepared statement = " + user + " PS => " + ps);
         ps.setString(1, user.getNotification());
         ps.setString(2, user.getPhoneNumber());
         ps.setInt(3, user.getAccount());
@@ -234,12 +236,13 @@ public class UserDAOImpl extends GenericDAO implements UserDAO {
     public Optional<User> getByEmail(String email) throws DAOException {
 
         log.info("Find user by email: " + email);
-        Connection connection = getConnection();
+        Connection connection = null;
         ResultSet rs = null;
         PreparedStatement ps = null;
         User user = null;
 
         try{
+            connection = getConnection();
             begin(connection);
             ps = connection.prepareStatement(SQL_GET_USER_BY_EMAIL);
             ps.setString(1, email);
@@ -260,16 +263,10 @@ public class UserDAOImpl extends GenericDAO implements UserDAO {
         return Optional.ofNullable(user);
     }
 
-    protected Connection getConnection(){
+    protected Connection getConnection() throws SQLException {
 
         Connection connection = null;
-
-        try {
-            connection = dataSource.getConnection();
-        } catch (SQLException e) {
-            e.printStackTrace();
-            throw new RuntimeException(e);
-        }
+        connection = dataSource.getConnection();
 
         return connection;
     }

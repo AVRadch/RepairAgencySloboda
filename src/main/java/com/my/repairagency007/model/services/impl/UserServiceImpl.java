@@ -98,11 +98,11 @@ public class UserServiceImpl implements UserService {
             log.error("Can't delete user by id", e);
             throw new ServiceException(e);
         }
-        log.debug("Delete user with id = " + id);
+        log.info("Delete user with id = " + id);
     }
 
     public void create(UserDTO userDTO) throws ServiceException {
-        log.debug("Try to convert userDTO to user " + userDTO);
+        log.info("Try to convert userDTO to user " + userDTO);
         User user = convertDTOToUser(userDTO);
         try {
             userDAO.create(user);
@@ -113,7 +113,7 @@ public class UserServiceImpl implements UserService {
     }
 
     public void update(UserDTO userDTO) throws ServiceException {
-        log.debug("Update user. UserDTO = " + userDTO);
+        log.info("Update user. UserDTO = " + userDTO);
         User user = convertDTOToUser(userDTO);
         try {
             userDAO.update(user);

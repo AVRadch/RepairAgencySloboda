@@ -7,6 +7,8 @@
 --%>
 <%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
+<%@ page import="com.my.repairagency007.model.entity.CompletionStatus" %>
+
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <fmt:setLocale value="${sessionScope.language}"/>
 <fmt:setBundle basename="language"/>
@@ -50,6 +52,18 @@
                     </select>
                 </label>
                 <button type="submit">Filter repairer</button>
+            </form>
+            <form method="post" action="controller">
+                <input type="hidden" name="action" value="adminFilteredStatus">
+                <label>
+                    <select name="status-id">
+                        <option value="0"><fmt:message key="label.selectCompletionStatus"/></option>
+                        <c:forEach var="status" items="${CompletionStatus.values()}">
+                            <option value="${status.ordinal()}">${status.name()}</option>
+                        </c:forEach>
+                    </select>
+                </label>
+                <button type="submit">Filter status</button>
             </form>
         </div>
     </div>

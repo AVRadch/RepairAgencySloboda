@@ -53,42 +53,19 @@ public class RequestServiceImpl implements RequestService {
     }
 
     @Override
-    public List<RequestDTO> viewCompletionStatusRequests(String completionStatus) throws ServiceException {
-        return null;
-    }
-
-    @Override
-    public List<RequestDTO> viewPaymentStatusRequests(String paymentStatus) throws ServiceException {
-        return null;
-    }
-
-    @Override
-    public void setCraftsman(int requestId, int userId) throws ServiceException {
-
-    }
-
-    @Override
-    public void setTotalCost(int requestId, int totalCost) throws ServiceException {
-
-    }
-
-    @Override
-    public void setPaymentStatus(int requestId, String paymentStatus) throws ServiceException {
-
-    }
-
-    @Override
-    public void setCompletionStatus(int requestId, String completionStatus) throws ServiceException {
-
-    }
-
-    @Override
     public RequestDTO getById(int id) throws ServiceException {
 
         RequestDTO requestDTO;
 
         try {
-            requestDTO = fillDTOFromRequestAndUsers(requestDAO.getEntityById(id).orElse(null));
+            Request request = requestDAO.getEntityById(id).orElse(null);
+            log.info("request => " + request);
+            if (request != null) {
+                requestDTO = fillDTOFromRequestAndUsers(request);
+                log.info("requestDTO => " + requestDTO);
+            } else {
+                throw new DAOException();
+            }
         } catch (DAOException e) {
             log.error("Error getEntity by id method", e);
             throw new ServiceException(e);
@@ -181,13 +158,17 @@ public class RequestServiceImpl implements RequestService {
 
     public boolean setPaymentStatusPaid(int requestId) throws ServiceException {
 
-        boolean result;
+        boolean result = false;
         Request request = null;
 
         try {
             request = requestDAO.getEntityById(requestId).orElse(null);
-            User user = userDAO.getEntityById(request.getUser_id()).orElse(null);
-            result = requestDAO.setPaymentStatusPaid(request, user);
+            if (request != null) {
+                User user = userDAO.getEntityById(request.getUser_id()).orElse(null);
+                result = requestDAO.setPaymentStatusPaid(request, user);
+            } else {
+                throw new DAOException();
+            }
         } catch (DAOException e) {
             log.error("Error to Set Payment PAID");
             throw new ServiceException(e);
