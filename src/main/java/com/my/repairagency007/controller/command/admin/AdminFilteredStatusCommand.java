@@ -7,7 +7,6 @@ import com.my.repairagency007.controller.context.AppContext;
 import com.my.repairagency007.exception.ServiceException;
 import com.my.repairagency007.model.services.impl.RequestServiceImpl;
 import com.my.repairagency007.model.services.impl.UserServiceImpl;
-import com.my.repairagency007.util.query.QueryBuilder;
 import com.my.repairagency007.util.query.RequestQueryBuilder;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -34,8 +33,10 @@ public class AdminFilteredStatusCommand implements Command {
         HttpSession session = request.getSession();
 
         String forward = "requestsForAdmin.jsp";
-        QueryBuilder queryBuilder = getQueryBuilder(request);
-        log.debug("получена query builder " + queryBuilder);
+        RequestQueryBuilder queryBuilder = new RequestQueryBuilder(); /* = getQueryBuilder(request);*/
+        log.info("status-id => " + request.getParameter("status-id"));
+        queryBuilder.getQueryBuilder(request);
+        log.info("получена query builder " + queryBuilder.getQuery());
         List<RequestDTO> requests;
         requests = requestService.getAll(queryBuilder.getQuery());
 
@@ -54,12 +55,12 @@ public class AdminFilteredStatusCommand implements Command {
         return forward;
     }
 
-    private QueryBuilder getQueryBuilder(HttpServletRequest request) {
+ /*   private QueryBuilder getQueryBuilder(HttpServletRequest request) {
         return new RequestQueryBuilder()
                 .setCompletionStatusFilter(request.getParameter("status-id") + 1)
                 .setDateFilter(request.getParameter("date"))
                 .setSortField(request.getParameter("sort"))
                 .setOrder(request.getParameter("order"))
                 .setLimits(request.getParameter("offset"), request.getParameter("records"));
-    }
+    }       */
 }

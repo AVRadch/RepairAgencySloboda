@@ -32,11 +32,14 @@ public class UserServiceImpl implements UserService {
     public UserDTO login(String email, String password) throws ServiceException {
 
         UserDTO userDTO;
-
         try {
             User user;
             log.info("Try to userDAO.getByEmail email = " + email);
             user = userDAO.getByEmail(email).orElseThrow(NoSuchUserException::new);
+            log.info("check the password");
+            if (!BCrypt.checkpw(password, user.getPassword())){
+                throw new IncorrectPasswordException();
+            }
             log.info("Try to convert to userDTO");
             userDTO = convertUserToDTO(user);
         } catch (DAOException e) {

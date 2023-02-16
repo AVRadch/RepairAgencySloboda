@@ -116,14 +116,14 @@ public class RequestServiceImpl implements RequestService {
     public List<RequestDTO> getAll(String query) throws ServiceException {
         List<RequestDTO> requestDTOS = new ArrayList<>();
         try {
-            log.debug("Try to execute requestDAO findAll method");
+            log.info("Try to execute requestDAO findAll method");
             List<Request> requests = requestDAO.findAll(query);
-            log.debug("convert request to dto");
+            log.info("convert request to dto");
             for (Request request : requests
             ) {
                 requestDTOS.add(fillDTOFromRequestAndUsers(request));
             }
-            log.debug("All OK inside getAll Request");
+            log.info("All OK inside getAll Request");
         } catch (DAOException e) {
             log.error("Error to find request and form DTO");
             throw new ServiceException(e);

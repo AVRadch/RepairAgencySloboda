@@ -20,6 +20,13 @@ import java.util.List;
 
 import static com.my.repairagency007.model.entity.Role.*;
 import static com.my.repairagency007.util.PaginationUtil.paginate;
+/**
+ * This is AllRequestCommand class. Accessible by admin.
+ * Return list of requests based on sorted, filtered and pagination parameters.
+ *
+ * @author Alex Radchenko
+ * @version 1.0
+ */
 
 public class AllRequestCommand implements Command {
 
@@ -28,12 +35,23 @@ public class AllRequestCommand implements Command {
     private final RequestServiceImpl requestService;
 
     private final UserServiceImpl userService;
-
+    /**
+     * @param appContext using for get the value of FeedbackServiceImpl and RequestServiceImpl
+     * instance to use in command
+     */
     public AllRequestCommand(AppContext appContext) {
         requestService = appContext.getRequestService();
         userService = appContext.getUserService();
     }
-
+    /**
+     * Method execute forms query with sorted, filtered and pagination parameters for
+     * getAll method RequestService. After that, the parameters for pagination are calculated
+     * and the requests list is filled in and saved in the session. Also method get list of
+     * repairs from getAllRepairer method UserService
+     *
+     * @param request to get parameters for query forms
+     * @return view requestsforAdmin page
+     */
     @Override
     public String execute(HttpServletRequest request, HttpServletResponse response) throws ServiceException {
 
@@ -42,9 +60,10 @@ public class AllRequestCommand implements Command {
         String forward = "requestsForAdmin.jsp";
         List<RequestDTO> requests;
 
-        log.debug("создание списка реквестов");
-        QueryBuilder queryBuilder = getQueryBuilder(request);
-        log.debug("получена query builder " + queryBuilder);
+        log.info("создание списка реквестов");
+        RequestQueryBuilder queryBuilder = new RequestQueryBuilder();
+        queryBuilder.getQueryBuilder(request);
+        log.info("получена query builder " + queryBuilder);
         requests = requestService.getAll(queryBuilder.getQuery());
         int numberOfRecords = requestService.getNumberOfRecords(queryBuilder.getRecordQuery());
         List<UserDTO> repairers = userService.getAllRepairer();
@@ -55,12 +74,17 @@ public class AllRequestCommand implements Command {
 
         return forward;
     }
-
-    private QueryBuilder getQueryBuilder(HttpServletRequest request) {
+/**
+ * Method get parameters from request and forms FeedbackQueryBuilder
+ *
+ * @param request to get parameters for RequestQueryBuilder
+ * @return RequestQueryBuilder
+ **/
+ /*   private QueryBuilder getQueryBuilder(HttpServletRequest request) {
         return new RequestQueryBuilder()
                 .setDateFilter(request.getParameter("date"))
                 .setSortField(request.getParameter("sort"))
                 .setOrder(request.getParameter("order"))
                 .setLimits(request.getParameter("offset"), request.getParameter("records"));
-    }
+    }       */
 }

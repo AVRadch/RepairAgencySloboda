@@ -70,10 +70,7 @@ public class LoginCommand implements Command {
         try {
             log.info("Try to login");
             userDTO = userService.login(email, password);
-            log.info("check the password");
-            if (!BCrypt.checkpw(password, userDTO.getPassword())){
-                throw new IncorrectPasswordException();
-            }
+
         }catch (Exception e){
             session.setAttribute("error", e.getMessage());
             session.setAttribute("email", email);

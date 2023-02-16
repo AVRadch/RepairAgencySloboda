@@ -1,12 +1,18 @@
 package com.my.repairagency007.util.query;
 
+import com.my.repairagency007.controller.command.admin.AdminFilteredRepairedUserCommand;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+import javax.servlet.http.HttpServletRequest;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.StringJoiner;
 
 public abstract class QueryBuilder {
 
-    private final List<String> filters = new ArrayList<>();
+    private static final Logger log = LoggerFactory.getLogger(QueryBuilder.class);
+    protected final List<String> filters = new ArrayList<>();
     private String sortField;
     private String order = "ASC";
     private int offset = 0;
@@ -18,13 +24,6 @@ public abstract class QueryBuilder {
 
     public QueryBuilder setUserIdFilter(long userIdFilter) {
         filters.add("user_id=" + userIdFilter);
-        return this;
-    }
-    public QueryBuilder setCompletionStatusFilter(String completionStatusIdFilter) {
-
-        if (completionStatusIdFilter != null && isPositiveInt(completionStatusIdFilter)) {
-            filters.add("completion_status_id=" + completionStatusIdFilter);
-        }
         return this;
     }
 
@@ -69,6 +68,7 @@ public abstract class QueryBuilder {
     }
 
     public String getQuery() {
+        log.info("getQuery filter query => " + getFilterQuery());
         return getFilterQuery() + getGroupByQuery() + getSortQuery() + getLimitQuery();
     }
 
@@ -77,6 +77,7 @@ public abstract class QueryBuilder {
     }
 
     private String getFilterQuery() {
+        log.info ("Inside getFilterQuery filters = " + filters);
         if (filters.isEmpty()) {
             return "";
         }
@@ -97,7 +98,7 @@ public abstract class QueryBuilder {
 
     protected abstract String checkSortField(String sortField);
 
-    private boolean isPositiveInt(String intString) {
+    protected boolean isPositiveInt(String intString) {
         try {
             int i = Integer.parseInt(intString);
             if (i < 0) {
@@ -108,4 +109,7 @@ public abstract class QueryBuilder {
         }
         return true;
     }
+
+
+
 }

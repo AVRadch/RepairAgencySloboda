@@ -15,15 +15,28 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
 import static com.my.repairagency007.util.MapperDTOUtil.fillUserDTO;
-
+/**
+ * This is RegistrationAdminCommand class. Accessible by admin.
+ * Get information from request, fill userDTO and create user in DB
+ *
+ * @author Alex Radchenko
+ * @version 1.0
+ */
 public class RegistrationAdminCommand implements Command {
 
     private static final Logger log = LoggerFactory.getLogger(RegistrationAdminCommand.class);
 
     private final UserServiceImpl userService;
-
-    public RegistrationAdminCommand() {userService = AppContext.getAppContext().getUserService();}
-
+    /**
+     * @param appContext using for get the value of UserServiceImpl instance to use in command
+     */
+    public RegistrationAdminCommand(AppContext appContext) {userService = appContext.getUserService();}
+    /**
+     * Method get users information from request, fill userDTO and create user in DB
+     *
+     * @param request to get users information
+     * @return command for controller
+     */
     @Override
     public String execute(HttpServletRequest request, HttpServletResponse response) {
 

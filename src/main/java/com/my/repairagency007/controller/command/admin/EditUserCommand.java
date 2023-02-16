@@ -13,15 +13,28 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import static com.my.repairagency007.controller.command.CommandUtility.moveAttributeFromSessionToRequest;
-
+/**
+ * This is EditUserCommand class. Accessible by admin.
+ * Get user from DB for edtitng in controller
+ *
+ * @author Alex Radchenko
+ * @version 1.0
+ */
 public class EditUserCommand implements Command {
 
     private static final Logger log = LoggerFactory.getLogger(EditUserCommand.class);
 
     private final UserServiceImpl userService;
-
+    /**
+     * @param appContext using for get the value of UserServiceImpl instance to use in command
+     */
     public EditUserCommand(AppContext appContext) {userService = appContext.getUserService();}
-
+    /**
+     * Method get user from DB and save it in request attribute and return editUser page
+     *
+     * @param request to get users id for get user from DB and save it in request attribute
+     * @return editUser page for redirect
+     */
     @Override
     public String execute(HttpServletRequest request, HttpServletResponse response) throws ServiceException {
 

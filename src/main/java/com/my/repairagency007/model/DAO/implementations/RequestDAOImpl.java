@@ -30,11 +30,13 @@ public class RequestDAOImpl extends GenericDAO implements RequestDAO {
     public int getNumberOfRecords(String filter) throws DAOException {
         int numberOfRecords = 0;
         String query = String.format(GET_NUMBER_OF_REQUEST_RECORDS, filter);
+        log.info("Record query => " + query);
         try (Connection connection = dataSource.getConnection();
              PreparedStatement preparedStatement = connection.prepareStatement(query)) {
             try (ResultSet resultSet = preparedStatement.executeQuery()) {
                 if (resultSet.next()) {
                     numberOfRecords = resultSet.getInt("numberOfRecords");
+                    log.info("Number of records => " + numberOfRecords);
                 }
             }
         }catch (SQLException e) {
@@ -122,7 +124,7 @@ public class RequestDAOImpl extends GenericDAO implements RequestDAO {
     @Override
     public List<Request> findAll(String query) throws DAOException {
 
-        log.trace("Find all request");
+        log.info("Find all request");
         Connection connection = null;
         ResultSet rs = null;
         PreparedStatement ps = null;
@@ -133,10 +135,11 @@ public class RequestDAOImpl extends GenericDAO implements RequestDAO {
             connection = dataSource.getConnection();
             begin(connection);
             ps = connection.prepareStatement(SQL_SELECT_ALL_REQUEST + query);
+            log.info("Prepare statement => " + SQL_SELECT_ALL_REQUEST + query);
             rs = ps.executeQuery();
             result = extractRequestsFromResultSet(rs);
             commit(connection);
-            log.trace("ArrayList of Request created");
+            log.info("ArrayList of Request created");
         } catch (SQLException e) {
             rollback(connection);
             log.error("Error in find All Request methods", e);
