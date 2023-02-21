@@ -11,8 +11,8 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
-@WebFilter(urlPatterns = "/*",
-initParams = @WebInitParam(name = "defaultLanguage", value = "en"))
+//@WebFilter(urlPatterns = "/*",
+//initParams = @WebInitParam(name = "defaultLanguage", value = "en"))
 public class LocaleFilter implements Filter {
 
     private static final Logger log = LoggerFactory.getLogger(LocaleFilter.class);
@@ -27,20 +27,20 @@ public class LocaleFilter implements Filter {
     public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain) throws IOException, ServletException {
         HttpServletRequest httpRequest = (HttpServletRequest) request;
         String language = httpRequest.getParameter("language");
-        log.debug("language from request = " + language);
+        log.info("language from request = " + language);
         if (language != null && !language.isEmpty()) {
             httpRequest.getSession().setAttribute("language", language);
-            log.debug("Set initial language " + language + " to session");
+            log.info("Set initial language " + language + " to session");
             ((HttpServletResponse)response).setIntHeader("Refresh", 0);
             if ((!httpRequest.getServletPath().contains("controller"))) {
                 chain.doFilter(request, response);
             }
         } else {
             String sessionLocale = (String) httpRequest.getSession().getAttribute("language");
-            log.debug("Else get language from session = " + sessionLocale);
+            log.info("Else get language from session = " + sessionLocale);
             if (sessionLocale == null || sessionLocale.isEmpty()) {
                 httpRequest.getSession().setAttribute("language", defaultLanguage);
-                log.debug("Session locale also empty, set default language = " + defaultLanguage);
+                log.info("Session locale also empty, set default language = " + defaultLanguage);
             }
             chain.doFilter(request, response);
         }

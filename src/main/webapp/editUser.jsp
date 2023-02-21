@@ -7,6 +7,7 @@
 --%>
 <%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
+<%@ taglib prefix="tags" tagdir="/WEB-INF/tags" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <fmt:setLocale value="${sessionScope.language}"/>
 <fmt:setBundle basename="language"/>
@@ -48,89 +49,79 @@
         </div>
         <div class="main-login main-center">
             <form class="form-horizontal" method="post" action="controller?action=updateUser">
-                <c:if test="${not empty requestScope.error}">
-                    <span class="text-danger"><fmt:message key="${requestScope.error}"/></span>
-                </c:if>
-                <input type="hidden" id="custId" name="user-id" value="${requestScope.userDTO.id}">
-
+                <input type="hidden" id="custId" name="user-id" value="${sessionScope.userDTO.id}">
                 <div class="form-group">
+                    <tags:contains error="${requestScope.error}" value="email"/>
                     <label for="email" class="cols-sm-3 control-label"><fmt:message key="label.email"/></label>
                     <div class="cols-sm-10">
                         <div class="input-group">
                             <span class="input-group-addon"><i class="fa fa-envelope fa" aria-hidden="true"></i></span>
                             <input type="text" class="form-control" name="email" id="email"
-                                   pattern="[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$"
-                                   required value="${requestScope.userDTO.email}"/>
+                                  pattern="[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$"
+                                   required value="${sessionScope.userDTO.email}"/>
+                            <%--                         <div class="invalid-feedback">
+                                                         error.emailFormat
+                                Пожалуйста, введите корректный email.
+                            </div>--%>
                         </div>
                     </div>
                 </div>
 
                 <div class="form-group">
+                    <tags:contains error="${requestScope.error}" value="first"/>
                     <label for="firstname" class="cols-sm-3 control-label"><fmt:message key="label.firstName"/></label>
                     <div class="cols-sm-10">
                         <div class="input-group">
                             <span class="input-group-addon"><i class="fa fa-user fa" aria-hidden="true"></i></span>
                             <input type="text" class="form-control" name="firstname" id="firstname"
-                                   pattern="^[A-Za-zА-ЩЬЮЯҐІЇЄа-щьюяґіїє'\- ]{1,30}" required value="${requestScope.userDTO.firstName}"/>
+                                   pattern="^[A-Za-zА-ЯҐІЇЄа-яёЁґіїє'\- ]{1,30}" required value="${sessionScope.userDTO.firstName}"/>
                         </div>
                     </div>
                 </div>
 
                 <div class="form-group">
+                    <tags:contains error="${requestScope.error}" value="last"/>
                     <label for="lastname" class="cols-sm-3 control-label"><fmt:message key="label.lastName"/></label>
                     <div class="cols-sm-10">
                         <div class="input-group">
                             <span class="input-group-addon"><i class="fa fa-users fa" aria-hidden="true"></i></span>
                             <input type="text" class="form-control" name="lastname" id="lastname"
-                                   pattern="^[A-Za-zА-ЩЬЮЯҐІЇЄа-щьюяґіїє'\- ]{1,30}" required value="${requestScope.userDTO.lastName}"/>
+                                   pattern="^[A-Za-zА-ЩЬЮЯҐІЇЄа-щьюяґіїє'\- ]{1,30}" required value="${sessionScope.userDTO.lastName}"/>
                         </div>
                     </div>
                 </div>
 
                 <div class="form-group">
+                    <tags:contains error="${requestScope.error}" value="phone"/>
                     <label for="phoneNumber" class="cols-sm-3 control-label"><fmt:message key="label.phoneNumber"/></label>
                     <div class="cols-sm-10">
                         <div class="input-group">
                             <span class="input-group-addon"><i class="fa fa-users fa" aria-hidden="true"></i></span>
                             <input type="text" class="form-control" name="phoneNumber" id="phoneNumber"
-                            required value="${requestScope.userDTO.phoneNumber}"/>
+                            pattern="^(\+\d{1,3})?[- ]?\d{2,3}[- ]?\d{2,4}[- ]?\d{2}[- ]?\d{2}$"
+                            required value="${sessionScope.userDTO.phoneNumber}"/>
                         </div>
                     </div>
                 </div>
 
                 <div class="form-group">
+                    <tags:contains error="${requestScope.error}" value="account"/>
                     <label for="account" class="cols-sm-3 control-label"><fmt:message key="label.account"/></label>
                     <div class="cols-sm-10">
                         <div class="input-group">
                             <span class="input-group-addon"><i class="fa fa-user fa" aria-hidden="true"></i></span>
                             <input type="text" class="form-control" name="account" id="account"
-                                   required value="${requestScope.userDTO.account}"/>
+                                   pattern="^-?\\d+\\.?\\,?\\d*$"
+                                   required value="${sessionScope.userDTO.account}"/>
                         </div>
                     </div>
                 </div>
-<%--
-                <form method="POST" class="d-flex mt-3">
-                    <label>
-                        <select name="role" <%--onchange='submit();' --%>
-                <%--                >
-                                        <option value="manager">
-                                              <fmt:message key="label.selectManager"/>
-                                          </option>
-                                          <option value="craftsman">
-                                              <fmt:message key="label.selectCraftsman"/>
-                                          </option>
-                                          <option value="user">
-                                              <fmt:message key="label.selectUser"/>
-                                          </option>
 
-                                      </select>
-                                  </label>
-                              </form> --%>
                 <fmt:message key="table.role"/>: <select name="role">
-                <option value="manager" ${requestScope.userDTO.role eq 'manager' ? 'selected' : ''}><fmt:message key="label.selectManager"/></option>
-                <option value="user" ${requestScope.userDTO.role eq 'user' ? 'selected' : ''}><fmt:message key="label.selectUser"/></option>
-                <option value="craftsman" ${requestScope.userDTO.role eq 'craftsman' ? 'selected' : ''}><fmt:message key="label.selectCraftsman"/></option>
-                <option value="unregistred" ${requestScope.userDTO.role eq 'unregistred' ? 'selected' : ''}><fmt:message key="label.selectUnregistred"/></option>
+                <option value="manager" ${sessionScope.userDTO.role eq 'manager' ? 'selected' : ''}><fmt:message key="label.selectManager"/></option>
+                <option value="user" ${sessionScope.userDTO.role eq 'user' ? 'selected' : ''}><fmt:message key="label.selectUser"/></option>
+                <option value="craftsman" ${sessionScope.userDTO.role eq 'craftsman' ? 'selected' : ''}><fmt:message key="label.selectCraftsman"/></option>
+                <option value="unregistred" ${sessionScope.userDTO.role eq 'unregistred' ? 'selected' : ''}><fmt:message key="label.selectUnregistred"/></option>
 
             </select>
 

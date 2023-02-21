@@ -11,14 +11,15 @@ import javax.servlet.http.HttpSession;
 import java.io.IOException;
 import java.util.*;
 
-@WebFilter(urlPatterns = "/*")
+//@WebFilter(urlPatterns = "/*")
 public class AccessFilter implements Filter {
     private static final Logger log = LoggerFactory.getLogger(AccessFilter.class);
     private final static Map<String, List<String>> commandAccessMap = new HashMap<>();
     private final static Map<String, List<String>> pagesAccessMap = new HashMap<>();
     private final static List<String> commonsCommands = Arrays.asList("login", "logout", "error");
     private final static List<String> commonsPages = Arrays.asList("login.jsp", "registration.jsp",
-            "error_page.jsp", "index.jsp");
+            "error_page.jsp", "index.jsp", "assets/css/main.css", "css/bootstrap.css", "assets/js/bootstrap.js",
+            "registration.css", "css/bootstrap.min.css", "assets/js/bootstrap.min.js", "login.css");
 
     public AccessFilter() {
     }
@@ -111,10 +112,13 @@ public class AccessFilter implements Filter {
 
         log.info(" user role => " + userRole);
 
-        log.info("Select role");
+        log.info("Select role for servlet Path => " + servletPath.substring(1));
         if (servletPath != null) {
-            return pagesAccessMap.get(userRole).contains(servletPath.substring(1));
+            log.info("Select role for servlet Path => " + servletPath.substring(1));
+            return pagesAccessMap.get(userRole).contains(servletPath.substring(1)) ||
+                    commonsPages.contains(servletPath.substring(1));
         }
-        return false;
+        log.info("Servlet path is null!!!");
+        return commonsPages.contains(servletPath.substring(1));
     }
 }

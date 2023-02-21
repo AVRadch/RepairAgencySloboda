@@ -3,6 +3,7 @@ package com.my.repairagency007.util;
 import com.my.repairagency007.DTO.FeedbackDTO;
 import com.my.repairagency007.DTO.RequestDTO;
 import com.my.repairagency007.DTO.UserDTO;
+import com.my.repairagency007.exception.IncorrectFormatException;
 import com.my.repairagency007.model.entity.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -10,6 +11,8 @@ import org.slf4j.LoggerFactory;
 import javax.servlet.http.HttpServletRequest;
 import java.text.DecimalFormat;
 import java.time.LocalDate;
+
+import static com.my.repairagency007.util.ValidatorUtil.*;
 
 public class MapperDTOUtil {
 
@@ -171,11 +174,17 @@ public class MapperDTOUtil {
                 .build();
     }
 
-    public static void fillUserDTO(HttpServletRequest request, UserDTO userDTO) {
+    public static void fillUserDTO(HttpServletRequest request, UserDTO userDTO) throws IncorrectFormatException {
         userDTO.setEmail(request.getParameter("email").trim());
+        validateEmail(userDTO.getEmail());
         userDTO.setFirstName(request.getParameter("firstname").trim());
+        validateName(userDTO.getFirstName(), "error.firstNameFormat");
+        log.info("Name => " + userDTO.getFirstName() + " " + request.getParameter("firstname"));
         userDTO.setLastName(request.getParameter("lastname").trim());
+        validateName(userDTO.getLastName(), "error.lastNameFormat");
+        log.info("Surname => " + userDTO.getLastName() + " " + request.getParameter("lastname"));
         userDTO.setPhoneNumber(request.getParameter("phoneNumber").trim());
+        validatePhoneNumber(userDTO.getPhoneNumber());
     }
 
     public static void fillRequestDTO(HttpServletRequest request, RequestDTO requestDTO){

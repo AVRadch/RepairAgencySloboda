@@ -38,7 +38,6 @@
                             <input type="text" name="email" id="email" class="form-control"
                                    pattern="[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$">
                             <tags:contains error="${requestScope.error}" value="email"/>
-                      <%--      <span class="text-danger"><fmt:message key="${requestScope.error}"/></span> --%>
                         </div>
                         <div class="form-group">
                             <label for="password" class="text-info"><fmt:message key="label.password"/></label><br>

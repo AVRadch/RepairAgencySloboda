@@ -4,6 +4,7 @@ import com.my.repairagency007.DTO.UserDTO;
 import com.my.repairagency007.controller.Path;
 import com.my.repairagency007.controller.command.Command;
 import com.my.repairagency007.controller.context.AppContext;
+import com.my.repairagency007.exception.IncorrectFormatException;
 import com.my.repairagency007.exception.ServiceException;
 import com.my.repairagency007.model.services.impl.UserServiceImpl;
 import org.mindrot.jbcrypt.BCrypt;
@@ -12,6 +13,7 @@ import org.slf4j.LoggerFactory;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 import java.io.IOException;
 
 import static com.my.repairagency007.util.MapperDTOUtil.fillUserDTO;
@@ -41,9 +43,14 @@ public class RegistrationAdminCommand implements Command {
     public String execute(HttpServletRequest request, HttpServletResponse response) {
 
         log.debug("Start registration admin command");
+        HttpSession session = request.getSession();
         UserDTO userDTO = UserDTO.builder().build();
         String resp = "controller?action=adminAllUsers";
-        fillUserDTO(request, userDTO);
+        try {
+            fillUserDTO(request, userDTO);
+        } catch (IncorrectFormatException e) {
+            session.setAttribute("error", e.getMessage());
+        }
         userDTO.setRole(request.getParameter("role"));
         userDTO.setAccount("0");
         userDTO.setPassword(BCrypt.hashpw(request.getParameter("password").trim(), BCrypt.gensalt()));

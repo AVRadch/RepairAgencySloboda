@@ -11,6 +11,7 @@ import org.slf4j.LoggerFactory;
 import javax.servlet.RequestDispatcher;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 import static com.my.repairagency007.controller.command.CommandUtility.moveAttributeFromSessionToRequest;
 /**
@@ -38,10 +39,11 @@ public class EditUserCommand implements Command {
     @Override
     public String execute(HttpServletRequest request, HttpServletResponse response) throws ServiceException {
 
+        HttpSession session = request.getSession();
         int id = Integer.parseInt(request.getParameter("user-id"));
         UserDTO userDTO = userService.getById(id);
-        request.setAttribute("userDTO", userDTO);
-        log.debug("Get user" + userDTO.getLastName());
+        session.setAttribute("userDTO", userDTO);
+        log.info("Get user => " + userDTO);
         return "editUser.jsp";
     }
 }

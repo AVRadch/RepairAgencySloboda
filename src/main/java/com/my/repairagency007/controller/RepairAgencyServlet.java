@@ -23,14 +23,14 @@ public class RepairAgencyServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp)
             throws ServletException, IOException {
-        log.debug("Make DoGet");
+        log.info("Make DoGet");
         req.getRequestDispatcher(processRequest(req, resp)).forward(req, resp);
     }
 
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp)
             throws IOException {
-        log.debug("Make Redirect DoPost");
+        log.info("Make Redirect DoPost");
         resp.sendRedirect(processRequest(req, resp));
     }
 

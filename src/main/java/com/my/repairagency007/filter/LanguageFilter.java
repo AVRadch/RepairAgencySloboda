@@ -17,8 +17,8 @@ import java.io.IOException;
  *To change this template use File | Settings | File Templates.
  * This filter makes encoding with charset utf-8.
  */
-@WebFilter(urlPatterns = "/*",
-initParams = @WebInitParam(name = "characterEncoding", value = "UTF-8"))
+//@WebFilter(filterName="LanguageFilter", urlPatterns = "/*",
+//initParams = @WebInitParam(name = "characterEncoding", value = "UTF-8"))
 public class LanguageFilter implements Filter {
 
     private static final Logger log = LoggerFactory.getLogger(LanguageFilter.class);
@@ -47,7 +47,7 @@ public class LanguageFilter implements Filter {
     public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain) throws IOException, ServletException {
         request.setCharacterEncoding(encoding);
         response.setCharacterEncoding(encoding);
-        log.debug("Language filter work");
+        log.info("Language filter work. Encoding => " + encoding);
  //       context.log("charset set");
         chain.doFilter(request, response);
     }
@@ -59,7 +59,7 @@ public class LanguageFilter implements Filter {
      */
     public void init(FilterConfig config) throws ServletException {
         encoding = config.getInitParameter("characterEncoding");
-        log.debug("Set encoding filter to " + encoding);
+        log.info("Set encoding filter to " + encoding);
         context = config.getServletContext();
     }
 }

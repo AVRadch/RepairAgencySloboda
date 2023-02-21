@@ -3,6 +3,7 @@ package com.my.repairagency007.controller.command.admin;
 import com.my.repairagency007.DTO.UserDTO;
 import com.my.repairagency007.controller.command.Command;
 import com.my.repairagency007.controller.context.AppContext;
+import com.my.repairagency007.exception.IncorrectFormatException;
 import com.my.repairagency007.exception.ServiceException;
 import com.my.repairagency007.model.services.impl.UserServiceImpl;
 import org.slf4j.Logger;
@@ -11,11 +12,13 @@ import org.slf4j.LoggerFactory;
 import javax.servlet.RequestDispatcher;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 import java.io.IOException;
 
 import static com.my.repairagency007.controller.command.CommandUtility.moveAttributeFromSessionToRequest;
 import static com.my.repairagency007.util.MapperDTOUtil.fillUserDTO;
+import static com.my.repairagency007.util.ValidatorUtil.validateAccount;
 
 public class UpdateUserCommand implements Command {
 
@@ -37,38 +40,43 @@ public class UpdateUserCommand implements Command {
         return "editUser.jsp";
     }
 
-    private String executePost(HttpServletRequest request, HttpServletResponse response) throws ServiceException {
- //       RequestDispatcher dispatcher;
+    private String executePost(HttpServletRequest request, HttpServletResponse response) {
 
-        log.debug("Get id user for update " + request.getParameter("user-id"));
         int id = Integer.parseInt(request.getParameter("user-id"));
-        UserDTO userDTO = userService.getById(id);
-        log.debug("Get user for update " + userDTO.getLastName());
-        log.debug("User role = " + userDTO.getRole());
-        log.debug("Role from form ==> " + request.getParameter("role"));
-        fillUserDTO(request, userDTO);
-        userDTO.setRole(request.getParameter("role"));
-        userDTO.setAccount(request.getParameter("account").replace(",", "."));
+        log.info("Get id user for update " + id);
+        HttpSession session = request.getSession();
+        UserDTO userDTO = null;
+        String errorMessage;
+        try {
+            userDTO = userService.getById(id);
+        } catch (ServiceException e) {
+            errorMessage = "error.updateDB";
+            log.info(errorMessage);
+            session.setAttribute("error", errorMessage);
+            return "controller?action=updateUser";
+        }
+        try {
+            fillUserDTO(request, userDTO);
+            userDTO.setRole(request.getParameter("role"));
+            userDTO.setAccount(request.getParameter("account").replace(",", "."));
+            validateAccount(userDTO.getAccount());
+        } catch (IncorrectFormatException e) {
+            session.setAttribute("error", e.getMessage());
+            return "controller?action=updateUser";
+        }
 
         String forward = "controller?action=adminAllUsers";
 
-        userService.update(userDTO);
-
-        request.getSession().setAttribute("message", "label.succesUpdate");
-        request.setAttribute("userDTO", userDTO);
-
-  //      try {
-//            response.sendRedirect(forward);
-//            forward = "controller?action=redirect";
- //           return forward;
-   //     } catch (IOException e) {
-   //         log.error("Error user update command", e);
-   //         forward = "error_page.jsp";
-   //     }
-
-        //       dispatcher = request.getRequestDispatcher("editUser.jsp");
-
-
+        try {
+            userService.update(userDTO);
+            request.getSession().setAttribute("message", "label.succesUpdate");
+            request.setAttribute("userDTO", userDTO);
+        } catch (ServiceException e) {
+            errorMessage = "error.updateDB";
+            log.info(errorMessage);
+            session.setAttribute("error", errorMessage);
+            return "controller?action=updateUser";
+        }
         return forward;
     }
 }
