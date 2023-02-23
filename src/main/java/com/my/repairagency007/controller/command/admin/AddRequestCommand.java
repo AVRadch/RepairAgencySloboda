@@ -8,6 +8,7 @@ import com.my.repairagency007.exception.ServiceException;
 import com.my.repairagency007.model.entity.CompletionStatus;
 import com.my.repairagency007.model.entity.PaymentStatus;
 import com.my.repairagency007.model.services.impl.RequestServiceImpl;
+import com.my.repairagency007.util.ValidatorUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -41,17 +42,21 @@ public class AddRequestCommand implements Command {
 
     private String executePost(HttpServletRequest request, HttpServletResponse response) {
 
-        log.debug("Post method add request");
+        log.info("Post method add request");
+        ValidatorUtil validatorUtil = new ValidatorUtil();
         HttpSession session = request.getSession();
         UserDTO userDTO = (UserDTO) session.getAttribute("logged_user");
         RequestDTO requestDTO = RequestDTO.builder().build();
-        log.debug("Build request DTO");
+        log.info("Build request DTO");
         requestDTO.setDescription(request.getParameter("description"));
+        validatorUtil.validateDescription(requestDTO.getDescription());
+  //проверка ошибок
+
         requestDTO.setUser_id(userDTO.getId());
         requestDTO.setDate(LocalDate.now().toString());
         requestDTO.setCompletionStatus(CompletionStatus.NOT_STARTED.getName());
         requestDTO.setPaymentStatus(PaymentStatus.PANDING_PAYMENT.getName());
-        log.debug("fill RequestDTO");
+        log.info("fill RequestDTO");
 
         String forward = "controller?action=userRequest";
 

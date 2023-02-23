@@ -3,22 +3,22 @@ package com.my.repairagency007.controller.command.admin;
 import com.my.repairagency007.DTO.UserDTO;
 import com.my.repairagency007.controller.command.Command;
 import com.my.repairagency007.controller.context.AppContext;
-import com.my.repairagency007.exception.IncorrectFormatException;
 import com.my.repairagency007.exception.ServiceException;
 import com.my.repairagency007.model.services.impl.UserServiceImpl;
+import com.my.repairagency007.util.ValidatorUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import javax.servlet.RequestDispatcher;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
+
 import java.io.IOException;
+import java.util.ArrayList;
 
 import static com.my.repairagency007.controller.command.CommandUtility.moveAttributeFromSessionToRequest;
 import static com.my.repairagency007.util.MapperDTOUtil.fillUserDTO;
-import static com.my.repairagency007.util.ValidatorUtil.validateAccount;
 
 public class UpdateUserCommand implements Command {
 
@@ -36,7 +36,6 @@ public class UpdateUserCommand implements Command {
 
     private String executeGet(HttpServletRequest request) {
         moveAttributeFromSessionToRequest(request, "message");
-        moveAttributeFromSessionToRequest(request, "error");
         return "editUser.jsp";
     }
 
@@ -45,25 +44,26 @@ public class UpdateUserCommand implements Command {
         int id = Integer.parseInt(request.getParameter("user-id"));
         log.info("Get id user for update " + id);
         HttpSession session = request.getSession();
+        ValidatorUtil validatorUtil = new ValidatorUtil();
         UserDTO userDTO = null;
-        String errorMessage;
         try {
             userDTO = userService.getById(id);
         } catch (ServiceException e) {
-            errorMessage = "error.updateDB";
-            log.info(errorMessage);
-            session.setAttribute("error", errorMessage);
-            return "controller?action=updateUser";
+            session.setAttribute("errorList", new ArrayList<String>().add("error.updateDB"));
+            return "modalErrorList.jsp";
         }
-        try {
-            fillUserDTO(request, userDTO);
+
+            fillUserDTO(request, userDTO, validatorUtil);
             userDTO.setRole(request.getParameter("role"));
             userDTO.setAccount(request.getParameter("account").replace(",", "."));
-            validateAccount(userDTO.getAccount());
-        } catch (IncorrectFormatException e) {
-            session.setAttribute("error", e.getMessage());
-            return "controller?action=updateUser";
-        }
+            validatorUtil.validateAccount(userDTO.getAccount());
+
+            if (validatorUtil.list.isPresent()){
+                ArrayList<String> arrayList = validatorUtil.list.get();
+                log.info("List error => " + arrayList);
+                session.setAttribute("errorList", validatorUtil.list.get());
+                return "modalErrorList.jsp";
+            }
 
         String forward = "controller?action=adminAllUsers";
 
@@ -72,10 +72,8 @@ public class UpdateUserCommand implements Command {
             request.getSession().setAttribute("message", "label.succesUpdate");
             request.setAttribute("userDTO", userDTO);
         } catch (ServiceException e) {
-            errorMessage = "error.updateDB";
-            log.info(errorMessage);
-            session.setAttribute("error", errorMessage);
-            return "controller?action=updateUser";
+            session.setAttribute("errorList", new ArrayList<String>().add("error.updateDB"));
+            forward = "modalErrorList.jsp";
         }
         return forward;
     }

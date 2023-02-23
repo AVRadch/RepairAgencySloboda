@@ -7,6 +7,7 @@ import com.my.repairagency007.controller.context.AppContext;
 import com.my.repairagency007.exception.IncorrectFormatException;
 import com.my.repairagency007.exception.ServiceException;
 import com.my.repairagency007.model.services.impl.UserServiceImpl;
+import com.my.repairagency007.util.ValidatorUtil;
 import org.mindrot.jbcrypt.BCrypt;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -15,6 +16,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.io.IOException;
+import java.util.ArrayList;
 
 import static com.my.repairagency007.util.MapperDTOUtil.fillUserDTO;
 /**
@@ -46,11 +48,17 @@ public class RegistrationAdminCommand implements Command {
         HttpSession session = request.getSession();
         UserDTO userDTO = UserDTO.builder().build();
         String resp = "controller?action=adminAllUsers";
-        try {
-            fillUserDTO(request, userDTO);
-        } catch (IncorrectFormatException e) {
-            session.setAttribute("error", e.getMessage());
+        ValidatorUtil validatorUtil = new ValidatorUtil();
+
+            fillUserDTO(request, userDTO, validatorUtil);
+
+        if (validatorUtil.list.isPresent()){
+            ArrayList<String> arrayList = validatorUtil.list.get();
+            log.info("List error => " + arrayList);
+            session.setAttribute("errorList", validatorUtil.list.get());
+            return "modalErrorList.jsp";
         }
+
         userDTO.setRole(request.getParameter("role"));
         userDTO.setAccount("0");
         userDTO.setPassword(BCrypt.hashpw(request.getParameter("password").trim(), BCrypt.gensalt()));

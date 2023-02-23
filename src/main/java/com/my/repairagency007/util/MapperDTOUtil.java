@@ -174,17 +174,17 @@ public class MapperDTOUtil {
                 .build();
     }
 
-    public static void fillUserDTO(HttpServletRequest request, UserDTO userDTO) throws IncorrectFormatException {
+    public static void fillUserDTO(HttpServletRequest request, UserDTO userDTO, ValidatorUtil validatorUtil) {
         userDTO.setEmail(request.getParameter("email").trim());
-        validateEmail(userDTO.getEmail());
+        validatorUtil.validateEmail(userDTO.getEmail());
         userDTO.setFirstName(request.getParameter("firstname").trim());
-        validateName(userDTO.getFirstName(), "error.firstNameFormat");
+        validatorUtil.validateName(userDTO.getFirstName(), "error.firstNameFormat");
         log.info("Name => " + userDTO.getFirstName() + " " + request.getParameter("firstname"));
         userDTO.setLastName(request.getParameter("lastname").trim());
-        validateName(userDTO.getLastName(), "error.lastNameFormat");
+        validatorUtil.validateName(userDTO.getLastName(), "error.lastNameFormat");
         log.info("Surname => " + userDTO.getLastName() + " " + request.getParameter("lastname"));
         userDTO.setPhoneNumber(request.getParameter("phoneNumber").trim());
-        validatePhoneNumber(userDTO.getPhoneNumber());
+        validatorUtil.validatePhoneNumber(userDTO.getPhoneNumber());
     }
 
     public static void fillRequestDTO(HttpServletRequest request, RequestDTO requestDTO){

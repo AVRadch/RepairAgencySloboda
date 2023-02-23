@@ -8,6 +8,7 @@ import com.my.repairagency007.exception.ServiceException;
 import com.my.repairagency007.controller.command.Command;
 import com.my.repairagency007.model.entity.Role;
 import com.my.repairagency007.model.services.impl.UserServiceImpl;
+import com.my.repairagency007.util.ValidatorUtil;
 import org.mindrot.jbcrypt.BCrypt;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -15,6 +16,8 @@ import org.slf4j.LoggerFactory;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
+
+import java.util.ArrayList;
 
 import static com.my.repairagency007.util.MapperDTOUtil.fillUserDTO;
 
@@ -40,11 +43,18 @@ public class RegistrationCommand implements Command {
     HttpSession session = request.getSession();
     String resp;
     UserDTO userDTO = UserDTO.builder().build();
-    try {
-      fillUserDTO(request, userDTO);
-    } catch (IncorrectFormatException e) {
-      session.setAttribute("error", e.getMessage());
+
+    ValidatorUtil validatorUtil = new ValidatorUtil();
+
+      fillUserDTO(request, userDTO, validatorUtil);
+
+    if (validatorUtil.list.isPresent()){
+      ArrayList<String> arrayList = validatorUtil.list.get();
+      log.info("List error => " + arrayList);
+      session.setAttribute("errorList", validatorUtil.list.get());
+      return "modalErrorList.jsp";
     }
+
     userDTO.setRole(Role.UNREGISTRED.getName());
     userDTO.setAccount("0");
     userDTO.setPassword(BCrypt.hashpw(request.getParameter("password").trim(), BCrypt.gensalt()));

@@ -61,9 +61,6 @@
 								</div>
 							</div>
 						</div>
-
-
-
 						<div class="form-group">
 							<label for="lastname" class="cols-sm-2 control-label">Lastname</label>
 							<div class="cols-sm-10">

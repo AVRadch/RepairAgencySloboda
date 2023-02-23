@@ -23,7 +23,20 @@
 
     <title><fmt:message key="label.login"/> | Repair Agency</title>
 </head>
+
 <body>
+<c:if test="${not empty sessionScope.logged_user}">
+    <c:if test="${sessionScope.logged_user_role eq 'manager'}">
+        <jsp:forward page="controller?action=adminAllRequest" />
+    </c:if>
+    <c:if test="${sessionScope.logged_user_role eq 'craftsman'}">
+        <jsp:forward page="controller?action=craftsmanRequest" />
+    </c:if>
+    <c:if test="${sessionScope.logged_user_role eq 'user'}">
+        <jsp:forward page="controller?action=userRequest" />
+    </c:if>
+</c:if>
+
 <div id="login">
     <h3 class="text-center text-white pt-5"><fmt:message key="label.loginForm"/></h3>
     <div class="container">

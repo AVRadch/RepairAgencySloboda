@@ -5,13 +5,6 @@
   Time: 19:15
   To change this template use File | Settings | File Templates.
 --%>
-<%--
-  Created by IntelliJ IDEA.
-  User: Алексей Радченко
-  Date: 29.12.2022
-  Time: 18:46
-  To change this template use File | Settings | File Templates.
---%>
 <%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
@@ -44,6 +37,7 @@
 <c:if test="${not empty requestScope.error}">
     <span class="text-danger text-center"><fmt:message key="${requestScope.error}"/></span>
 </c:if>
+
 <div class="container-fluid">
     <div class="form-row text-center">
         <div class="btn-group">

@@ -32,7 +32,12 @@
                 </button>
             </div>
             <div class="modal-body">
-                <p>There was an error. Please try again.</p>
+                <ul>
+                    <c:forEach var="errorMsg" items="${sessionScope.errorList}">
+                        <li><fmt:message key="${errorMsg}"/></li>
+                    </c:forEach>
+                </ul>
+      <%--          <p>There was an error. Please try again.</p>        --%>
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
@@ -40,6 +45,7 @@
         </div>
     </div>
 </div>
+<c:remove var="errorList" scope="session" />
 
 <script>
     function goBack() {

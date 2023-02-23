@@ -17,7 +17,7 @@ public class LogoutCommand implements Command {
     public String execute(HttpServletRequest httpRequest, HttpServletResponse httpResponse) throws ServiceException {
 
         HttpSession session = httpRequest.getSession();
-        if (session.getAttribute("newUser") != null) {
+        if (session.getAttribute("logged_user") != null) {
             String locale = (String) session.getAttribute("locale");
             session.invalidate();
             httpRequest.getSession(true).setAttribute("locale", locale);

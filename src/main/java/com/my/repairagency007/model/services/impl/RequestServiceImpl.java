@@ -17,7 +17,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import static com.my.repairagency007.util.MapperDTOUtil.*;
-import static com.my.repairagency007.util.ValidatorUtil.validateDescription;
 
 public class RequestServiceImpl implements RequestService {
 
@@ -35,7 +34,6 @@ public class RequestServiceImpl implements RequestService {
     @Override
     public Request addRequest(RequestDTO requestDTO) throws ServiceException {
         log.debug("Start add request. Validate Description");
-        validateDescription(requestDTO.getDescription());
         log.debug("convert request DTO to request");
         Request request = convertDTOToRequest(requestDTO);
 

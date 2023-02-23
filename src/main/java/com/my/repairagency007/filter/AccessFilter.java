@@ -5,7 +5,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import javax.servlet.*;
-import javax.servlet.annotation.WebFilter;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 import java.io.IOException;
@@ -19,7 +18,9 @@ public class AccessFilter implements Filter {
     private final static List<String> commonsCommands = Arrays.asList("login", "logout", "error");
     private final static List<String> commonsPages = Arrays.asList("login.jsp", "registration.jsp",
             "error_page.jsp", "index.jsp", "assets/css/main.css", "css/bootstrap.css", "assets/js/bootstrap.js",
-            "registration.css", "css/bootstrap.min.css", "assets/js/bootstrap.min.js", "login.css");
+            "registration.css", "css/bootstrap.min.css", "assets/js/bootstrap.min.js", "login.css",
+            "modalErrorList.jsp", "css/bootstrap-icons.css", "css/my.css", "css/fonts/bootstrap-icons.woff2",
+            "css/fonts/bootstrap-icons.woff");
 
     public AccessFilter() {
     }
@@ -33,14 +34,14 @@ public class AccessFilter implements Filter {
         List<String> managerPagesList = Arrays.asList("addRequest.jsp", "addRequest.css", "adminAddUser.jsp",
                 "changePassword.jsp", "editRequest.jsp", "editUser.jsp", "feedbacksForAdmin.jsp",
                 "error_page.jsp", "editUser.jsp", "editRequest.jsp", "deleteUserModal.jsp", "changePassword.jsp",
-                "adminAddUser.jsp", "addRequest.jsp", "addFeedback.jsp");
+                "adminAddUser.jsp", "addRequest.jsp", "addFeedback.jsp", "modalErrorList.jsp");
         List<String> craftsmanCommandsList = Arrays.asList("craftsmanRequest", "craftsmanFeedbacks", "setStartRepair",
                 "setCompletedRepair");
         List<String> craftsmanPagesList = Arrays.asList("requestsForCraftsman.jsp", "headerCraftsman.jsp",
                 "feedbacksForCraftsman.jsp");
         List<String> userCommandsList = Arrays.asList("userRequest", "userEditRequest", "userUpdateRequest",
                 "userFeedbacks", "addFeedback", "createFeedback");
-        List<String> userPagesList = Arrays.asList("addFeedback.jsp", "editRequest.jsp", "userEditRequest.jsp",
+        List<String> userPagesList = Arrays.asList("addFeedback.jsp", "addRequest.jsp", "editRequest.jsp", "userEditRequest.jsp",
                 "feedbacksForUser.jsp", "requestsForUser.jsp", "requestsForUser.jsp");
         commandAccessMap.put(Role.MANAGER.getName(), managerCommandsList);
         pagesAccessMap.put(Role.MANAGER.getName(), managerPagesList);
@@ -112,7 +113,6 @@ public class AccessFilter implements Filter {
 
         log.info(" user role => " + userRole);
 
-        log.info("Select role for servlet Path => " + servletPath.substring(1));
         if (servletPath != null) {
             log.info("Select role for servlet Path => " + servletPath.substring(1));
             return pagesAccessMap.get(userRole).contains(servletPath.substring(1)) ||

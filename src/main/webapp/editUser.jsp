@@ -48,10 +48,10 @@
             </div>
         </div>
         <div class="main-login main-center">
+            <tags:notEmptyError value="${requestScope.error}"/>
             <form class="form-horizontal" method="post" action="controller?action=updateUser">
                 <input type="hidden" id="custId" name="user-id" value="${sessionScope.userDTO.id}">
                 <div class="form-group">
-                    <tags:contains error="${requestScope.error}" value="email"/>
                     <label for="email" class="cols-sm-3 control-label"><fmt:message key="label.email"/></label>
                     <div class="cols-sm-10">
                         <div class="input-group">
@@ -59,16 +59,11 @@
                             <input type="text" class="form-control" name="email" id="email"
                                   pattern="[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$"
                                    required value="${sessionScope.userDTO.email}"/>
-                            <%--                         <div class="invalid-feedback">
-                                                         error.emailFormat
-                                Пожалуйста, введите корректный email.
-                            </div>--%>
                         </div>
                     </div>
                 </div>
 
                 <div class="form-group">
-                    <tags:contains error="${requestScope.error}" value="first"/>
                     <label for="firstname" class="cols-sm-3 control-label"><fmt:message key="label.firstName"/></label>
                     <div class="cols-sm-10">
                         <div class="input-group">
@@ -80,19 +75,18 @@
                 </div>
 
                 <div class="form-group">
-                    <tags:contains error="${requestScope.error}" value="last"/>
                     <label for="lastname" class="cols-sm-3 control-label"><fmt:message key="label.lastName"/></label>
                     <div class="cols-sm-10">
                         <div class="input-group">
                             <span class="input-group-addon"><i class="fa fa-users fa" aria-hidden="true"></i></span>
                             <input type="text" class="form-control" name="lastname" id="lastname"
-                                   pattern="^[A-Za-zА-ЩЬЮЯҐІЇЄа-щьюяґіїє'\- ]{1,30}" required value="${sessionScope.userDTO.lastName}"/>
+                                   pattern="^[A-Za-zА-ЩЬЮЯҐІЇЄа-щьюяґіїє'\- ]{1,30}"
+                                   required value="${sessionScope.userDTO.lastName}"/>
                         </div>
                     </div>
                 </div>
 
                 <div class="form-group">
-                    <tags:contains error="${requestScope.error}" value="phone"/>
                     <label for="phoneNumber" class="cols-sm-3 control-label"><fmt:message key="label.phoneNumber"/></label>
                     <div class="cols-sm-10">
                         <div class="input-group">
@@ -105,7 +99,6 @@
                 </div>
 
                 <div class="form-group">
-                    <tags:contains error="${requestScope.error}" value="account"/>
                     <label for="account" class="cols-sm-3 control-label"><fmt:message key="label.account"/></label>
                     <div class="cols-sm-10">
                         <div class="input-group">

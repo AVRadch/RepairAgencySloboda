@@ -34,6 +34,6 @@ class EditUserCommandTest {
         String forward = new EditUserCommand(appContext).execute(testRequest, response);
 
         assertEquals("editUser.jsp", forward);
-        assertEquals(getTestUserDTO(), testRequest.getAttribute("userDTO"));
+        assertEquals(getTestUserDTO(), testRequest.getSession().getAttribute("userDTO"));
     }
 }

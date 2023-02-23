@@ -48,9 +48,7 @@
         </div>
         <div class="main-login main-center">
             <form class="form-horizontal" method="post" action="controller?action=userUpdateRequest">
-                <c:if test="${not empty requestScope.error}">
-                    <span class="text-danger"><fmt:message key="${requestScope.error}"/></span>
-                </c:if>
+                <tags:notEmptyError value="${requestScope.error}"/>
                 <input type="hidden" id="custId" name="request-id" value="${requestScope.requestDTO.id}">
                 <input type="hidden" id="userId" name="user-id" value="${requestScope.requestDTO.user_id}">
 
