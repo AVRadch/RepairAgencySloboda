@@ -53,6 +53,10 @@
                 </li>
 
                 <li>
+                  <a href="userProfile.jsp"><fmt:message key="button.profile"/></a>
+                </li>
+
+                <li>
                   <a href="#"><fmt:message key="button.reports"/></a>
                 </li>
               </ul>

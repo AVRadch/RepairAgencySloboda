@@ -25,8 +25,8 @@ public class UserFeedbacksCommand implements Command {
 
     private final FeedbackServiceImpl feedbackService;
 
-    public UserFeedbacksCommand() {
-        feedbackService = AppContext.getAppContext().getFeedbackService();
+    public UserFeedbacksCommand(AppContext appContext) {
+        feedbackService = appContext.getFeedbackService();
     }
 
     @Override

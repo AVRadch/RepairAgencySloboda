@@ -25,7 +25,7 @@
 
 
     <form method="POST" action="controller">
-        <input type="hidden" name="action" value="change-password">
+        <input type="hidden" name="action" value="changePassword">
 
         <div class="form-group">
             <c:if test="${not empty requestScope.message}">
@@ -41,14 +41,14 @@
         <div class="form-group">
             <label class="form-label fs-5" for="password"><fmt:message key="label.new.password"/>*: </label>
             <input class="form-control" type="password" name="password" id="password"
-                   pattern="^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9]).{8,20}$"
+         <%--          pattern="^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9]).{8,20}$" -->
                    title="<fmt:message key="label.password.requirements"/>" required><br>
         </div>
 
         <div class="form-group">
             <label class="form-label fs-5" for="confirm-password"><fmt:message key="label.confirm.password"/>*: </label>
             <input class="form-control" type="password" name="confirm-password" id="confirm-password"
-                   pattern="^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9]).{8,20}$"
+             <%--      pattern="^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9]).{8,20}$" --%>
                    title="<fmt:message key="label.password.requirements"/>" required><br>
         </div>
 
@@ -63,6 +63,20 @@
 </div>
 
 <%--<jsp:include page="fragments/footer.jsp"/> --%>
+<script>
+    var password = document.getElementById("password");
+    var confirm_password = document.getElementById("confirm-password");
 
+    function validatePassword(){
+        if(password.value !== confirm_password.value) {
+            confirm_password.setCustomValidity("Passwords Don't Match");
+        } else {
+            confirm_password.setCustomValidity('');
+        }
+    }
+
+    password.onchange = validatePassword;
+    confirm_password.onkeyup = validatePassword;
+</script>
 </body>
 </html>

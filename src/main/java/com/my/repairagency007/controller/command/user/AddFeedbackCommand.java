@@ -31,10 +31,10 @@ public class AddFeedbackCommand implements Command {
 
     private final UserServiceImpl userService;
 
-    public AddFeedbackCommand() {
-        feedbackService = AppContext.getAppContext().getFeedbackService();
-        requestService = AppContext.getAppContext().getRequestService();
-        userService = AppContext.getAppContext().getUserService();
+    public AddFeedbackCommand(AppContext appContext) {
+        feedbackService = appContext.getFeedbackService();
+        requestService = appContext.getRequestService();
+        userService = appContext.getUserService();
     }
 
     @Override

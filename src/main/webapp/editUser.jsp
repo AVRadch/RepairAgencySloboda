@@ -58,7 +58,9 @@
                             <span class="input-group-addon"><i class="fa fa-envelope fa" aria-hidden="true"></i></span>
                             <input type="text" class="form-control" name="email" id="email"
                                   pattern="[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$"
-                                   required value="${sessionScope.userDTO.email}"/>
+                                   title="<fmt:message key="error.emailFormat"/>"
+                                   required value="${sessionScope.userDTO.email}"
+                                   disabled/>
                         </div>
                     </div>
                 </div>
@@ -69,7 +71,9 @@
                         <div class="input-group">
                             <span class="input-group-addon"><i class="fa fa-user fa" aria-hidden="true"></i></span>
                             <input type="text" class="form-control" name="firstname" id="firstname"
-                                   pattern="^[A-Za-zА-ЯҐІЇЄа-яёЁґіїє'\- ]{1,30}" required value="${sessionScope.userDTO.firstName}"/>
+                                   pattern="^[A-Za-zА-ЯҐІЇЄа-яёЁґіїє'\- ]{1,30}"
+                                   title="<fmt:message key="error.firstNameFormat"/>" required
+                                   value="${sessionScope.userDTO.firstName}"/>
                         </div>
                     </div>
                 </div>
@@ -81,6 +85,7 @@
                             <span class="input-group-addon"><i class="fa fa-users fa" aria-hidden="true"></i></span>
                             <input type="text" class="form-control" name="lastname" id="lastname"
                                    pattern="^[A-Za-zА-ЩЬЮЯҐІЇЄа-щьюяґіїє'\- ]{1,30}"
+                                   title="<fmt:message key="error.lastNameFormat"/>"
                                    required value="${sessionScope.userDTO.lastName}"/>
                         </div>
                     </div>
@@ -93,6 +98,7 @@
                             <span class="input-group-addon"><i class="fa fa-users fa" aria-hidden="true"></i></span>
                             <input type="text" class="form-control" name="phoneNumber" id="phoneNumber"
                             pattern="^(\+\d{1,3})?[- ]?\d{2,3}[- ]?\d{2,4}[- ]?\d{2}[- ]?\d{2}$"
+                                   title="<fmt:message key="error.phoneNumberFormat"/>"
                             required value="${sessionScope.userDTO.phoneNumber}"/>
                         </div>
                     </div>

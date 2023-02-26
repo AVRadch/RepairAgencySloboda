@@ -20,7 +20,7 @@ public class AccessFilter implements Filter {
             "error_page.jsp", "index.jsp", "assets/css/main.css", "css/bootstrap.css", "assets/js/bootstrap.js",
             "registration.css", "css/bootstrap.min.css", "assets/js/bootstrap.min.js", "login.css",
             "modalErrorList.jsp", "css/bootstrap-icons.css", "css/my.css", "css/fonts/bootstrap-icons.woff2",
-            "css/fonts/bootstrap-icons.woff");
+            "css/fonts/bootstrap-icons.woff", "assets/js/showPass.js");
 
     public AccessFilter() {
     }
@@ -39,10 +39,10 @@ public class AccessFilter implements Filter {
                 "setCompletedRepair");
         List<String> craftsmanPagesList = Arrays.asList("requestsForCraftsman.jsp", "headerCraftsman.jsp",
                 "feedbacksForCraftsman.jsp");
-        List<String> userCommandsList = Arrays.asList("userRequest", "userEditRequest", "userUpdateRequest",
-                "userFeedbacks", "addFeedback", "createFeedback");
+        List<String> userCommandsList = Arrays.asList("userRequest", "userProfile", "userEditRequest", "userUpdateRequest",
+                "userFeedbacks", "addFeedback", "createFeedback", "updateProfile", "changePassword");
         List<String> userPagesList = Arrays.asList("addFeedback.jsp", "addRequest.jsp", "editRequest.jsp", "userEditRequest.jsp",
-                "feedbacksForUser.jsp", "requestsForUser.jsp", "requestsForUser.jsp");
+                "feedbacksForUser.jsp", "requestsForUser.jsp", "requestsForUser.jsp", "userProfile.jsp", "changePassword.jsp");
         commandAccessMap.put(Role.MANAGER.getName(), managerCommandsList);
         pagesAccessMap.put(Role.MANAGER.getName(), managerPagesList);
         commandAccessMap.put(Role.CRAFTSMAN.getName(), craftsmanCommandsList);

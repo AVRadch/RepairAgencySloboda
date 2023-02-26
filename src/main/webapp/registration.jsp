@@ -1,5 +1,6 @@
 <%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
+<%@ taglib prefix="tags" tagdir="/WEB-INF/tags" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <fmt:setLocale value="${sessionScope.language}"/>
 <fmt:setBundle basename="language"/>
@@ -43,60 +44,75 @@
 					<form class="form-horizontal" method="post" action="controller?action=registration">
 					
 						<div class="form-group">
-							<label for="email" class="cols-sm-2 control-label">Your Email</label>
+							<label for="email" class="cols-sm-2 control-label"><fmt:message key="label.email"/></label>
 							<div class="cols-sm-10">
 								<div class="input-group">
 									<span class="input-group-addon"><i class="fa fa-envelope fa" aria-hidden="true"></i></span>
-									<input type="text" class="form-control" name="email" id="email"  placeholder="<fmt:message key="label.email"/>"/>
+									<input type="text" class="form-control" name="email" id="email"  placeholder="<fmt:message key="label.email"/>"
+										   pattern="[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$"
+										   title="<fmt:message key="error.emailFormat"/>" required/>
 								</div>
 							</div>
 						</div>
 						
 						<div class="form-group">
-							<label for="firstname" class="cols-sm-2 control-label">First Name</label>
+							<label for="firstname" class="cols-sm-2 control-label"><fmt:message key="label.firstName"/></label>
 							<div class="cols-sm-10">
 								<div class="input-group">
 									<span class="input-group-addon"><i class="fa fa-user fa" aria-hidden="true"></i></span>
-									<input type="text" class="form-control" name="firstname" id="firstname"  placeholder="<fmt:message key="label.firstName"/>"/>
+									<input type="text" class="form-control" name="firstname" id="firstname"  placeholder="<fmt:message key="label.firstName"/>"
+										   pattern="^[A-Za-zА-ЯҐІЇЄа-яёЁґіїє'\- ]{1,30}"
+										   title="<fmt:message key="error.firstNameFormat"/>" required/>
 								</div>
 							</div>
 						</div>
 						<div class="form-group">
-							<label for="lastname" class="cols-sm-2 control-label">Lastname</label>
+							<label for="lastname" class="cols-sm-2 control-label"><fmt:message key="label.lastName"/></label>
 							<div class="cols-sm-10">
 								<div class="input-group">
 									<span class="input-group-addon"><i class="fa fa-users fa" aria-hidden="true"></i></span>
-									<input type="text" class="form-control" name="lastname" id="lastname"  placeholder="<fmt:message key="label.lastName"/>"/>
+									<input type="text" class="form-control" name="lastname" id="lastname"  placeholder="<fmt:message key="label.lastName"/>"
+										   pattern="^[A-Za-zА-ЩЬЮЯҐІЇЄа-щьюяґіїє'\- ]{1,30}"
+										   title="<fmt:message key="error.lastNameFormat"/>" required
+									/>
 								</div>
 							</div>
 						</div>
 
 						<div class="form-group">
-							<label for="password" class="cols-sm-2 control-label">Password</label>
+							<label for="password" class="cols-sm-2 control-label"><fmt:message key="label.password"/></label>
 							<div class="cols-sm-10">
 								<div class="input-group">
 									<span class="input-group-addon"><i class="fa fa-lock fa-lg" aria-hidden="true"></i></span>
-									<input type="password" class="form-control" name="password" id="password"  placeholder="<fmt:message key="label.password"/>"/>
+									<input type="password" class="form-control" name="password" id="password"
+										   pattern="^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9]).{8,20}$"
+										   title="<fmt:message key="label.password.requirements"/>"
+										   placeholder="<fmt:message key="label.password"/>"/>
 								</div>
 							</div>
 						</div>
 
 						<div class="form-group">
-							<label for="confirm" class="cols-sm-2 control-label">Confirm Password</label>
+							<label for="confirm" class="cols-sm-2 control-label"><fmt:message key="label.password"/></label>
 							<div class="cols-sm-10">
 								<div class="input-group">
 									<span class="input-group-addon"><i class="fa fa-lock fa-lg" aria-hidden="true"></i></span>
-									<input type="password" class="form-control" name="confirm" id="confirm"  placeholder="<fmt:message key="label.password"/>"/>
+									<input type="password" class="form-control" name="confirm" id="confirm"
+										   pattern="^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9]).{8,20}$"
+										   title="<fmt:message key="label.password.requirements"/>"
+										   placeholder="<fmt:message key="label.password"/>"/>
 								</div>
 							</div>
 						</div>
 						
 						<div class="form-group">
-							<label for="phoneNumber" class="cols-sm-2 control-label">Phone Number</label>
+							<label for="phoneNumber" class="cols-sm-2 control-label"><fmt:message key="label.phoneNumber"/></label>
 							<div class="cols-sm-10">
 								<div class="input-group">
 									<span class="input-group-addon"><i class="fa fa-users fa" aria-hidden="true"></i></span>
-									<input type="text" class="form-control" name="phoneNumber" id="phoneNumber"  placeholder="<fmt:message key="label.phoneNumber"/>"/>
+									<input type="text" class="form-control" name="phoneNumber" id="phoneNumber"
+										   title="<fmt:message key="error.phoneNumberFormat"/>"
+										   placeholder="<fmt:message key="label.phoneNumber"/>"/>
 								</div>
 							</div>
 						</div>
@@ -109,6 +125,8 @@
 				         </div>
 					</form>
 				</div>
+				<br>
+				<%@ include file="/language_selector.jsp" %>
 			</div>
 		</div>
 

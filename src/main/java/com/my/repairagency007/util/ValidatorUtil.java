@@ -36,6 +36,11 @@ public final class ValidatorUtil {
         validateFormat(account, "^-?\\d+\\.?\\,?\\d*$", "error.accountFormat");
     }
 
+    public void validatePassword(String password){
+        validateFormat(password, "^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9]).{8,20}$",
+                "error.passwordWrongFormat");
+    }
+
     private void validateFormat(String name, String regex,String message){
         if (name == null || !name.matches(regex)) {
             list.ifPresentOrElse(l -> l.add(message),

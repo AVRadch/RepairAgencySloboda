@@ -44,12 +44,14 @@ public class CommandFactory {
         commands.put("setStartRepair", new SetStartRepairCommand(AppContext.getAppContext()));
         commands.put("setCompletedRepair", new SetCompletedRepairCommand(AppContext.getAppContext()));
         //user commands
-        commands.put("userRequest", new UserRequestCommand());
+        commands.put("userRequest", new UserRequestCommand(AppContext.getAppContext()));
+        commands.put("updateProfile", new UserProfileCommand(AppContext.getAppContext()));
         commands.put("userEditRequest", new UserEditRequestCommand());
         commands.put("userUpdateRequest", new UserUpdateRequestCommand());
-        commands.put("userFeedbacks", new UserFeedbacksCommand());
-        commands.put("addFeedback", new AddFeedbackCommand());
+        commands.put("userFeedbacks", new UserFeedbacksCommand(AppContext.getAppContext()));
+        commands.put("addFeedback", new AddFeedbackCommand(AppContext.getAppContext()));
         commands.put("createFeedback", new CreateFeedbackCommand(AppContext.getAppContext()));
+        commands.put("changePassword", new ChangePasswordCommand(AppContext.getAppContext()));
         // common commands
         commands.put("login", new LoginCommand(AppContext.getAppContext()));
         commands.put("logout", new LogoutCommand());
