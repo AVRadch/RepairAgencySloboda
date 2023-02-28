@@ -43,14 +43,25 @@ public class RequestQueryBuilder extends QueryBuilder {
         }
         return this;
     }
+    public RequestQueryBuilder setReparierFilter(String repairerIdFilter) {
+        if (repairerIdFilter != null && isPositiveInt(repairerIdFilter)) {
+            filters.add("repairer_id=" + repairerIdFilter);
+        }
+        return this;
+    }
 
-    public RequestQueryBuilder getQueryBuilder(HttpServletRequest request) {
+
+        public RequestQueryBuilder getQueryBuilder(HttpServletRequest request) {
         RequestQueryBuilder queryBuilder = new RequestQueryBuilder();
+        log.info("status id => " + (request.getParameter("status-id") + 1));
         queryBuilder.setDateFilter(request.getParameter("date"));
         queryBuilder.setCompletionStatusFilter(request.getParameter("status-id") + 1);
         log.info("Request querry filters => " + filters);
+        log.info("sort => " + request.getParameter("sort"));
         queryBuilder.setSortField(request.getParameter("sort"));
+        log.info("order => " + request.getParameter("order"));
         queryBuilder.setOrder(request.getParameter("order"));
+        queryBuilder.setLimits(request.getParameter("offset"), request.getParameter("records"));
         return queryBuilder;
  /*               new RequestQueryBuilder()
                 .setDateFilter(request.getParameter("date"))

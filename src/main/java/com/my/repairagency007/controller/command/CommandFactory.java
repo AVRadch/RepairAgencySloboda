@@ -66,6 +66,7 @@ public class CommandFactory {
         commands.put("adminFilteredRepairerUsers", new AdminFilteredRepairedUserCommand(AppContext.getAppContext()));
         commands.put("adminFilteredStatus", new AdminFilteredStatusCommand(AppContext.getAppContext()));
         commands.put("deleteRequest", new DeleteRequestCommand(AppContext.getAppContext()));
+        commands.put("deleteFeedback", new DeleteFeedbackCommand(AppContext.getAppContext()));
         commands.put("deleteUser", new DeleteUserCommand(AppContext.getAppContext()));
         commands.put("editUser", new EditUserCommand(AppContext.getAppContext()));
         commands.put("updateUser", new UpdateUserCommand(AppContext.getAppContext()));

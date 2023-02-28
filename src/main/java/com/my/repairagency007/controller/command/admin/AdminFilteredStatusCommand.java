@@ -7,6 +7,7 @@ import com.my.repairagency007.controller.context.AppContext;
 import com.my.repairagency007.exception.ServiceException;
 import com.my.repairagency007.model.services.impl.RequestServiceImpl;
 import com.my.repairagency007.model.services.impl.UserServiceImpl;
+import com.my.repairagency007.util.query.QueryBuilder;
 import com.my.repairagency007.util.query.RequestQueryBuilder;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -20,7 +21,7 @@ import static com.my.repairagency007.util.PaginationUtil.paginate;
 
 public class AdminFilteredStatusCommand implements Command {
 
-    private static final Logger log = LoggerFactory.getLogger(AdminFilteredRepairedUserCommand.class);
+    private static final Logger log = LoggerFactory.getLogger(AdminFilteredStatusCommand.class);
     private final RequestServiceImpl requestService;
     private final UserServiceImpl userService;
     public AdminFilteredStatusCommand(AppContext appContext) {
@@ -32,35 +33,37 @@ public class AdminFilteredStatusCommand implements Command {
 
         HttpSession session = request.getSession();
 
-        String forward = "requestsForAdmin.jsp";
-        RequestQueryBuilder queryBuilder = new RequestQueryBuilder(); /* = getQueryBuilder(request);*/
+
+        QueryBuilder queryBuilder = getQueryBuilder(request);
         log.info("status-id => " + request.getParameter("status-id"));
-        queryBuilder.getQueryBuilder(request);
         log.info("получена query builder " + queryBuilder.getQuery());
         List<RequestDTO> requests;
         requests = requestService.getAll(queryBuilder.getQuery());
 
         int numberOfRecords = requestService.getNumberOfRecords(queryBuilder.getRecordQuery());
-        log.debug("получение списка мастеров");
+        log.info("получение списка мастеров");
         List<UserDTO> repairers = userService.getAllRepairer();
-        log.debug("repairs = " + repairers);
+        log.info("repairs = " + repairers);
 
 
-        log.debug("Paginate list = " + requests);
+        log.info("Paginate list = " + requests);
         paginate(numberOfRecords, request);
+        log.info("Pages => " + request.getAttribute("pages"));
+        session.setAttribute("pages", request.getAttribute("pages"));
 
+        String forward = "requestsForAdmin.jsp";
         session.setAttribute("requestDTOS", requests);
         session.setAttribute("repairers", repairers);
-
         return forward;
     }
 
- /*   private QueryBuilder getQueryBuilder(HttpServletRequest request) {
+    private QueryBuilder getQueryBuilder(HttpServletRequest request) {
+        int status = Integer.parseInt(request.getParameter("status-id")) + 1;
         return new RequestQueryBuilder()
-                .setCompletionStatusFilter(request.getParameter("status-id") + 1)
+                .setCompletionStatusFilter(String.valueOf(status))
                 .setDateFilter(request.getParameter("date"))
                 .setSortField(request.getParameter("sort"))
                 .setOrder(request.getParameter("order"))
                 .setLimits(request.getParameter("offset"), request.getParameter("records"));
-    }       */
+    }
 }

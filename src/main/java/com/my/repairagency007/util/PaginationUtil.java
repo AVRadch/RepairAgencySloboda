@@ -6,6 +6,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
 
 public final class PaginationUtil {
 
@@ -19,24 +20,31 @@ public final class PaginationUtil {
 
     private static void setAttributes(HttpServletRequest request, int totalRecords, int records, int offset) {
 
-        log.debug("Total records" + totalRecords);
-        log.debug("Records = " + records);
-        log.debug("Offset = " + offset);
+        log.info("Total records" + totalRecords);
+        log.info("Records = " + records);
+        log.info("Offset = " + offset);
         int pages = totalRecords / records + (totalRecords % records != 0 ? 1 : 0);
-        log.debug("pages = " + pages);
+        log.info("pages = " + pages);
         int currentPage = offset / records + 1;
-        log.debug("current Pages = " + currentPage);
+        log.info("current Pages = " + currentPage);
         int startPage = currentPage == pages ? Math.max(currentPage - 2, 1)
                 : Math.max(currentPage - 1, 1);
-        log.debug("Start page = " + startPage);
+        log.info("Start page = " + startPage);
         int endPage = Math.min(startPage + 2, pages);
-        log.debug("End page = " + endPage);
+        log.info("End page = " + endPage);
+        final HttpSession session = request.getSession();
         request.setAttribute("offset", offset);
+        session.setAttribute("offset", offset);
         request.setAttribute("records", records);
+        session.setAttribute("records", records);
         request.setAttribute("pages", pages);
+        session.setAttribute("pages", pages);
         request.setAttribute("currentPage", currentPage);
+        session.setAttribute("currentPage", currentPage);
         request.setAttribute("start", startPage);
+        session.setAttribute("start", startPage);
         request.setAttribute("end", endPage);
+        session.setAttribute("end", endPage);
     }
 
     private static int getInt(String value, int min, int defaultValue) {

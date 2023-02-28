@@ -41,7 +41,7 @@
         <div class="form-group">
             <label class="form-label fs-5" for="password"><fmt:message key="label.new.password"/>*: </label>
             <input class="form-control" type="password" name="password" id="password"
-         <%--          pattern="^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9]).{8,20}$" -->
+         <%--          pattern="^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9]).{8,20}$" --%>
                    title="<fmt:message key="label.password.requirements"/>" required><br>
         </div>
 

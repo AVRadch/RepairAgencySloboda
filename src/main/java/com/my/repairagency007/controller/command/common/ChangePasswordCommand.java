@@ -63,7 +63,7 @@ public class ChangePasswordCommand implements Command {
         if (validatorUtil.list.isPresent()) {
             return getString(validatorUtil.list.get().get(0), session);
         }
-        user.setPassword(newPassword);
+        user.setPassword(BCrypt.hashpw(newPassword, BCrypt.gensalt()));
         userService.update(user);
         request.getSession().setAttribute("message", "label.succesUpdate");
         request.setAttribute("userDTO", user);

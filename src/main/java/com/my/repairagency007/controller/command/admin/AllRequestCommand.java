@@ -61,14 +61,16 @@ public class AllRequestCommand implements Command {
         List<RequestDTO> requests;
 
         log.info("создание списка реквестов");
-        RequestQueryBuilder queryBuilder = new RequestQueryBuilder();
-        queryBuilder.getQueryBuilder(request);
+        QueryBuilder queryBuilder = getQueryBuilder(request);
         log.info("получена query builder " + queryBuilder);
         requests = requestService.getAll(queryBuilder.getQuery());
         int numberOfRecords = requestService.getNumberOfRecords(queryBuilder.getRecordQuery());
         List<UserDTO> repairers = userService.getAllRepairer();
 
         paginate(numberOfRecords, request);
+        log.info("Pages => " + request.getAttribute("pages"));
+        session.setAttribute("pages", request.getAttribute("pages"));
+
         session.setAttribute("requestDTOS", requests);
         session.setAttribute("repairers", repairers);
 
@@ -80,11 +82,11 @@ public class AllRequestCommand implements Command {
  * @param request to get parameters for RequestQueryBuilder
  * @return RequestQueryBuilder
  **/
- /*   private QueryBuilder getQueryBuilder(HttpServletRequest request) {
+    private QueryBuilder getQueryBuilder(HttpServletRequest request) {
         return new RequestQueryBuilder()
                 .setDateFilter(request.getParameter("date"))
                 .setSortField(request.getParameter("sort"))
                 .setOrder(request.getParameter("order"))
                 .setLimits(request.getParameter("offset"), request.getParameter("records"));
-    }       */
+    }
 }

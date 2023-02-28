@@ -2,45 +2,45 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 
 <ul class="pagination text-center">
-    <c:if test="${requestScope.end > 3}">
+    <c:if test="${end > 3}">
         <li class="page-item">
-            <a class="page-link link-dark" href="${requestScope.href}offset=0&records=${requestScope.records}">
+            <a class="page-link link-dark" href="${href}offset=0&records=${records}">
                 1
             </a>
         </li>
-        <c:if test="${requestScope.end > 4}">
+        <c:if test="${end > 4}">
             <li class="page-item">
-                <c:set var="currentOffset" value="${(requestScope.start - 2) * requestScope.records}"/>
+                <c:set var="currentOffset" value="${(start - 2) * records}"/>
                 <a class="page-link link-dark"
-                   href="${requestScope.href}offset=${currentOffset}&records=${requestScope.records}">
+                   href="${href}offset=${currentOffset}&records=${records}">
                     ...
                 </a>
             </li>
         </c:if>
     </c:if>
-    <c:forEach var="page" begin="${requestScope.start}" end="${requestScope.end}">
+    <c:forEach var="page" begin="${start}" end="${end}">
         <li class="page-item">
-            <c:set var="currentOffset" value="${(page - 1) * requestScope.records}"/>
-            <a class="page-link ${requestScope.currentPage eq page ? 'dark-active' : 'link-dark'}"
-               href="${requestScope.href}offset=${currentOffset}&records=${requestScope.records}">
+            <c:set var="currentOffset" value="${(page - 1) * records}"/>
+            <a class="page-link ${currentPage eq page ? 'dark-active' : 'link-dark'}"
+               href="${href}offset=${currentOffset}&records=${records}">
                     ${page}
             </a>
         </li>
     </c:forEach>
-    <c:if test="${requestScope.end < requestScope.pages}">
-        <c:if test="${requestScope.end + 1 < requestScope.pages}">
+    <c:if test="${end < pages}">
+        <c:if test="${end + 1 < pages}">
             <li class="page-item">
-                <c:set var="currentOffset" value="${(requestScope.end) * requestScope.records}"/>
+                <c:set var="currentOffset" value="${(end) * records}"/>
                 <a class="page-link link-dark"
-                   href="${requestScope.href}offset=${currentOffset}&records=${requestScope.records}">
+                   href="${href}offset=${currentOffset}&records=${records}">
                     ...
                 </a>
             </li>
         </c:if>
         <li class="page-item">
             <a class="page-link link-dark"
-                href="${requestScope.href}offset=${(requestScope.pages - 1) * requestScope.records}&records=${requestScope.records}">
-                    ${requestScope.pages}
+                href="${href}offset=${(pages - 1) * records}&records=${records}">
+                    ${pages}
                 </a>
         </li>
     </c:if>

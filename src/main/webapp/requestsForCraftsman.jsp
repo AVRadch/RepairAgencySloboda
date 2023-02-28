@@ -117,7 +117,7 @@
             <div class="flex-column">
                 <label for="records"><fmt:message key="label.numberRecords"/></label>
                 <input class="col-2" type="number" min="1" name="records" id="records"
-                       value="${not empty requestScope.records ? requestScope.records : "6"}">&nbsp&nbsp&nbsp&nbsp&nbsp
+                       value="${not empty records ? records : "4"}">&nbsp&nbsp&nbsp&nbsp&nbsp
                 <button type="submit" class="btn btn-dark mt-2 mb-3"><fmt:message key="label.submit"/></button>
             </div>
         </div>
