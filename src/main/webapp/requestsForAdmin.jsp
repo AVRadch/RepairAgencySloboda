@@ -42,7 +42,11 @@
         <div class="btn-group">
             <a href="addRequest.jsp" class="btn btn" role="button"><fmt:message key="button.addRequest"/></a>
             <form method="post" action="controller">
-                <input type="hidden" name="action" value="adminFilteredRepairerUsers">
+                <input type="hidden" name="action" value="adminAllRequest">
+                <input type="hidden" name="offset" value="0">
+                <input type="hidden" name="date" value="${param.date}">
+                <input type="hidden" name="sort" value="${param.sort}">
+                <input type="hidden" name="order" value="${param.order}">
                 <label>
                     <select name="reparier-id">
                         <option value="0"><fmt:message key="label.selectRepairer"/></option>
@@ -54,7 +58,11 @@
                 <button type="submit">Filter repairer</button>
             </form>
             <form method="post" action="controller">
-                <input type="hidden" name="action" value="adminFilteredStatus">
+                <input type="hidden" name="action" value="adminAllRequest">
+                <input type="hidden" name="offset" value="0">
+                <input type="hidden" name="date" value="${param.date}">
+                <input type="hidden" name="sort" value="${param.sort}">
+                <input type="hidden" name="order" value="${param.order}">
                 <label>
                     <select name="status-id">
      <%--                   <option value="0"><fmt:message key="label.selectCompletionStatus"/></option>    --%>
@@ -139,6 +147,10 @@
     <div class="d-flex justify-content-between text-center">
         <input type="hidden" name="action" value="adminAllRequest">
         <input type="hidden" name="offset" value="0">
+        <input type="hidden" name="status-id" value="${param.status-id}">
+        <input type="hidden" name="date" value="${param.date}">
+        <input type="hidden" name="sort" value="${param.sort}">
+        <input type="hidden" name="order" value="${param.order}">
         <div class="form-row ">
             <div class="flex-column">
                 <label for="records"><fmt:message key="label.numberRecords"/></label>
@@ -151,7 +163,7 @@
 </form>
 
 <c:set var="href" scope="request"
-       value="controller?action=adminAllRequest&date=${param.date}&sort=${param.sort}&order=${param.order}&"/>
+       value="controller?action=adminAllRequest&status-id=${param.status-id}&date=${param.date}&sort=${param.sort}&order=${param.order}&"/>
 
 <jsp:include page="pagination.jsp"/>
 

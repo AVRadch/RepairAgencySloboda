@@ -83,9 +83,13 @@ public class AllRequestCommand implements Command {
  * @return RequestQueryBuilder
  **/
     private QueryBuilder getQueryBuilder(HttpServletRequest request) {
-        int status = Integer.parseInt(request.getParameter("status-id")) + 1;
+        String statusString = "";
+        if (request.getParameter("status-id") != null){
+            int status = Integer.parseInt(request.getParameter("status-id")) + 1;
+            statusString = String.valueOf(status);
+        }
         return new RequestQueryBuilder()
-                .setCompletionStatusFilter(String.valueOf(status))
+                .setCompletionStatusFilter(statusString)
                 .setDateFilter(request.getParameter("date"))
                 .setSortField(request.getParameter("sort"))
                 .setOrder(request.getParameter("order"))
