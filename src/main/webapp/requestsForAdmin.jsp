@@ -41,37 +41,40 @@
     <div class="form-row text-center">
         <div class="btn-group">
             <a href="addRequest.jsp" class="btn btn" role="button"><fmt:message key="button.addRequest"/></a>
-            <form method="post" action="controller">
+            <form method="GET" action="controller">
                 <input type="hidden" name="action" value="adminAllRequest">
                 <input type="hidden" name="offset" value="0">
+                <input type="hidden" name="status" value="${param.status}">
                 <input type="hidden" name="date" value="${param.date}">
                 <input type="hidden" name="sort" value="${param.sort}">
                 <input type="hidden" name="order" value="${param.order}">
                 <label>
-                    <select name="reparier-id">
-                        <option value="0"><fmt:message key="label.selectRepairer"/></option>
+                    <select name="repairer" class="form-select mt-2" onchange='submit();'>
+                        <option value="0" ${param.repairer eq "0" ? "selected" : ""}><fmt:message key="label.selectRepairer"/></option>
                         <c:forEach var="repairer" items="${sessionScope.repairers}">
-                            <option value="${repairer.id}">${repairer.lastName} ${repairer.firstName}</option>
+                            <option value="${repairer.id}" ${param.repairer eq repairer.id ? "selected" : ""}>${repairer.lastName} ${repairer.firstName}</option>
                         </c:forEach>
                     </select>
                 </label>
-                <button type="submit">Filter repairer</button>
+ <%--      &nbsp&nbsp&nbsp&nbsp&nbsp         <button type="submit">Filter repairer</button>      --%>
             </form>
-            <form method="post" action="controller">
+            <form method="GET" action="controller">
                 <input type="hidden" name="action" value="adminAllRequest">
                 <input type="hidden" name="offset" value="0">
+                <input type="hidden" name="repairer" value="${param.repairer}">
                 <input type="hidden" name="date" value="${param.date}">
                 <input type="hidden" name="sort" value="${param.sort}">
                 <input type="hidden" name="order" value="${param.order}">
                 <label>
-                    <select name="status-id">
-     <%--                   <option value="0"><fmt:message key="label.selectCompletionStatus"/></option>    --%>
+                    <select name="status" class="form-select mt-2" onchange='submit();'>
+                        <option value="-1" ${param.status eq "-1" ? "selected" : ""}><fmt:message key="label.selectCompletionStatus"/></option>
                         <c:forEach var="status" items="${CompletionStatus.values()}">
-                            <option value="${status.ordinal()}">${status.name()}</option>
+                            <option value="${status.ordinal()}" ${param.status eq status.ordinal() ? "selected" : ""}>${status.name()}
+                            </option>
                         </c:forEach>
                     </select>
                 </label>
-                <button type="submit">Filter status</button>
+  <%--              <button type="submit">Filter status</button>        --%>
             </form>
         </div>
     </div>
@@ -80,7 +83,7 @@
     <div class="bd-example">
         <table class="table table-striped" aria-label="user-table">
         <thead>
-        <c:set var="base" value="controller?action=adminAllRequest&status-id=${param.status-id}&date=${param.date}&"/>
+        <c:set var="base" value="controller?action=adminAllRequest&repairer=${param.repairer}&status=${param.status}&date=${param.date}&"/>
         <c:set var="byDate" value="sort=date&"/>
         <c:set var="byCompletionStatus" value="sort=completion_status_id&"/>
         <c:set var="byPaymentStatus" value="sort=payment_status_id&"/>
@@ -147,7 +150,8 @@
     <div class="d-flex justify-content-between text-center">
         <input type="hidden" name="action" value="adminAllRequest">
         <input type="hidden" name="offset" value="0">
-        <input type="hidden" name="status-id" value="${param.status-id}">
+        <input type="hidden" name="repairer" value="${param.repairer}">
+        <input type="hidden" name="status" value="${param.status}">
         <input type="hidden" name="date" value="${param.date}">
         <input type="hidden" name="sort" value="${param.sort}">
         <input type="hidden" name="order" value="${param.order}">
@@ -163,7 +167,7 @@
 </form>
 
 <c:set var="href" scope="request"
-       value="controller?action=adminAllRequest&status-id=${param.status-id}&date=${param.date}&sort=${param.sort}&order=${param.order}&"/>
+       value="controller?action=adminAllRequest&repairer=${param.repairer}&status=${param.status}&date=${param.date}&sort=${param.sort}&order=${param.order}&"/>
 
 <jsp:include page="pagination.jsp"/>
 
