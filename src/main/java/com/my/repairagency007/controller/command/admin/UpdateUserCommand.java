@@ -52,7 +52,6 @@ public class UpdateUserCommand implements Command {
             session.setAttribute("errorList", new ArrayList<String>().add("error.updateDB"));
             return "modalErrorList.jsp";
         }
-
             fillUserDTO(request, userDTO, validatorUtil);
             userDTO.setRole(request.getParameter("role"));
             userDTO.setAccount(request.getParameter("account").replace(",", "."));

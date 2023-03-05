@@ -60,7 +60,7 @@
                                   pattern="[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$"
                                    title="<fmt:message key="error.emailFormat"/>"
                                    required value="${sessionScope.userDTO.email}"
-                                   disabled/>
+                                   readonly/>
                         </div>
                     </div>
                 </div>
@@ -110,7 +110,7 @@
                         <div class="input-group">
                             <span class="input-group-addon"><i class="fa fa-user fa" aria-hidden="true"></i></span>
                             <input type="text" class="form-control" name="account" id="account"
-                                   pattern="^-?\\d+\\.?\\,?\\d*$"
+                                   pattern="^\d+\.?\,?\d*$"
                                    required value="${sessionScope.userDTO.account}"/>
                         </div>
                     </div>

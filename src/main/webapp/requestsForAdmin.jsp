@@ -57,7 +57,7 @@
                 <input type="hidden" name="action" value="adminFilteredStatus">
                 <label>
                     <select name="status-id">
-                        <option value="0"><fmt:message key="label.selectCompletionStatus"/></option>
+     <%--                   <option value="0"><fmt:message key="label.selectCompletionStatus"/></option>    --%>
                         <c:forEach var="status" items="${CompletionStatus.values()}">
                             <option value="${status.ordinal()}">${status.name()}</option>
                         </c:forEach>
@@ -72,7 +72,7 @@
     <div class="bd-example">
         <table class="table table-striped" aria-label="user-table">
         <thead>
-        <c:set var="base" value="controller?action=adminAllRequest&date=${param.date}&"/>
+        <c:set var="base" value="controller?action=adminAllRequest&status-id=${param.status-id}&date=${param.date}&"/>
         <c:set var="byDate" value="sort=date&"/>
         <c:set var="byCompletionStatus" value="sort=completion_status_id&"/>
         <c:set var="byPaymentStatus" value="sort=payment_status_id&"/>
@@ -143,7 +143,7 @@
             <div class="flex-column">
                 <label for="records"><fmt:message key="label.numberRecords"/></label>
                 <input class="col-2" type="number" min="1" name="records" id="records"
-                       value="${not empty requestScope.records ? requestScope.records : "6"}">&nbsp&nbsp&nbsp&nbsp&nbsp
+                       value="${not empty records ? records : "5"}">&nbsp&nbsp&nbsp&nbsp&nbsp
                 <button type="submit" class="btn btn-dark mt-2 mb-3"><fmt:message key="label.submit"/></button>
             </div>
         </div>

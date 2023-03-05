@@ -175,6 +175,7 @@ public class MapperDTOUtil {
     }
 
     public static void fillUserDTO(HttpServletRequest request, UserDTO userDTO, ValidatorUtil validatorUtil) {
+
         userDTO.setEmail(request.getParameter("email").trim());
         validatorUtil.validateEmail(userDTO.getEmail());
         userDTO.setFirstName(request.getParameter("firstname").trim());

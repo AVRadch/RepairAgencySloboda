@@ -50,6 +50,7 @@ public class AdminFilteredStatusCommand implements Command {
         paginate(numberOfRecords, request);
         log.info("Pages => " + request.getAttribute("pages"));
         session.setAttribute("pages", request.getAttribute("pages"));
+        session.setAttribute("status-id", request.getParameter("status-id"));
 
         String forward = "requestsForAdmin.jsp";
         session.setAttribute("requestDTOS", requests);

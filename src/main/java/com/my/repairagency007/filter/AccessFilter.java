@@ -15,7 +15,7 @@ public class AccessFilter implements Filter {
     private static final Logger log = LoggerFactory.getLogger(AccessFilter.class);
     private final static Map<String, List<String>> commandAccessMap = new HashMap<>();
     private final static Map<String, List<String>> pagesAccessMap = new HashMap<>();
-    private final static List<String> commonsCommands = Arrays.asList("login", "logout", "error");
+    private final static List<String> commonsCommands = Arrays.asList("login", "logout", "error", "registration");
     private final static List<String> commonsPages = Arrays.asList("login.jsp", "registration.jsp",
             "error_page.jsp", "index.jsp", "assets/css/main.css", "css/bootstrap.css", "assets/js/bootstrap.js",
             "registration.css", "css/bootstrap.min.css", "assets/js/bootstrap.min.js", "login.css",
@@ -39,7 +39,7 @@ public class AccessFilter implements Filter {
                 "setCompletedRepair");
         List<String> craftsmanPagesList = Arrays.asList("requestsForCraftsman.jsp", "headerCraftsman.jsp",
                 "feedbacksForCraftsman.jsp");
-        List<String> userCommandsList = Arrays.asList("userRequest", "userProfile", "userEditRequest", "userUpdateRequest",
+        List<String> userCommandsList = Arrays.asList("userRequest", "addRequest", "userProfile", "userEditRequest", "userUpdateRequest",
                 "userFeedbacks", "addFeedback", "createFeedback", "updateProfile", "changePassword");
         List<String> userPagesList = Arrays.asList("addFeedback.jsp", "addRequest.jsp", "editRequest.jsp", "userEditRequest.jsp",
                 "feedbacksForUser.jsp", "requestsForUser.jsp", "requestsForUser.jsp", "userProfile.jsp", "changePassword.jsp");
