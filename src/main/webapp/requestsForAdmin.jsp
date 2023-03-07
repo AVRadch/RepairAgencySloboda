@@ -41,41 +41,50 @@
     <div class="form-row text-center">
         <div class="btn-group">
             <a href="addRequest.jsp" class="btn btn" role="button"><fmt:message key="button.addRequest"/></a>
-            <form method="GET" action="controller">
+            <form method="GET" action="controller"  class="form-inline">
                 <input type="hidden" name="action" value="adminAllRequest">
                 <input type="hidden" name="offset" value="0">
-                <input type="hidden" name="status" value="${param.status}">
-                <input type="hidden" name="date" value="${param.date}">
-                <input type="hidden" name="sort" value="${param.sort}">
-                <input type="hidden" name="order" value="${param.order}">
-                <label>
-                    <select name="repairer" class="form-select mt-2" onchange='submit();'>
+                <%--         <input type="hidden" name="status" value="${param.status}">
+                       <input type="hidden" name="date" value="${param.date}">
+                        <input type="hidden" name="sort" value="${param.sort}">
+                        <input type="hidden" name="order" value="${param.order}">   --%>
+                <div class="form-group mr-2">
+                    <label for="repairer" class="mr-2"><fmt:message key="label.selectRepairer"/>:</label>
+                    <select name="repairer" class="form-control" id="repairer">
                         <option value="0" ${param.repairer eq "0" ? "selected" : ""}><fmt:message key="label.selectRepairer"/></option>
                         <c:forEach var="repairer" items="${sessionScope.repairers}">
                             <option value="${repairer.id}" ${param.repairer eq repairer.id ? "selected" : ""}>${repairer.lastName} ${repairer.firstName}</option>
                         </c:forEach>
                     </select>
-                </label>
+                </div>
  <%--      &nbsp&nbsp&nbsp&nbsp&nbsp         <button type="submit">Filter repairer</button>      --%>
-            </form>
-            <form method="GET" action="controller">
-                <input type="hidden" name="action" value="adminAllRequest">
-                <input type="hidden" name="offset" value="0">
-                <input type="hidden" name="repairer" value="${param.repairer}">
-                <input type="hidden" name="date" value="${param.date}">
-                <input type="hidden" name="sort" value="${param.sort}">
-                <input type="hidden" name="order" value="${param.order}">
-                <label>
-                    <select name="status" class="form-select mt-2" onchange='submit();'>
+                <div class="form-group mr-2">
+                    <label for="status" class="mr-2"><fmt:message key="label.selectCompletionStatus"/>:</label>
+                    <select name="status" class="form-control" id="status">
                         <option value="-1" ${param.status eq "-1" ? "selected" : ""}><fmt:message key="label.selectCompletionStatus"/></option>
                         <c:forEach var="status" items="${CompletionStatus.values()}">
                             <option value="${status.ordinal()}" ${param.status eq status.ordinal() ? "selected" : ""}>${status.name()}
                             </option>
                         </c:forEach>
                     </select>
-                </label>
-  <%--              <button type="submit">Filter status</button>        --%>
+                </div>
+                <%--             <button type="submit" class="btn btn-primary">Filter</button>
+                       <button type="submit">Filter status</button>        --%>
             </form>
+            <script>
+                const repairerSelect = document.getElementById("repairer");
+                const statusSelect = document.getElementById("status");
+
+                repairerSelect.addEventListener("change", function () {
+                    const form = this.closest("form");
+                    form.submit();
+                });
+
+                statusSelect.addEventListener("change", function () {
+                    const form = this.closest("form");
+                    form.submit();
+                });
+            </script>
         </div>
     </div>
 </div>
