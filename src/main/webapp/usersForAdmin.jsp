@@ -35,19 +35,17 @@
 
 <%@ include file="/header.jsp" %>
 
-<div class="container-fluid">
+<div class="container-fluid" style="padding-top: 10px; padding-bottom: 5px;">
     <div class="form-row text-center">
         <div class="btn-group">
         <a href="controller?action=addUser" class="btn btn" role="button"><fmt:message key="button.addUser"/></a>
         </div>
     </div>
 </div>
-<br>
-
 
 <div class="bd-example-snippet bd-code-snippet">
     <div class="bd-example">
-        <table class="table table-striped" aria-label="user-table">
+        <table class="table table-striped" aria-label="user-table" style=" margin: 0 auto; max-width: 95%;">
             <thead>
             <tr>
                 <c:set var="base" value="controller?action=adminAllUsers&date=${param.date}&"/>
@@ -56,7 +54,7 @@
                 <c:set var="byFirstName" value="sort=first_name&"/>
                 <c:set var="byLastName" value="sort=last_name&"/>
                 <c:set var="idOrder"
-                        value="order=${param.sort ne 'u_id' || param.order eq 'DESC' ? 'ASC' : 'DESC'}"/>
+                       value="order=${param.sort ne 'u_id' || param.order eq 'DESC' ? 'ASC' : 'DESC'}"/>
                 <c:set var="emailOrder"
                        value="order=${param.sort ne 'email' || param.order eq 'DESC' ? 'ASC' : 'DESC'}"/>
                 <c:set var="firstNameOrder"
@@ -64,16 +62,20 @@
                 <c:set var="lastNameOrder"
                        value="order=${param.sort ne 'last_name' || param.order eq 'DESC' ? 'ASC' : 'DESC'}"/>
                 <c:set var="limits" value="&offset=0&records=${param.records}"/>
-                <th scope="col"><fmt:message key="table.id"/><a href="${base.concat(byId).concat(idOrder).concat(limits)}">
+                <th scope="col"><fmt:message key="table.id"/><a
+                        href="${base.concat(byId).concat(idOrder).concat(limits)}">
                     <i class="bi bi-arrow-down-up link-dark"></i>
                 </a></th>
-                <th scope="col"><fmt:message key="table.email"/><a href="${base.concat(byEmail).concat(emailOrder).concat(limits)}">
-                    <i class="bi bi-arrow-down-up link-dark"></i>
-                    </a></th>
-                <th scope="col"><fmt:message key="table.lastname"/><a href="${base.concat(byLastName).concat(lastNameOrder).concat(limits)}">
+                <th scope="col"><fmt:message key="table.email"/><a
+                        href="${base.concat(byEmail).concat(emailOrder).concat(limits)}">
                     <i class="bi bi-arrow-down-up link-dark"></i>
                 </a></th>
-                <th scope="col"><fmt:message key="table.firstname"/><a href="${base.concat(byFirstName).concat(firstNameOrder).concat(limits)}">
+                <th scope="col"><fmt:message key="table.lastname"/><a
+                        href="${base.concat(byLastName).concat(lastNameOrder).concat(limits)}">
+                    <i class="bi bi-arrow-down-up link-dark"></i>
+                </a></th>
+                <th scope="col"><fmt:message key="table.firstname"/><a
+                        href="${base.concat(byFirstName).concat(firstNameOrder).concat(limits)}">
                     <i class="bi bi-arrow-down-up link-dark"></i>
                 </a></th>
                 <th><fmt:message key="table.account"/></th>
@@ -82,8 +84,7 @@
                 <th><fmt:message key="table.action"/></th>
             </tr>
             </thead>
-            <tbody>
-
+            <tbody style="padding-top: 4px; padding-bottom: 4px;">
             <c:forEach var="user" items="${sessionScope.userDTOS}" varStatus="status">
                 <tr>
                     <td><c:out value="${user.id}"/></td>
@@ -94,52 +95,37 @@
                     <td><c:out value="${user.phoneNumber}"/></td>
                     <td><c:out value="${user.role}"/></td>
                     <td>
-                        <div class="btn-group">
-                            <form method="post"
-                                  action="controller?action=deleteUser&user-id=${user.id}">
-                                <input type="submit" value=
-                                    <fmt:message key="button.deleteUser"/>>
-                            </form>
-                            <form method="post"
-                                  action="controller?action=editUser&user-id=${user.id}">
-                                <input type="submit" value=
-                                    <fmt:message key="button.editUser"/>>
-                            </form>
-<%--
-                            ```
-                            javascript
-                            var xhttp = new XMLHttpRequest();
-                            xhttp.open("POST", "your_url_here", true);
-                            xhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
-                            xhttp.send("param1=value1&param2=value2");
-                            ```         --%>
-                            <%--
-                            <a class="link-dark" href=controller?action=editUser&user-id=${user.id} method="post">
-                                <fmt:message key="button.editUser"/>
-                            </a>
-                            --%>
-                        </div>
+                        <form method="post"
+                              style="margin-bottom: 0px; margin-top: 0px; padding-top: 0px; padding-bottom: 0px;"
+                              action="controller?action=deleteUser&user-id=${user.id}">
+                            <input type="submit" value=
+                                <fmt:message key="button.deleteUser"/>>
+                        </form>
+                        <form method="post"
+                              style="margin-bottom: 0px; margin-top: 0px; padding-top: 0px; padding-bottom: 0px;"
+                              action="controller?action=editUser&user-id=${user.id}">
+                            <input type="submit" value=
+                                <fmt:message key="button.editUser"/>>
+                        </form>
                     </td>
                 </tr>
             </c:forEach>
-
             </tbody>
         </table>
     </div>
 </div>
 
-
-<form method="GET" action="controller" class="flex">
-    <div class="d-flex justify-content-between text-center">
+<form method="GET" action="controller" class="flex" style=" margin: 0 auto; padding-bottom: 0px;">
+    <div class="d-flex justify-content-between text-center" >
         <input type="hidden" name="action" value="adminAllUsers">
         <input type="hidden" name="offset" value="0">
         <div class="form-row ">
-        <div class="flex-column">
-            <label for="records"><fmt:message key="label.numberRecords"/></label>
-            <input class="col-2" type="number" min="1" name="records" id="records"
-                   value="${not empty requestScope.records ? requestScope.records : "6"}">&nbsp&nbsp&nbsp&nbsp&nbsp
-            <button type="submit" class="btn btn-dark mt-2 mb-3"><fmt:message key="label.submit"/></button>
-        </div>
+            <div class="flex-column" style=" margin-bottom: 0px; padding-bottom: 0px;">
+                <label for="records"><fmt:message key="label.numberRecords"/></label>
+                <input class="col-2" type="number" min="1" name="records" id="records"
+                       value="${not empty requestScope.records ? requestScope.records : "5"}">&nbsp&nbsp&nbsp&nbsp&nbsp
+                <button type="submit" class="btn btn-dark mt-2 mb-3"><fmt:message key="label.submit"/></button>
+            </div>
         </div>
     </div>
 </form>

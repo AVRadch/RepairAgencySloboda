@@ -42,8 +42,8 @@ public class CraftsmanRequestCommand implements Command {
         log.debug("создание списка реквестов");
         QueryBuilder queryBuilder = getQueryBuilder(request);
         log.debug("получена query builder " + queryBuilder);
-        requests = requestService.getAll(queryBuilder.getQuery());
-        int numberOfRecords = requestService.getNumberOfRecords(queryBuilder.getRecordQuery());
+        requests = requestService.getAllForCraftsman(queryBuilder.getQuery(), loggedUserID);
+        int numberOfRecords = requestService.getNumberOfCraftsmanRecords(queryBuilder.getRecordQuery(), loggedUserID);
 
         paginate(numberOfRecords, request);
         session.setAttribute("requestDTOS", requests);
@@ -52,11 +52,7 @@ public class CraftsmanRequestCommand implements Command {
     }
 
     private QueryBuilder getQueryBuilder(HttpServletRequest request) {
-        HttpSession session = request.getSession();
-        UserDTO currentUser = (UserDTO) session.getAttribute("logged_user");
-        int loggedUserID = currentUser.getId();
         return new RequestQueryBuilder()
-                .setReparierFilter(String.valueOf(loggedUserID))
                 .setDateFilter(request.getParameter("date"))
                 .setSortField(request.getParameter("sort"))
                 .setOrder(request.getParameter("order"))

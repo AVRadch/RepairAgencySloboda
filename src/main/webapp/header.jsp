@@ -18,7 +18,7 @@
 
 <!------ Include the above in your HEAD tag ---------->
 
-<div class="container">
+<div class="container" style="padding-left: 0; padding-right: 0;">
     <div class="row">
         <div class="span12">
             <div class="head">
@@ -31,42 +31,37 @@
                             <%@ include file="/language_selector.jsp" %>
                         </div>
                         <div class="span2 offset2">
-                            <br><rls:roletag role="${sessionScope.logged_user_role}"/>
+                            <br><rls:roletag role="${sessionScope.logged_user_role}" account="${sessionScope.logged_user.account}"/>
                         </div>
                         <div class="span1 offset4" style="margin-top:0px;">
-                 <!--           <button class="btn pull-right" type="button">Sign Out</button>  -->
                             <a href="controller?action=logout" class="btn pull-right" role="button"><fmt:message key="button.logout"/></a>
                         </div>
                     </div>
                 </div>
-
-                <div class="navbar">
-                    <div class="navbar-inner">
-                        <div class="container-fluid">
-                            <ul class="nav">
-                                <li>
-                                    <a href="controller?action=adminAllUsers"><fmt:message key="button.users"/></a>
-                                </li>
-
-                                <li>
-                                    <a href="controller?action=adminAllFeedbacks"><fmt:message key="button.feedbacks"/></a>
-                                </li>
-
-                                <li>
-                                    <a href="controller?action=adminAllRequest"><fmt:message key="button.requests"/></a>
-                                </li>
-
-                                <li>
-                                    <a href="#"><fmt:message key="button.reports"/></a>
-                                </li>
-                            </ul>
-                        </div>
-                    </div>
-                </div>
-
             </div>
         </div>
     </div>
 </div>
+<div class="navbar navbar-full" style="width: 100%; margin: 0; padding: 0;">
+    <div class="navbar-inner">
+        <div class="container" style="width: 100%;">
+            <ul class="nav">
+                <li>
+                    <a href="controller?action=adminAllUsers"><fmt:message key="button.users"/></a>
+                </li>
+                <li>
+                    <a href="controller?action=adminAllFeedbacks"><fmt:message key="button.feedbacks"/></a>
+                </li>
+                <li>
+                    <a href="controller?action=adminAllRequest"><fmt:message key="button.requests"/></a>
+                </li>
+                <li>
+                    <a href="#"><fmt:message key="button.reports"/></a>
+                </li>
+            </ul>
+        </div>
+    </div>
+</div>
+
 </body>
 </html>

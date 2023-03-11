@@ -36,121 +36,117 @@
 <body>
 <%@ include file="/header.jsp" %>
 
-
-<div class="container-fluid">
-    <div class="form-row text-center">
-        <div class="btn-group">
-            <a href="addRequest.jsp" class="btn btn" role="button"><fmt:message key="button.addRequest"/></a>
-            <form method="GET" action="controller"  class="form-inline">
-                <input type="hidden" name="action" value="adminAllRequest">
-                <input type="hidden" name="offset" value="0">
-                <%--         <input type="hidden" name="status" value="${param.status}">
-                       <input type="hidden" name="date" value="${param.date}">
-                        <input type="hidden" name="sort" value="${param.sort}">
-                        <input type="hidden" name="order" value="${param.order}">   --%>
-                <div class="form-group mr-2">
-                    <label for="repairer" class="mr-2"><fmt:message key="label.selectRepairer"/>:</label>
-                    <select name="repairer" class="form-control" id="repairer">
-                        <option value="0" ${param.repairer eq "0" ? "selected" : ""}><fmt:message key="label.selectRepairer"/></option>
-                        <c:forEach var="repairer" items="${sessionScope.repairers}">
-                            <option value="${repairer.id}" ${param.repairer eq repairer.id ? "selected" : ""}>${repairer.lastName} ${repairer.firstName}</option>
-                        </c:forEach>
-                    </select>
-                </div>
- <%--      &nbsp&nbsp&nbsp&nbsp&nbsp         <button type="submit">Filter repairer</button>      --%>
-                <div class="form-group mr-2">
-                    <label for="status" class="mr-2"><fmt:message key="label.selectCompletionStatus"/>:</label>
-                    <select name="status" class="form-control" id="status">
-                        <option value="-1" ${param.status eq "-1" ? "selected" : ""}><fmt:message key="label.selectCompletionStatus"/></option>
-                        <c:forEach var="status" items="${CompletionStatus.values()}">
-                            <option value="${status.ordinal()}" ${param.status eq status.ordinal() ? "selected" : ""}>${status.name()}
-                            </option>
-                        </c:forEach>
-                    </select>
-                </div>
-                <%--             <button type="submit" class="btn btn-primary">Filter</button>
-                       <button type="submit">Filter status</button>        --%>
-            </form>
-            <script>
-                const repairerSelect = document.getElementById("repairer");
-                const statusSelect = document.getElementById("status");
-
-                repairerSelect.addEventListener("change", function () {
-                    const form = this.closest("form");
-                    form.submit();
-                });
-
-                statusSelect.addEventListener("change", function () {
-                    const form = this.closest("form");
-                    form.submit();
-                });
-            </script>
+<div class="text-center" style="padding-top: 20px;">
+    <form method="GET" action="controller" class="form-inline">
+        <input type="hidden" name="action" value="adminAllRequest">
+        <input type="hidden" name="offset" value="0">
+        <div class="form-group mr-2" style="padding-left: 0; padding-right: 20px;">
+            <label for="repairer" class="mr-2"><fmt:message key="label.selectRepairer"/>:</label>
+            <select name="repairer" class="form-control" id="repairer">
+                <option value="0" ${param.repairer eq "0" ? "selected" : ""}><fmt:message
+                        key="label.selectAllRepairer"/></option>
+                <c:forEach var="repairer" items="${sessionScope.repairers}">
+                    <option value="${repairer.id}" ${param.repairer eq repairer.id ? "selected" : ""}>${repairer.lastName} ${repairer.firstName}</option>
+                </c:forEach>
+            </select>
         </div>
-    </div>
+        <div class="form-group mr-2" style="padding-left: 20px; padding-right: 0px;">
+            <label for="status" class="mr-2"><fmt:message key="label.selectCompletionStatus"/>:</label>
+            <select name="status" class="form-control" id="status">
+                <option value="-1" ${param.status eq "-1" ? "selected" : ""}><fmt:message
+                        key="label.selectAllCompletionStatus"/></option>
+                <c:forEach var="status" items="${CompletionStatus.values()}">
+                    <option value="${status.ordinal()}" ${param.status eq status.ordinal() ? "selected" : ""}>${status.name()}
+                    </option>
+                </c:forEach>
+            </select>
+        </div>
+    </form>
+    <script>
+        const repairerSelect = document.getElementById("repairer");
+        const statusSelect = document.getElementById("status");
+
+        repairerSelect.addEventListener("change", function () {
+            const form = this.closest("form");
+            form.submit();
+        });
+
+        statusSelect.addEventListener("change", function () {
+            const form = this.closest("form");
+            form.submit();
+        });
+    </script>
+
 </div>
+
 <div class="bd-example-snippet bd-code-snippet">
     <div class="bd-example">
-        <table class="table table-striped" aria-label="user-table">
-        <thead>
-        <c:set var="base" value="controller?action=adminAllRequest&repairer=${param.repairer}&status=${param.status}&date=${param.date}&"/>
-        <c:set var="byDate" value="sort=date&"/>
-        <c:set var="byCompletionStatus" value="sort=completion_status_id&"/>
-        <c:set var="byPaymentStatus" value="sort=payment_status_id&"/>
-        <c:set var="byTotalCost" value="sort=total_cost&"/>
-        <c:set var="dateOrder"
-               value="order=${param.sort ne 'date' || param.order eq 'DESC' ? 'ASC' : 'DESC'}"/>
-        <c:set var="completionStatusOrder"
-               value="order=${param.sort ne 'completion_status_id' || param.order eq 'DESC' ? 'ASC' : 'DESC'}"/>
-        <c:set var="paymentStatusOrder"
-               value="order=${param.sort ne 'payment_status_id' || param.order eq 'DESC' ? 'ASC' : 'DESC'}"/>
-        <c:set var="totalCostOrder"
-               value="order=${param.sort ne 'total_cost' || param.order eq 'DESC' ? 'ASC' : 'DESC'}"/>
-        <c:set var="limits" value="&offset=0&records=${param.records}"/>
-        <tr>
-            <th><fmt:message key="table.id"/></th>
-            <th><fmt:message key="table.user"/></th>
-            <th><fmt:message key="table.description"/></th>
-            <th scope="col"><fmt:message key="table.date"/><a href="${base.concat(byDate).concat(dateOrder).concat(limits)}">
-                <i class="bi bi-arrow-down-up link-dark"></i>
-            </a></th>
-            <th scope="col"><fmt:message key="table.completion"/><a href="${base.concat(byCompletionStatus).concat(completionStatusOrder).concat(limits)}">
-                <i class="bi bi-arrow-down-up link-dark"></i>
-            </a></th>
-            <th><fmt:message key="table.repairer"/></th>
-            <th scope="col"><fmt:message key="table.payment"/><a href="${base.concat(byPaymentStatus).concat(paymentStatusOrder).concat(limits)}">
-                <i class="bi bi-arrow-down-up link-dark"></i>
-            </a></th>
-            <th scope="col"><fmt:message key="table.totalCost"/><a href="${base.concat(byTotalCost).concat(totalCostOrder).concat(limits)}">
-                <i class="bi bi-arrow-down-up link-dark"></i>
-            </a></th>
-            <th><fmt:message key="table.action"/></th>
-        </tr>
-        </thead>
-        <tbody>
-
-        <c:forEach var="request" items="${sessionScope.requestDTOS}" varStatus="status">
+        <table class="table table-striped" aria-label="user-table" style=" margin: 0 auto; max-width: 95%;">
+            <thead>
+            <c:set var="base"
+                   value="controller?action=adminAllRequest&repairer=${param.repairer}&status=${param.status}&date=${param.date}&"/>
+            <c:set var="byDate" value="sort=date&"/>
+            <c:set var="byCompletionStatus" value="sort=completion_status_id&"/>
+            <c:set var="byPaymentStatus" value="sort=payment_status_id&"/>
+            <c:set var="byTotalCost" value="sort=total_cost&"/>
+            <c:set var="dateOrder"
+                   value="order=${param.sort ne 'date' || param.order eq 'DESC' ? 'ASC' : 'DESC'}"/>
+            <c:set var="completionStatusOrder"
+                   value="order=${param.sort ne 'completion_status_id' || param.order eq 'DESC' ? 'ASC' : 'DESC'}"/>
+            <c:set var="paymentStatusOrder"
+                   value="order=${param.sort ne 'payment_status_id' || param.order eq 'DESC' ? 'ASC' : 'DESC'}"/>
+            <c:set var="totalCostOrder"
+                   value="order=${param.sort ne 'total_cost' || param.order eq 'DESC' ? 'ASC' : 'DESC'}"/>
+            <c:set var="limits" value="&offset=0&records=${param.records}"/>
             <tr>
-                <td><c:out value="${request.id}"/></td>
-                <td><c:out value="${request.userFirstName}"/><br>
-                    <c:out value="${request.userLastName}"/></td>
-            <td><c:out value="${request.description}"/></td>
-            <td><c:out value="${request.date}"/></td>
-            <td><c:out value="${request.completionStatus}"/></td>
-                <td><c:out value="${request.repairerLastName}"/></td>
-            <td><c:out value="${request.paymentStatus}"/></td>
-            <td><c:out value="${request.totalCost}"/></td>
-                <td>
-                    <a class="link-dark" href=controller?action=deleteRequest&request-id=${request.id}>
-                        <fmt:message key="button.deleteRequest"/>
-                    </a> <br>
-                    <a class="link-dark" href=controller?action=editRequest&request-id=${request.id}>
-                        <fmt:message key="button.editRequest"/>
-                    </a>
-                </td>
+                <th><fmt:message key="table.id"/></th>
+                <th><fmt:message key="table.user"/></th>
+                <th><fmt:message key="table.description"/></th>
+                <th scope="col"><fmt:message key="table.date"/><a
+                        href="${base.concat(byDate).concat(dateOrder).concat(limits)}">
+                    <i class="bi bi-arrow-down-up link-dark"></i>
+                </a></th>
+                <th scope="col"><fmt:message key="table.completion"/><a
+                        href="${base.concat(byCompletionStatus).concat(completionStatusOrder).concat(limits)}">
+                    <i class="bi bi-arrow-down-up link-dark"></i>
+                </a></th>
+                <th><fmt:message key="table.repairer"/></th>
+                <th scope="col"><fmt:message key="table.payment"/><a
+                        href="${base.concat(byPaymentStatus).concat(paymentStatusOrder).concat(limits)}">
+                    <i class="bi bi-arrow-down-up link-dark"></i>
+                </a></th>
+                <th scope="col"><fmt:message key="table.totalCost"/><a
+                        href="${base.concat(byTotalCost).concat(totalCostOrder).concat(limits)}">
+                    <i class="bi bi-arrow-down-up link-dark"></i>
+                </a></th>
+                <th><fmt:message key="table.action"/></th>
             </tr>
-        </c:forEach>
+            </thead>
+            <tbody>
 
-        </tbody>
+            <c:forEach var="request" items="${sessionScope.requestDTOS}" varStatus="status">
+                <tr>
+                    <td><c:out value="${request.id}"/></td>
+                    <td><c:out value="${request.userFirstName}"/><br>
+                        <c:out value="${request.userLastName}"/></td>
+                    <td><c:out value="${request.description}"/></td>
+                    <td><c:out value="${request.date}"/></td>
+                    <td><c:out value="${request.completionStatus}"/></td>
+                    <td><c:out value="${request.repairerLastName}"/></td>
+                    <td><c:out value="${request.paymentStatus}"/></td>
+                    <td><c:out value="${request.totalCost}"/></td>
+                    <td>
+                        <a class="link-dark" href=controller?action=deleteRequest&request-id=${request.id}>
+                            <fmt:message key="button.deleteRequest"/>
+                        </a> <br>
+                        <a class="link-dark" href=controller?action=editRequest&request-id=${request.id}>
+                            <fmt:message key="button.editRequest"/>
+                        </a>
+                    </td>
+                </tr>
+            </c:forEach>
+
+            </tbody>
         </table>
     </div>
 </div>
@@ -168,7 +164,7 @@
             <div class="flex-column">
                 <label for="records"><fmt:message key="label.numberRecords"/></label>
                 <input class="col-2" type="number" min="1" name="records" id="records"
-                       value="${not empty records ? records : "5"}">&nbsp&nbsp&nbsp&nbsp&nbsp
+                       value="${not empty records ? records : "5"}">
                 <button type="submit" class="btn btn-dark mt-2 mb-3"><fmt:message key="label.submit"/></button>
             </div>
         </div>

@@ -37,7 +37,7 @@
 
 <div class="bd-example-snippet bd-code-snippet">
   <div class="bd-example">
-    <table class="table table-striped" aria-label="user-table">
+    <table class="table table-striped" aria-label="user-table" style="margin-top: 20px; margin-left: 40px; max-width: 95%;">
       <thead>
       <c:set var="base" value="controller?action=userFeedbacks&date=${param.date}&"/>
       <c:set var="byDate" value="sort=date_time&"/>

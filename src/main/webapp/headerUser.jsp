@@ -18,7 +18,7 @@
 
 <!------ Include the above in your HEAD tag ---------->
 
-<div class="container">
+<div class="container" style="padding-left: 0; padding-right: 0;">
   <div class="row">
     <div class="span12">
       <div class="head">
@@ -31,10 +31,9 @@
               <%@ include file="/language_selector.jsp" %>
             </div>
             <div class="span2 offset2">
-              <br><rls:roletag role="${sessionScope.logged_user_role}"/>
+              <br><rls:roletag role="${sessionScope.logged_user_role}" account="${sessionScope.logged_user.account}"/>
             </div>
             <div class="span1 offset4" style="margin-top:0px;">
-              <!--           <button class="btn pull-right" type="button">Sign Out</button>  -->
               <a href="controller?action=logout" class="btn pull-right" role="button"><fmt:message key="button.logout"/></a>
             </div>
           </div>

@@ -62,6 +62,23 @@ public class RequestDAOImpl extends GenericDAO implements RequestDAO {
         return numberOfRecords;
     }
 
+    public int getNumberOfCraftsmanRecords(String filter, int userId) throws DAOException {
+        int numberOfRecords = 0;
+        String query = String.format(GET_NUMBER_OF_CRAFTSMAN_REQUEST_RECORDS, filter);
+        try (Connection connection = dataSource.getConnection();
+             PreparedStatement preparedStatement = connection.prepareStatement(query)) {
+            preparedStatement.setInt(1, userId);
+            try (ResultSet resultSet = preparedStatement.executeQuery()) {
+                if (resultSet.next()) {
+                    numberOfRecords = resultSet.getInt("numberOfRecords");
+                }
+            }
+        }catch (SQLException e) {
+            throw new DAOException(e);
+        }
+        return numberOfRecords;
+    }
+
     public List<Request> findAllForCraftsman(String query, int userId) throws DAOException {
 
         log.trace("Find all for user request");

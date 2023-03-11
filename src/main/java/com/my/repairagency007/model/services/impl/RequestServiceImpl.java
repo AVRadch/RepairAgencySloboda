@@ -201,6 +201,16 @@ public class RequestServiceImpl implements RequestService {
         return records;
     }
 
+    public int getNumberOfCraftsmanRecords (String filter, int userId) throws ServiceException {
+        int records;
+        try {
+            records = requestDAO.getNumberOfCraftsmanRecords(filter, userId);
+        } catch (DAOException e) {
+            throw new ServiceException(e);
+        }
+        return records;
+    }
+
     public int getNumberOfRecords(String filter) throws ServiceException {
         int records;
         try {

@@ -44,12 +44,13 @@ public class SetStartRepairCommand implements Command {
         HttpSession session = request.getSession();
 
         UserDTO currentUser = (UserDTO) session.getAttribute("logged_user");
-        log.debug("Получили юзера из сессии");
+        log.info("Получили юзера из сессии");
         String forward = "controller?action=craftsmanRequest";
 
         RequestDTO requestDTO = null;
         try {
             requestDTO = requestService.getById(Integer.parseInt(request.getParameter("request-id")));
+            log.info("Get request for set repairer" + requestDTO);
             requestService.setStartRepair(requestDTO, currentUser);
             session.setAttribute("message", "label.successSetStartRepair");
         } catch (ServiceException e) {

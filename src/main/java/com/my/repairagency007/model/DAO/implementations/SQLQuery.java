@@ -22,6 +22,7 @@ public abstract class SQLQuery {
         public static final String SQL_GET_REQUEST_BY_ID = "SELECT * FROM request WHERE r_id = ?";
         public static final String GET_NUMBER_OF_REQUEST_RECORDS = "SELECT COUNT(r_id) AS numberOfRecords FROM request %s";
         public static final String GET_NUMBER_OF_USER_REQUEST_RECORDS = "SELECT COUNT(r_id) AS numberOfRecords FROM request where users_id = ? %s";
+        public static final String GET_NUMBER_OF_CRAFTSMAN_REQUEST_RECORDS = "SELECT COUNT(r_id) AS numberOfRecords FROM request where isnull(repairer_id) or repairer_id = ?";
         public static final String SQL_DELETE_REQUEST_BY_ID = "DELETE FROM request WHERE r_id = ?";
         public static final String SQL_DELETE_FEEDBACKS_REQUEST_BY_ID = "DELETE FROM feedback WHERE request_id = ?";
         public static final String SQL_CREATE_REQUEST = "INSERT INTO request(users_id, descriptions, date, completion_status_id, " +

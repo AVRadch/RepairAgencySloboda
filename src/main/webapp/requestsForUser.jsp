@@ -49,7 +49,7 @@
 
 <div class="bd-example-snippet bd-code-snippet">
     <div class="bd-example">
-        <table class="table table-striped" aria-label="user-table">
+        <table class="table table-striped" aria-label="user-table" style=" margin: 0 auto; max-width: 95%;">
             <thead>
             <c:set var="base" value="controller?action=userRequest&date=${param.date}&"/>
             <c:set var="byDate" value="sort=date&"/>

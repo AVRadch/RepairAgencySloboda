@@ -33,12 +33,11 @@
 </head>
 <body>
 <%@ include file="/headerCraftsman.jsp" %>
-
 <br>
 
 <div class="bd-example-snippet bd-code-snippet">
     <div class="bd-example">
-        <table class="table table-striped" aria-label="user-table">
+        <table class="table table-striped" aria-label="user-table" style=" margin: 0 auto; max-width: 95%;">
             <thead>
             <c:set var="base" value="controller?action=craftsmanRequest&date=${param.date}&"/>
             <c:set var="byDate" value="sort=date&"/>
@@ -90,14 +89,22 @@
                     <td>
                         <c:if test="${request.paymentStatus eq 'paid'}">
                             <c:if test="${request.completionStatus eq 'not_started'}">
-                                <a class="link-dark" href=controller?action=setStartRepair&request-id=${request.id}>
+                                <form method="post"
+                                      action="controller?action=setStartRepair&request-id=${request.id}">
+                                    <input type="submit" value="<fmt:message key='button.startRepair'/>">
+                                </form>
+                <%--                <a class="link-dark" href=controller?action=setStartRepair&request-id=${request.id}>
                                     <fmt:message key="button.startRepair"/>
-                                </a> <br>
+                                </a> <br>       --%>
                             </c:if>
                             <c:if test="${request.completionStatus eq 'in_progress'}">
-                                <a class="link-dark" href=controller?action=setCompletedRepair&request-id=${request.id}>
+                                <form method="post"
+                                      action="controller?action=setCompletedRepair&request-id=${request.id}">
+                                    <input type="submit" value="<fmt:message key='button.completionRequest'/>">
+                                </form>
+                    <%--            <a class="link-dark" href=controller?action=setCompletedRepair&request-id=${request.id}>
                                     <fmt:message key="button.completionRequest"/>
-                                </a>
+                                </a>        --%>
                             </c:if>
                         </c:if>
                     </td>

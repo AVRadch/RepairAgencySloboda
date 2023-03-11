@@ -1,7 +1,7 @@
 <%@ page contentType="text/html;charset=UTF-8" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 
-<ul class="pagination text-center">
+<ul class="pagination" style="margin-left: 40px; margin-top: 0px;">
     <c:if test="${end > 3}">
         <li class="page-item">
             <a class="page-link link-dark" href="${href}offset=0&records=${records}">
