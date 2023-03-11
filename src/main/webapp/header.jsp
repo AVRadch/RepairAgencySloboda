@@ -56,7 +56,7 @@
                     <a href="controller?action=adminAllRequest"><fmt:message key="button.requests"/></a>
                 </li>
                 <li>
-                    <a href="#"><fmt:message key="button.reports"/></a>
+                    <a href="controller?action=requestPdfReport&repairer=${param.repairer}&status=${param.status}&date=${param.date}&sort=${param.sort}&order=${param.order}&"><fmt:message key="button.reports"/></a>
                 </li>
             </ul>
         </div>

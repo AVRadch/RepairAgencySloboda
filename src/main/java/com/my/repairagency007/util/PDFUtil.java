@@ -31,41 +31,26 @@ import java.util.stream.Stream;
 
 public class PDFUtil {
 
-
-    private static final Logger logger = LoggerFactory.getLogger(PDFUtil.class);
+    private static final Logger log = LoggerFactory.getLogger(PDFUtil.class);
     private final ServletContext servletContext;
-    private static final String FONT = "fonts/arial.ttf";
     private static final Color LIGHT_GREY = new DeviceRgb(220, 220, 220);
-    private static final int TITLE_SIZE = 20;
-    private static final Paragraph LINE_SEPARATOR = new Paragraph(new Text("\n"));
-    private static final String USER_TITLE = "users";
-    private static final String[] USER_CELLS = new String[]{"id", "email", "name", "surname", "role"};
-    private static final String EVENT_TITLE = "events";
-    private static final String[] EVENT_CELLS =
-            new String[]{"title", "date", "location", "reports", "registrations", "visitors"};
+    private static final String[] REQUEST_CELLS = new String[]{"table.id", "table.user", "table.description",
+            "table.date", "table.completion", "table.repairer", "table.payment", "table.totalCost"};
 
     public PDFUtil(ServletContext servletContext) {
         this.servletContext = servletContext;
     }
 
-    public ByteArrayOutputStream createUsersPdf(List<UserDTO> users, String locale) {
-        ResourceBundle resourceBundle = getBundle(locale);
+    public ByteArrayOutputStream createPdfRequests(List<RequestDTO> requestDTOS, String language) {
+        ResourceBundle resourceBundle = getBundle(language);
         ByteArrayOutputStream output = new ByteArrayOutputStream();
         Document document = getDocument(output);
-        document.add(getTableTitle(resourceBundle.getString(USER_TITLE).toUpperCase()));
-        document.add(LINE_SEPARATOR);
-        document.add(getUserTable(users, resourceBundle));
-        document.close();
-        return output;
-    }
-
-    public ByteArrayOutputStream createEventsPdf(List<RequestDTO> events, String locale) {
-        ResourceBundle resourceBundle = getBundle(locale);
-        ByteArrayOutputStream output = new ByteArrayOutputStream();
-        Document document = getDocument(output);
-        document.add(getTableTitle(resourceBundle.getString(EVENT_TITLE).toUpperCase()));
-        document.add(LINE_SEPARATOR);
-        document.add(getEventTable(events, resourceBundle));
+        Paragraph pdfParagraf = new Paragraph(resourceBundle.getString("requestsTitle"))
+                .setFontSize(18)
+                .setTextAlignment(TextAlignment.CENTER);
+        document.add(pdfParagraf);
+        document.add(new Paragraph(new Text("\n")));
+        document.add(getRequestTable(requestDTOS, resourceBundle));
         document.close();
         return output;
     }
@@ -81,25 +66,11 @@ public class PDFUtil {
         return document;
     }
 
-    private static Paragraph getTableTitle(String tableTitle) {
-        return new Paragraph(new Text(tableTitle))
-                .setFontSize(TITLE_SIZE)
-                .setTextAlignment(TextAlignment.CENTER);
-    }
-
-    private Table getUserTable(List<UserDTO> users, ResourceBundle resourceBundle) {
-        Table table = new Table(new float[]{4, 12, 6, 6, 6});
+    private Table getRequestTable(List<RequestDTO> requestDTOS, ResourceBundle resourceBundle) {
+        Table table = new Table(new float[]{2, 5, 8, 4, 3, 6, 3, 2});
         table.setWidth(UnitValue.createPercentValue(100));
-        addTableHeader(table, USER_CELLS, resourceBundle);
-        addUserTableRows(table, users);
-        return table;
-    }
-
-    private Table getEventTable(List<RequestDTO> events, ResourceBundle resourceBundle) {
-        Table table = new Table(new float[]{7, 3, 3, 2, 2, 2});
-        table.setWidth(UnitValue.createPercentValue(100));
-        addTableHeader(table, EVENT_CELLS, resourceBundle);
-        addEventTableRows(table, events);
+        addTableHeader(table, REQUEST_CELLS, resourceBundle);
+        addRequestTableRows(table, requestDTOS);
         return table;
     }
 
@@ -114,50 +85,45 @@ public class PDFUtil {
                 });
     }
 
-    private void addUserTableRows(Table table, List<UserDTO> users) {
-        users.forEach(user ->
+    private void addRequestTableRows(Table table, List<RequestDTO> requestDTOS) {
+        requestDTOS.forEach(requestDTO ->
                 {
-                    table.addCell(String.valueOf(user.getId()));
-                    table.addCell(user.getEmail());
-                    table.addCell(user.getFirstName());
-                    table.addCell(user.getLastName());
-                    table.addCell(user.getRole());
-                }
-        );
-    }
-
-    private void addEventTableRows(Table table, List<RequestDTO> events) {
-        events.forEach(event -> {
-                   // table.addCell(event.getId());
-                    table.addCell(event.getDate());
-       /*             table.addCell(event.getLocation());
-                    table.addCell(String.valueOf(event.getReports()));
-                    table.addCell(String.valueOf(event.getRegistrations()));
-                    table.addCell(String.valueOf(event.getVisitors()));*/
+                    table.addCell(String.valueOf(requestDTO.getId()));
+                    table.addCell(requestDTO.getUserFirstName() + " " + requestDTO.getUserLastName());
+                    table.addCell(requestDTO.getDescription());
+                    table.addCell(requestDTO.getDate());
+                    table.addCell(requestDTO.getCompletionStatus());
+                    String repairerName = requestDTO.getRepairerLastName();
+                    if (repairerName == null) {
+                        repairerName = "";
+                    }
+                    table.addCell(repairerName);
+                    table.addCell(requestDTO.getPaymentStatus());
+                    table.addCell(requestDTO.getTotalCost());
                 }
         );
     }
 
     private PdfFont getPdfFont() {
         try {
-            URL resource = servletContext.getResource(FONT);
+            URL resource = servletContext.getResource("fonts/arial.ttf");
             String fontUrl = resource.getFile();
+            log.info("fonts url => " + fontUrl);
             return PdfFontFactory.createFont(fontUrl);
         } catch (IOException e) {
-            logger.error(e.getMessage());
+            log.error(e.getMessage());
             return null;
         }
     }
 
-    private ResourceBundle getBundle(String locale) {
-        String resources = "resources";
-        if (locale.contains("_")) {
-            int index = locale.indexOf("_");
-            String lang = locale.substring(0, index);
-            String country = locale.substring(index + 1);
-            return ResourceBundle.getBundle(resources, new Locale(lang, country));
+    private ResourceBundle getBundle(String language) {
+        String resources = "language";
+        log.info("Language resources => " + language);
+        if (language.contains("_")) {
+            String[] splitLocale = language.split("_");
+            return ResourceBundle.getBundle(resources, new Locale(splitLocale[0], splitLocale[1]));
         } else {
-            return ResourceBundle.getBundle(resources, new Locale(locale));
+            return ResourceBundle.getBundle(resources, new Locale(language));
         }
     }
 }

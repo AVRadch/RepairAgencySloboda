@@ -30,7 +30,7 @@ public class AccessFilter implements Filter {
         List<String> managerCommandsList = Arrays.asList("registration", "adminAllRequest", "adminAllUsers",
                 "adminAllFeedbacks", "adminFilteredRepairerUsers", "adminFilteredStatus", "deleteRequest",
                 "deleteUser", "editUser", "updateUser", "updateRequest", "addUser", "editRequest",
-                "registrationAdmin", "deleteFeedback");
+                "registrationAdmin", "deleteFeedback", "requestPdfReport");
         List<String> managerPagesList = Arrays.asList("addRequest.jsp", "addRequest.css", "adminAddUser.jsp",
                 "changePassword.jsp", "editRequest.jsp", "editUser.jsp", "feedbacksForAdmin.jsp",
                 "error_page.jsp", "editUser.jsp", "editRequest.jsp", "deleteUserModal.jsp", "changePassword.jsp",

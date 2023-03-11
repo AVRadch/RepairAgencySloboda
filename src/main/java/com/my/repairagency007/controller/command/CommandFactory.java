@@ -72,6 +72,7 @@ public class CommandFactory {
         commands.put("addUser", new AddUserCommand());
         commands.put("editRequest", new EditRequestCommand(AppContext.getAppContext()));
         commands.put("registrationAdmin", new RegistrationAdminCommand(AppContext.getAppContext()));
+        commands.put("requestPdfReport", new RequestPdfReportCommand(AppContext.getAppContext()));
     }
 
     public Command getCommand(HttpServletRequest request) {
